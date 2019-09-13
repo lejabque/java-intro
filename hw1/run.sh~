@@ -1,0 +1,3 @@
+#!/bin/bash
+javac RunMe.java
+java RunMe true String for Character private true
