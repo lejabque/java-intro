@@ -7,15 +7,8 @@ public class Sum {
             while (j < s.length()) {
                 char c = s.charAt(j);
                 String new_num = "";
-                if (c == '-' && j + 1 < s.length()) { // случай с отрицательным числом отдельно
-                    if (Character.isDigit(s.charAt(j + 1))) {
-                        new_num += c;
-                        j++;
-                        c = s.charAt(j);
-                    }
-                }
-                if (Character.isDigit(c)) {
-                    while (Character.isDigit(c) && j < s.length()) {
+                if (!Character.isWhitespace(c)) {
+                    while (!Character.isWhitespace(c) && j < s.length()) {
                         new_num += c;
                         j++;
                         if (j < s.length()) {
