@@ -105,7 +105,7 @@ public class RunMe {
 
 
     private static void key7(final byte[] password) {
-        int result = 760;
+        int result = 592;
         print(7, result, password);
     }
 

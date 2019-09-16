@@ -3,21 +3,18 @@ public class Sum {
         int sum_result = 0;
         for (int i = 0; i < args.length; i++) {
             String s = args[i];
-            int j = 0; // проход по символам строки
-            while (j < s.length()) {
-                char c = s.charAt(j);
-                String new_num = "";
-                if (!Character.isWhitespace(c)) {
-                    while (!Character.isWhitespace(c) && j < s.length()) {
-                        new_num += c;
-                        j++;
-                        if (j < s.length()) {
-                            c = s.charAt(j);
-                        }
+            int num_start = 0; // индекс начала числа
+            int num_end = 0; // индекс конца числа
+            while (num_start < s.length()) {
+                if (!Character.isWhitespace(s.charAt(num_start))) {
+                    num_end = num_start;
+                    while (num_end < s.length() && !Character.isWhitespace(s.charAt(num_end)) ) {
+                        num_end++;
                     }
-                    sum_result += Integer.parseInt(new_num);
+                    sum_result += Integer.parseInt(s.substring(num_start, num_end));
+                    num_start = num_end;
                 } else {
-                    j++;
+                    num_start++;
                 }
             }
         }
