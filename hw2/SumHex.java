@@ -3,28 +3,20 @@ public class SumHex {
         int sumResult = 0;
         for (int i = 0; i < args.length; i++) {
             String s = args[i].toLowerCase();
-            int beginIndex = 0;
-            int endIndex = 0;
-            while (beginIndex < s.length()) {
-                if (!Character.isWhitespace(s.charAt(beginIndex))) {
-                    boolean hex = false;
-                    if (s.charAt(beginIndex) == '0' && beginIndex + 1 < s.length() && s.charAt(beginIndex + 1) == 'x') {
-                        hex = true;
-                        beginIndex += 2;
+            int index = 0;
+            while (index < s.length()) {
+                if (!Character.isWhitespace(s.charAt(index))) {
+                    int beginIndex = index;
+                    while (index < s.length() && !Character.isWhitespace(s.charAt(index))) {
+                        index++;
                     }
-                    endIndex = beginIndex;
-                    while (endIndex < s.length() && !Character.isWhitespace(s.charAt(endIndex))) {
-                        endIndex++;
-                    }
-                    if (hex) {
-                        sumResult += (int) Long.parseLong(s.substring(beginIndex, endIndex), 16);
+                    if (beginIndex + 1 < s.length() && s.charAt(beginIndex) == '0' && s.charAt(beginIndex + 1) == 'x') {
+                        sumResult += Integer.parseUnsignedInt(s.substring(beginIndex + 2, index), 16);
                     } else {
-                        sumResult += Integer.parseInt(s.substring(beginIndex, endIndex));
-
+                        sumResult += Integer.parseInt(s.substring(beginIndex, index));
                     }
-                    beginIndex = endIndex;
                 } else {
-                    beginIndex++;
+                    index++;
                 }
             }
         }

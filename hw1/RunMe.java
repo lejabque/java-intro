@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.lang.Math;
 
 /**
  * Run this code with provided arguments.
@@ -30,11 +31,11 @@ public class RunMe {
 //        key4(password);
         // key5(password);
 //        key6(password);
-        key7(password);
+        // key7(password);
         // key8(password);
-        // key9(password);
+        key9(password);
         // key10(password);
-        key11(password);
+        // key11(password);
         // key12(password);
         // key13(password);
     }
@@ -110,7 +111,6 @@ public class RunMe {
     }
 
 
-    private static final String PATTERN = "Hello, World! Привет, Мир!";
     private static final int SMALL_REPEAT_COUNT = 10_000_000;
 
     private static void key8(final byte[] password) {
@@ -123,16 +123,19 @@ public class RunMe {
     }
 
 
+    private static final String PATTERN = "Hello, World! Привет, Мир!";
     private static final long LARGE_REPEAT_SHIFT = 27;
     private static final long LARGE_REPEAT_COUNT = 1L << LARGE_REPEAT_SHIFT;
 
     private static void key9(final byte[] password) {
-        String repeated = "";
+        int repeated = 0;
+        int pattern_hash = PATTERN.hashCode();
+        int mod = 961614017;
         for (long i = 0; i < LARGE_REPEAT_COUNT; i++) {
-            repeated += PATTERN;
+            repeated = repeated * mod + pattern_hash;
         }
 
-        print(9, repeated.hashCode(), password);
+        print(9, repeated, password);
     }
 
 
@@ -145,12 +148,11 @@ public class RunMe {
         final BigInteger year = BigInteger.valueOf(-2019);
         final BigInteger prime = BigInteger.valueOf(PRIME);
 
-        long result = Stream.iterate(BigInteger.ZERO, BigInteger.ONE::add)
-                .limit(2)
-                .filter(i -> year.multiply(i).add(prime).multiply(i).compareTo(BigInteger.ZERO) > 0)
+        long result = Stream.iterate(BigInteger.valueOf(0), i -> i.compareTo(BigInteger.valueOf(531819)) > 0, BigInteger.ONE::add)
+                .filter(i -> i.compareTo(BigInteger.valueOf(531819)) > 0)
                 .mapToLong(i -> i.longValue() * password[i.intValue() % password.length])
                 .sum();
-
+        System.out.println(result);
         print(11, result, password);
     }
 
@@ -172,13 +174,10 @@ public class RunMe {
 
 
     private static void key13(final byte[] password) {
-        final BigInteger secondsInDay = BigInteger.valueOf(60 * 60 * 24);
-
-        long result = Stream.iterate(BigInteger.ZERO, BigInteger.ONE::add)
-                .map(secondsInDay::multiply)
-                .collect(Collectors.reducing(BigInteger.ZERO, BigInteger::add))
-                .longValue();
-
+        final BigInteger secondsInDay = BigInteger.valueOf(1);
+        // long result = 60 * 60 * 24;
+        long result = -60 * 60 * 24 / 12;
+        System.out.println(result);
         print(13, result, password);
     }
 
