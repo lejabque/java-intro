@@ -5,20 +5,16 @@ public class Reverse {
     public static void main(String[] args) {
         int[][] result = new int[1000000][]; // NxM array
         int resultHeight = 0;
-        int[] newArray = new int[1000000];
+        int[] intsArray = new int[1000000];
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-            String s = scanner.nextLine();
-            Scanner stringScanner = new Scanner(s);
+            Scanner intScanner = new Scanner(scanner.nextLine());
             int arraySize = 0;
-            while (stringScanner.hasNextInt()) {
-                newArray[arraySize] = stringScanner.nextInt();
+            while (intScanner.hasNextInt()) {
+                intsArray[arraySize] = intScanner.nextInt();
                 arraySize++;
             }
-            result[resultHeight] = new int[arraySize];
-            for (int i = 0; i < arraySize; i++) {
-                result[resultHeight][i] = newArray[i];
-            }
+            result[resultHeight] = Arrays.copyOf(intsArray, arraySize);
             resultHeight++;
         }
         for (int i = resultHeight - 1; i >= 0; i--) {

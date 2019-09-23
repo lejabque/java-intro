@@ -15,7 +15,7 @@ public class Reverse {
                 newArray[arraySize] = stringScanner.nextInt();
                 arraySize++;
             }
-            result[resultHeight] = new int[arraчелySize];
+            result[resultHeight] = new int[arraySize];
             for (int i = 0; i < arraySize; i++) {
                 result[resultHeight][i] = newArray[i];
             }
