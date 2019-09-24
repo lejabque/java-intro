@@ -13,10 +13,12 @@ public class ReverseEven {
             int arraySize = 0;
             while (intScanner.hasNextInt()) {
                 int newElement = intScanner.nextInt();
-                if (arraySize == intsArray.length) {
-                    intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);
+                if (newElement % 2 == 0) {
+                    if (arraySize == intsArray.length) {
+                        intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);
+                    }
+                    intsArray[arraySize++] = newElement;
                 }
-                intsArray[arraySize++] = newElement;
             }
             if (resultHeight == result.length) {
                 result = Arrays.copyOf(result, result.length * 2);
