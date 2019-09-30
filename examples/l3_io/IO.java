@@ -5,7 +5,6 @@ public class IO {
     public static void main(String[] args) throws IOException {
         exceptions();
         resources();
-
         encodings();
         readers();
         writers();
@@ -168,11 +167,11 @@ public class IO {
                 while (in.hasNext()) {
                     System.out.println(in.nextInt());
                 }
-                in.close();
                 System.out.println("File exists and contains only integers");
             } catch (InputMismatchException e) {
                 System.out.println("File contains non-integers");
             } finally {
+                in.close();
                 System.out.println("Finally block is executed under any circumstances");
                 System.out.println("Success! Scanner is closed");
             }
@@ -343,7 +342,12 @@ public class IO {
         System.out.println("Use FileInputStream to open file as a sequence of bytes");
         System.out.println("Wrap it by InputStreamReader to specify encoding");
         System.out.println("Wrap it again in BufferedReader to get line reading capabilities");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input.txt"), "utf8"));
+        BufferedReader reader = new BufferedReader(
+            new InputStreamReader(
+                new FileInputStream("input.txt"),
+                "utf8"
+            )
+        );
         try {
             readerAndWriter(reader);
         } finally {
@@ -370,7 +374,12 @@ public class IO {
         System.out.println("    Reader -> Writer");
         System.out.println("    Input -> Output");
         System.out.println("    Read -> Write");
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("output.txt"), "utf8"));
+        BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(
+                new FileOutputStream("output.txt"),
+                "utf8"
+            )
+        );
         try {
             writer.write("Hello, world!");
         } finally {
@@ -381,16 +390,11 @@ public class IO {
     public static void readerAndWriter() throws IOException {
         section("You may use readers and writers simultaneously via nested resource blocks");
         BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("input.txt"),
-                        "utf8"
-                ));
+            new InputStreamReader(new FileInputStream("input.txt"), "utf8")
+        );
         try {
             BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream("output.txt"),
-                            "utf8"
-                    )
+                new OutputStreamWriter(new FileOutputStream("output.txt"), "utf8")
             );
             try {
                 while (true) {
@@ -414,14 +418,10 @@ public class IO {
         Scanner in = new Scanner(new File("input.txt"), "utf8");
         try {
             PrintWriter writer = new PrintWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream("output.txt"),
-                            "utf8"
-                    )
+                new OutputStreamWriter(new FileOutputStream("output.txt"), "utf8")
             );
             try {
-                while (in.hasNextInt()) {
-                    ;
+                while (in.hasNextInt()) {;
                     writer.println(in.nextInt());
                 }
             } finally {
