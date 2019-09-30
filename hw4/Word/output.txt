@@ -1,0 +1,9 @@
+child 2
+face 1
+fair 1
+full 1
+grace 1
+is 2
+monday's 1
+of 2
+tuesday's 1
