@@ -9,7 +9,7 @@ public class ImmutableVectorPolar {
 
     public ImmutableVectorPolar(final double x, final double y) {
         phi = Math.atan2(y, x);
-        rho = Math.sqrt(x * x + y * y);
+        rho = Math.hypot(x, y);
     }
 
     public double getX() {
@@ -21,11 +21,11 @@ public class ImmutableVectorPolar {
     }
 
     public double getPhi() {
-        return Math.atan2(getY(), getX());
+        return phi;
     }
 
     public double getRho() {
-        return Math.sqrt(getX() * getX() + getY() * getY());
+        return rho;
     }
 
     public ImmutableVectorPolar add(ImmutableVectorPolar v) {

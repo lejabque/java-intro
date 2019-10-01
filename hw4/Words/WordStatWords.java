@@ -1,29 +1,26 @@
 import java.util.*;
 import java.io.*;
 
-public class WordStatInput {
+public class WordStatWords {
     private static boolean charInWord(Character c) {
-        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == 0x0027;
+        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
     }
 
     public static void main(String[] args) {
-        LinkedHashMap<String, Integer> wordCounter = new LinkedHashMap<>();
+        Map<String, Integer> wordCounter = new HashMap<>();
         try {
-            BufferedReader out = new BufferedReader(
+            try (BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(new File(args[0])),
                             "utf8"
-                    ),
-                    1024
-            );
-            try {
+                    ))) {
                 while (true) {
-                    String s = out.readLine();
+                    String s = in.readLine();
                     if (s == null) {
                         break;
-                    } else {
-                        s = s.toLowerCase();
                     }
+
+                    s = s.toLowerCase();
                     int index = 0;
                     while (index < s.length()) {
                         if (charInWord(s.charAt(index))) {
@@ -37,33 +34,24 @@ public class WordStatInput {
                         }
                     }
                 }
-            } finally {
-                out.close();
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Input file not found: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("I/O error: " + e.getMessage());
-        }
-        try {
-            BufferedWriter writer = new BufferedWriter(
+
+            try (BufferedWriter out = new BufferedWriter(
                     new OutputStreamWriter(
                             new FileOutputStream(args[1]),
                             "utf8"
                     )
-            );
-            try {
-                for (String key : wordCounter.keySet()) {
-                    writer.write(key + " " + wordCounter.get(key) + "\n");
+            )) {
+                String[] keys = wordCounter.keySet().toArray(new String[wordCounter.size()]);
+                Arrays.sort(keys);
+                for (String key : keys) {
+                    out.write(key + " " + wordCounter.get(key) + "\n");
                 }
-            } finally {
-                writer.close();
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Input file not found: " + e.getMessage());
+            System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());
         }
-
     }
 }

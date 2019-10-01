@@ -30,7 +30,7 @@ public class MutableVector {
     }
 
     public double getRho() {
-        return Math.sqrt(x * x + y * y);
+        return Math.hypot(x, y);
     }
 
     public MutableVector copy() {

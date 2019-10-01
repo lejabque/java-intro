@@ -26,7 +26,7 @@ public class ImmutableVectorGetters {
     }
 
     public double getRho() {
-        return Math.sqrt(getX() * getX() + getY() * getY());
+        return Math.hypot(getX(), getY());
     }
 
     public ImmutableVectorGetters add(ImmutableVectorGetters v) {
