@@ -10,41 +10,27 @@ public class FastScanner {
     private int nextEnd = 0; // pointer to end of next in stream
     private int bufferSize = 0;
 
-    public FastScanner(String s) {
-        this(new ByteArrayInputStream(s.getBytes()));
+    public FastScanner(String s, String charset) throws UnsupportedEncodingException {
+        this(new ByteArrayInputStream(s.getBytes()), charset);
     }
 
-    public FastScanner(File file) throws FileNotFoundException {
-        this(new FileInputStream(file));
+    public FastScanner(File file, String charset) throws FileNotFoundException, UnsupportedEncodingException {
+        this(new FileInputStream(file), charset);
     }
 
-    public FastScanner(InputStream source) {
-        inputReader = new InputStreamReader(source);
+    public FastScanner(InputStream source, String charset) throws UnsupportedEncodingException {
+        inputReader = new InputStreamReader(source, charset);
     }
 
-    public boolean hasNext() throws IOException, IllegalStateException {
-        if (isClosed) {
-            throw new IllegalStateException("Input is closed");
+    private int updateBuffer() throws IOException {
+        if (bufferPtr == bufferSize) {
+            bufferSize = inputReader.read(charBuffer);
+            bufferPtr = 0;
         }
-        if (updateBuffer() == -1) {
-            return false;
-        }
-        nextBegin = bufferPtr;
-        while (nextBegin < bufferSize && Character.isWhitespace(charBuffer[nextBegin])) {
-            nextBegin++;
-            if (nextBegin == charBuffer.length) {
-                charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);
-                bufferSize += inputReader.read(charBuffer, nextBegin, nextBegin);
-            }
-        }
-        if (nextBegin == bufferSize) {
-            return false;
-        } else {
-            return true;
-        }
+        return bufferSize;
     }
 
-    public String readNext() throws IOException, IllegalStateException {
+    private String readNext() throws IOException, IllegalStateException {
         if (isClosed) {
             throw new IllegalStateException("Input is closed");
         }
@@ -63,12 +49,26 @@ public class FastScanner {
         return null;
     }
 
-    private int updateBuffer() throws IOException {
-        if (bufferPtr == bufferSize) {
-            bufferSize = inputReader.read(charBuffer);
-            bufferPtr = 0;
+    public boolean hasNext() throws IOException, IllegalStateException {
+        checkNotClosed();
+        if (updateBuffer() == -1) {
+            return false;
         }
-        return bufferSize;
+        nextBegin = bufferPtr;
+        while (nextBegin < bufferSize && Character.isWhitespace(charBuffer[nextBegin])) {
+            nextBegin++;
+            if (nextBegin == charBuffer.length) {
+                charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);
+                bufferSize += inputReader.read(charBuffer, nextBegin, nextBegin);
+            }
+        }
+        return nextBegin != bufferSize;
+    }
+
+    private void checkNotClosed() {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
     }
 
     public boolean hasNextLine() throws IOException, IllegalStateException {
@@ -79,6 +79,34 @@ public class FastScanner {
             return false;
         }
         return bufferSize != bufferPtr;
+    }
+
+    public boolean hasNextInt() throws IOException, IllegalStateException {
+        String newWord = readNext();
+        try {
+            Integer.parseInt(newWord);
+        } catch (NumberFormatException | NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public String next() throws NoSuchElementException, IOException, IllegalStateException {
+        if (!hasNext()) {
+            throw new NoSuchElementException("Input is empty");
+        }
+        String newWord = readNext();
+        bufferPtr = nextEnd;
+        return newWord;
+    }
+
+    public int nextInt() throws NoSuchElementException, IOException, IllegalStateException {
+        if (!hasNextInt()) {
+            throw new NoSuchElementException("Input is empty");
+        }
+        String newWord = readNext();
+        bufferPtr = nextEnd;
+        return Integer.parseInt(newWord);
     }
 
     public String nextLine() throws NoSuchElementException, IOException, IllegalStateException {
@@ -106,38 +134,6 @@ public class FastScanner {
         }
         return new String(charBuffer, lineIndex, bufferPtr - lineIndex);
     }
-
-    public boolean hasNextInt() throws IOException, IllegalStateException {
-        String newWord = readNext();
-        if (newWord == null) {
-            return false;
-        }
-        for (int i = 0; i < newWord.length(); ++i) {
-            if (!Character.isDigit(newWord.charAt(i)) && newWord.charAt(i) != '-') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public String next() throws NoSuchElementException, IOException, IllegalStateException {
-        String newWord = readNext();
-        bufferPtr = nextEnd;
-        if (newWord == null) {
-            throw new NoSuchElementException("Input is empty");
-        }
-        return newWord;
-    }
-
-    public int nextInt() throws NoSuchElementException, IOException, IllegalStateException {
-        String newWord = readNext();
-        bufferPtr = nextEnd;
-        if (newWord == null) {
-            throw new NoSuchElementException("Input is empty");
-        }
-        return Integer.parseInt(newWord);
-    }
-
 
     public void close() throws IllegalStateException, IOException {
         if (!isClosed) {

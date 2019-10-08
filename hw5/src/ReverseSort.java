@@ -1,45 +1,79 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Comparator;
 
-public class FastReverseSort {
+class Pair {
+    public long sum;
+    public int num;
+
+    public Pair(long new_sum, int new_num) {
+        this.sum = new_sum;
+        this.num = new_num;
+    }
+}
+
+public class ReverseSort {
     public static void main(String[] args) {
-        String[] result = new String[10]; // NxM array
+        int[][] result = new int[10][]; // NxM array
         int resultHeight = 0;
-
+        int[] intsArray = new int[10]; // arr of current string
+        Pair[] sums = new Pair[10];
         try {
-            FastScanner lineScanner = new FastScanner(System.in);
+            FastScanner lineScanner = new FastScanner(System.in, "utf-8");
             while (lineScanner.hasNextLine()) {
-                FastScanner intScanner = new FastScanner(lineScanner.nextLine());
-                StringBuilder newLine = new StringBuilder();
+                FastScanner intScanner = new FastScanner(lineScanner.nextLine(), "utf-8");
+                int arraySize = 0;
                 long sum = 0;
                 while (intScanner.hasNext()) {
                     int newElement = intScanner.nextInt();
-                    newLine.append(newElement).append(" ");
+                    sum += newElement;
+                    if (arraySize == intsArray.length) {
+                        intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);
+                    }
+                    intsArray[arraySize++] = newElement;
                 }
                 if (resultHeight == result.length) {
                     result = Arrays.copyOf(result, result.length * 2);
+                    sums = Arrays.copyOf(sums, result.length * 2);
                 }
-                result[resultHeight++] = sum + " " + resultHeight + " " + newLine.toString();
+                sums[resultHeight] = new Pair(sum, resultHeight);
+                result[resultHeight] = Arrays.copyOf(intsArray, arraySize);
+                Arrays.sort(result[resultHeight++]);
             }
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Uncorrect encoding: " + e.getMessage());
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());
         }
-        Arrays.sort(result);
-        for (int i = resultHeight - 1; i >= 0; i--) {
-            int whitespace = 0;
-            int j = 0;
-            while (whitespace< 2){
-                if (Character.isWhitespace(result[i].charAt(j))) {
-                    whitespace++;
+
+        result = Arrays.copyOf(result, resultHeight);
+        sums = Arrays.copyOf(sums, resultHeight);
+        Arrays.sort(sums, new Comparator<>() {
+            public int compare(Pair p1, Pair p2) {
+                if (p1.sum > p2.sum) {
+                    return -1;
                 }
-                j++;
+                if (p1.sum < p2.sum) {
+                    return 1;
+                }
+                if (p1.num > p2.num) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             }
-            System.out.println(result[i].substring(j));
+        });
+
+        for (int i = 0; i < resultHeight; i++) {
+            int index = sums[i].num;
+            for (int j = result[index].length - 1; j >= 0; j--) {
+                System.out.print(result[index][j] + " ");
+            }
+            System.out.println();
         }
     }
 }
