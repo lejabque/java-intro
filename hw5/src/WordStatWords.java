@@ -11,7 +11,7 @@ public class WordStatWords {
     public static void main(String[] args) {
         Map<String, Integer> wordCounter = new HashMap<>();
         try {
-            FastScanner in = new FastScanner(new File(args[0]));
+            FastScanner in = new FastScanner(new File(args[0]), "utf-8");
             while (in.hasNext()) {
                 String s = in.next().toLowerCase();
                 int index = 0;
@@ -25,7 +25,6 @@ public class WordStatWords {
                     } else {
                         index++;
                     }
-
                 }
             }
 

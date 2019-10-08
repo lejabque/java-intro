@@ -19,11 +19,11 @@ public class ReverseSort {
         int[][] result = new int[10][]; // NxM array
         int resultHeight = 0;
         int[] intsArray = new int[10]; // arr of current string
-        Pair[] sums = new Pair[10];
+        Pair[] sums = new Pair[10]; // pairs sum:num in stream
         try {
             FastScanner lineScanner = new FastScanner(System.in, "utf-8");
             while (lineScanner.hasNextLine()) {
-                FastScanner intScanner = new FastScanner(lineScanner.nextLine(), "utf-8");
+                FastScanner intScanner = new FastScanner(lineScanner.nextLine());
                 int arraySize = 0;
                 long sum = 0;
                 while (intScanner.hasNext()) {

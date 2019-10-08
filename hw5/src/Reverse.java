@@ -10,7 +10,7 @@ public class Reverse {
         int[] intsArray = new int[10]; // arr of current string
 
         try {
-            FastScanner lineScanner = new FastScanner(System.in);
+            FastScanner lineScanner = new FastScanner(System.in, "utf-8");
             while (lineScanner.hasNextLine()) {
                 FastScanner intScanner = new FastScanner(lineScanner.nextLine());
                 int arraySize = 0;

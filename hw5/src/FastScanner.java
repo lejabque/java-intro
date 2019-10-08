@@ -2,67 +2,19 @@ import java.util.*;
 import java.io.*;
 
 public class FastScanner {
-    private InputStreamReader inputReader;
+    private BufferedReader inputReader;
     private boolean isClosed = false;
-    private char[] charBuffer = new char[1024];
-    private int bufferPtr = 0; // current pointer in stream
-    private int nextBegin = 0; // pointer to begin of next in stream
+    private int bufferPtr = 0; // current pointer in cached string
+    private int nextBegin = 0; // pointer to begin of next in string
     private int nextEnd = 0; // pointer to end of next in stream
-    private int bufferSize = 0;
+    private String cachedString = null;
 
-    public FastScanner(String s, String charset) throws UnsupportedEncodingException {
-        this(new ByteArrayInputStream(s.getBytes()), charset);
+    public FastScanner(String s) throws UnsupportedEncodingException {
+        inputReader = new BufferedReader(new StringReader(s));
     }
 
     public FastScanner(File file, String charset) throws FileNotFoundException, UnsupportedEncodingException {
         this(new FileInputStream(file), charset);
-    }
-
-    public FastScanner(InputStream source, String charset) throws UnsupportedEncodingException {
-        inputReader = new InputStreamReader(source, charset);
-    }
-
-    private int updateBuffer() throws IOException {
-        if (bufferPtr == bufferSize) {
-            bufferSize = inputReader.read(charBuffer);
-            bufferPtr = 0;
-        }
-        return bufferSize;
-    }
-
-    private String readNext() throws IOException, IllegalStateException {
-        if (isClosed) {
-            throw new IllegalStateException("Input is closed");
-        }
-        if (hasNext()) {
-            nextEnd = nextBegin;
-            while (nextEnd < bufferSize && !Character.isWhitespace(charBuffer[nextEnd]) &&
-                    !String.valueOf(charBuffer[bufferPtr]).equals(System.getProperty("line.separator"))) {
-                nextEnd++;
-                if (nextEnd == charBuffer.length) {
-                    charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);
-                    bufferSize += inputReader.read(charBuffer, nextEnd, nextEnd);
-                }
-            }
-            return new String(charBuffer, nextBegin, nextEnd - nextBegin);
-        }
-        return null;
-    }
-
-    public boolean hasNext() throws IOException, IllegalStateException {
-        checkNotClosed();
-        if (updateBuffer() == -1) {
-            return false;
-        }
-        nextBegin = bufferPtr;
-        while (nextBegin < bufferSize && Character.isWhitespace(charBuffer[nextBegin])) {
-            nextBegin++;
-            if (nextBegin == charBuffer.length) {
-                charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);
-                bufferSize += inputReader.read(charBuffer, nextBegin, nextBegin);
-            }
-        }
-        return nextBegin != bufferSize;
     }
 
     private void checkNotClosed() {
@@ -71,14 +23,48 @@ public class FastScanner {
         }
     }
 
+    public FastScanner(InputStream source, String charset) throws UnsupportedEncodingException {
+        inputReader = new BufferedReader(new InputStreamReader(source, charset));
+    }
+
+    private String readNext() throws IOException, IllegalStateException {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
+        if (hasNext()) {
+            nextEnd = nextBegin;
+            while (nextEnd < cachedString.length() && !Character.isWhitespace(cachedString.charAt(nextEnd))) {
+                nextEnd++;
+            }
+            return cachedString.substring(nextBegin, nextEnd);
+        }
+        return null;
+    }
+
+    public boolean hasNext() throws IOException, IllegalStateException {
+        checkNotClosed();
+        if (!hasNextLine()) {
+            return false;
+        }
+        nextBegin = bufferPtr;
+        while (nextBegin < cachedString.length() && Character.isWhitespace(cachedString.charAt(nextBegin))) {
+            nextBegin++;
+        }
+        if (nextBegin == cachedString.length()) {
+            cachedString = null;
+            return false;
+        }
+        return true;
+    }
+
     public boolean hasNextLine() throws IOException, IllegalStateException {
         if (isClosed) {
             throw new IllegalStateException("Input is closed");
         }
-        if (updateBuffer() == -1) {
-            return false;
+        if (cachedString == null || bufferPtr == cachedString.length()) {
+            cachedString = inputReader.readLine();
         }
-        return bufferSize != bufferPtr;
+        return cachedString != null;
     }
 
     public boolean hasNextInt() throws IOException, IllegalStateException {
@@ -104,35 +90,20 @@ public class FastScanner {
         if (!hasNextInt()) {
             throw new NoSuchElementException("Input is empty");
         }
-        String newWord = readNext();
-        bufferPtr = nextEnd;
-        return Integer.parseInt(newWord);
+        return Integer.parseInt(next());
     }
 
     public String nextLine() throws NoSuchElementException, IOException, IllegalStateException {
         if (isClosed) {
             throw new IllegalStateException("Input is closed");
         }
-        if (!hasNextLine()) {
-            throw new NoSuchElementException("Input is empty");
+        bufferPtr = 0;
+        if (cachedString != null && (bufferPtr < cachedString.length() || cachedString.length() == 0)) {
+            String newString = cachedString.substring(bufferPtr);
+            cachedString = null;
+            return newString;
         }
-
-        if (bufferPtr == bufferSize) {
-            bufferSize = inputReader.read(charBuffer);
-            bufferPtr = 0;
-        }
-        int lineIndex = bufferPtr;
-        while (bufferPtr < bufferSize && !String.valueOf(charBuffer[bufferPtr]).equals(System.getProperty("line.separator"))) {
-            bufferPtr++;
-            if (bufferPtr == charBuffer.length) {
-                charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);
-                bufferSize += inputReader.read(charBuffer, bufferPtr, bufferPtr);
-            }
-        }
-        if (String.valueOf(charBuffer[bufferPtr]).equals(System.getProperty("line.separator"))) {
-            bufferPtr++;
-        }
-        return new String(charBuffer, lineIndex, bufferPtr - lineIndex);
+        return inputReader.readLine();
     }
 
     public void close() throws IllegalStateException, IOException {
