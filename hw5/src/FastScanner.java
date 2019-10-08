@@ -2,29 +2,30 @@ import java.util.*;
 import java.io.*;
 
 public class FastScanner {
-    private InputStream inputSource;
     private InputStreamReader inputReader;
     private boolean isClosed = false;
     private char[] charBuffer = new char[1024];
-    private int bufferPtr = 0;
-    private int nextBegin = 0;
-    private int nextEnd = 0;
+    private int bufferPtr = 0; // current pointer in stream
+    private int nextBegin = 0; // pointer to begin of next in stream
+    private int nextEnd = 0; // pointer to end of next in stream
     private int bufferSize = 0;
 
     public FastScanner(String s) {
         this(new ByteArrayInputStream(s.getBytes()));
     }
 
-    public FastScanner(File file) throws IOException {
+    public FastScanner(File file) throws FileNotFoundException {
         this(new FileInputStream(file));
     }
 
     public FastScanner(InputStream source) {
-        inputSource = source;
-        inputReader = new InputStreamReader(inputSource);
+        inputReader = new InputStreamReader(source);
     }
 
-    public boolean hasNext() throws IOException {
+    public boolean hasNext() throws IOException, IllegalStateException {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
         if (updateBuffer() == -1) {
             return false;
         }
@@ -43,7 +44,10 @@ public class FastScanner {
         }
     }
 
-    public String readNext() throws NoSuchElementException, IOException, IllegalStateException {
+    public String readNext() throws IOException, IllegalStateException {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
         if (hasNext()) {
             nextEnd = nextBegin;
             while (nextEnd < bufferSize && !Character.isWhitespace(charBuffer[nextEnd]) &&
@@ -67,15 +71,20 @@ public class FastScanner {
         return bufferSize;
     }
 
-    public boolean hasNextLine() throws NoSuchElementException, IOException, IllegalStateException {
+    public boolean hasNextLine() throws IOException, IllegalStateException {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
         if (updateBuffer() == -1) {
             return false;
         }
-        ;
         return bufferSize != bufferPtr;
     }
 
     public String nextLine() throws NoSuchElementException, IOException, IllegalStateException {
+        if (isClosed) {
+            throw new IllegalStateException("Input is closed");
+        }
         if (!hasNextLine()) {
             throw new NoSuchElementException("Input is empty");
         }
@@ -133,7 +142,7 @@ public class FastScanner {
     public void close() throws IllegalStateException, IOException {
         if (!isClosed) {
             isClosed = true;
-            inputSource.close();
+            inputReader.close();
         } else {
             throw new IllegalStateException("Scanner was closed before");
         }
