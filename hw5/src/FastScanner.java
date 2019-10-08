@@ -11,21 +11,6 @@ public class FastScanner {
     private int nextEnd = 0;
     private int bufferSize = 0;
 
-    public static void main(String[] args) {
-        try {
-            FastScanner newScanner = new FastScanner(new File("/home/lejabque/study/ct_y2019/term1/hw/prog_intro/hw5/src/input.txt"));
-            try {
-                System.out.println(newScanner.nextLine());
-                System.out.println(newScanner.nextLine());
-            } finally {
-                newScanner.close();
-            }
-        } catch (IOException e) {
-            System.err.println("I/O error: " + e.getMessage());
-        }
-
-    }
-
     public FastScanner(String s) {
         this(new ByteArrayInputStream(s.getBytes()));
     }
@@ -61,7 +46,8 @@ public class FastScanner {
     public String readNext() throws NoSuchElementException, IOException, IllegalStateException {
         if (hasNext()) {
             nextEnd = nextBegin;
-            while (nextEnd < bufferSize && !Character.isWhitespace(charBuffer[nextEnd])) {
+            while (nextEnd < bufferSize && !Character.isWhitespace(charBuffer[nextEnd]) &&
+                    !String.valueOf(charBuffer[bufferPtr]).equals(System.getProperty("line.separator"))) {
                 nextEnd++;
                 if (nextEnd == charBuffer.length) {
                     charBuffer = Arrays.copyOf(charBuffer, charBuffer.length * 2);

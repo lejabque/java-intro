@@ -1,14 +1,13 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class Reverse {
+public class ReverseTranspose {
     public static void main(String[] args) {
         int[][] result = new int[10][]; // NxM array
         int resultHeight = 0;
         int[] intsArray = new int[10]; // arr of current string
-
+        int maxStringLength = 0;
         try {
             FastScanner lineScanner = new FastScanner(System.in);
             while (lineScanner.hasNextLine()) {
@@ -21,8 +20,13 @@ public class Reverse {
                     }
                     intsArray[arraySize++] = newElement;
                 }
+                // изменить здесь
                 if (resultHeight == result.length) {
                     result = Arrays.copyOf(result, result.length * 2);
+                }
+
+                if (arraySize > maxStringLength) {
+                    maxStringLength = arraySize;
                 }
                 result[resultHeight++] = Arrays.copyOf(intsArray, arraySize);
             }
@@ -32,9 +36,11 @@ public class Reverse {
             System.err.println("I/O error: " + e.getMessage());
         }
 
-        for (int i = resultHeight - 1; i >= 0; i--) {
-            for (int j = result[i].length - 1; j >= 0; j--) {
-                System.out.print(result[i][j] + " ");
+        for (int j = 0; j < maxStringLength; j++) {
+            for (int i = 0; i < resultHeight; i++) {
+                if (result[i].length > j) {
+                    System.out.print(result[i][j] + " ");
+                }
             }
             System.out.println();
         }
