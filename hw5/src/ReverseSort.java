@@ -47,7 +47,7 @@ public class ReverseSort {
                 Arrays.sort(result[resultHeight++]);
             }
         } catch (UnsupportedEncodingException e) {
-            System.err.println("Uncorrect encoding: " + e.getMessage());
+            System.err.println("Incorrect encoding: " + e.getMessage());
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {

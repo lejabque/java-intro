@@ -9,11 +9,10 @@ public class WordStatWords {
         Map<String, Integer> wordCounter = new HashMap<>();
         try (FastScanner in = new FastScanner(new File(args[0]), "utf-8")) {
             while (in.hasNextWord()) {
-                String s = in.nextWord().toLowerCase();
-                wordCounter.merge(s, 1, Integer::sum);
+                wordCounter.merge(in.nextWord().toLowerCase(), 1, Integer::sum);
             }
         } catch (UnsupportedEncodingException e) {
-            System.err.println("Uncorrect encoding: " + e.getMessage());
+            System.err.println("Incorrect encoding: " + e.getMessage());
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
