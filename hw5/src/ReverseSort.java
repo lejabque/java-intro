@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 class Pair {
-    public long sum;
-    public int num;
+    long sum;
+    int num;
 
-    public Pair(long new_sum, int new_num) {
+    Pair(long new_sum, int new_num) {
         this.sum = new_sum;
         this.num = new_num;
     }
@@ -20,8 +20,7 @@ public class ReverseSort {
         int resultHeight = 0;
         int[] intsArray = new int[10]; // arr of current string
         Pair[] sums = new Pair[10]; // pairs sum:num in stream
-        try {
-            FastScanner myScanner = new FastScanner(System.in, "utf-8");
+        try (FastScanner myScanner = new FastScanner(System.in, "utf-8")) {
             while (myScanner.inputNotEmpty()) {
                 int arraySize = 0;
                 long sum = 0;
@@ -57,19 +56,17 @@ public class ReverseSort {
 
         result = Arrays.copyOf(result, resultHeight);
         sums = Arrays.copyOf(sums, resultHeight);
-        Arrays.sort(sums, new Comparator<>() {
-            public int compare(Pair p1, Pair p2) {
-                if (p1.sum > p2.sum) {
-                    return -1;
-                }
-                if (p1.sum < p2.sum) {
-                    return 1;
-                }
-                if (p1.num > p2.num) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+        Arrays.sort(sums, (p1, p2) -> {
+            if (p1.sum > p2.sum) {
+                return -1;
+            }
+            if (p1.sum < p2.sum) {
+                return 1;
+            }
+            if (p1.num > p2.num) {
+                return -1;
+            } else {
+                return 0;
             }
         });
 

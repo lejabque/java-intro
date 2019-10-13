@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +7,7 @@ import java.util.Map;
 public class WordStatWords {
     public static void main(String[] args) {
         Map<String, Integer> wordCounter = new HashMap<>();
-        try (FastScanner in = new FastScanner(new File(args[0]), "utf-8");) {
+        try (FastScanner in = new FastScanner(new File(args[0]), "utf-8")) {
             while (in.hasNextWord()) {
                 String s = in.nextWord().toLowerCase();
                 wordCounter.merge(s, 1, Integer::sum);
@@ -20,8 +21,8 @@ public class WordStatWords {
         }
 
         try (BufferedWriter out = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(args[1]), "utf8"))) {
-            String[] keys = wordCounter.keySet().toArray(new String[wordCounter.size()]);
+                new OutputStreamWriter(new FileOutputStream(args[1]), StandardCharsets.UTF_8))) {
+            String[] keys = wordCounter.keySet().toArray(new String[0]);
             Arrays.sort(keys);
             for (String key : keys) {
                 out.write(key + " " + wordCounter.get(key) + "\n");
