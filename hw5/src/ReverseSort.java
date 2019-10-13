@@ -21,18 +21,26 @@ public class ReverseSort {
         int[] intsArray = new int[10]; // arr of current string
         Pair[] sums = new Pair[10]; // pairs sum:num in stream
         try {
-            FastScanner lineScanner = new FastScanner(System.in, "utf-8");
-            while (lineScanner.hasNextLine()) {
-                FastScanner intScanner = new FastScanner(lineScanner.nextLine());
+            FastScanner myScanner = new FastScanner(System.in, "utf-8");
+            while (myScanner.hasNext()) {
                 int arraySize = 0;
                 long sum = 0;
-                while (intScanner.hasNext()) {
-                    int newElement = intScanner.nextInt();
+                boolean endOfLine = myScanner.lastInLine();
+                while (myScanner.hasNextInt()) {
+                    endOfLine = myScanner.lastInLine();
+                    int newElement = myScanner.nextInt();
                     sum += newElement;
                     if (arraySize == intsArray.length) {
                         intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);
                     }
                     intsArray[arraySize++] = newElement;
+                    if (endOfLine) {
+                        break;
+                    }
+                }
+                // skip EOL if string is empty
+                if (endOfLine && arraySize == 0) {
+                    myScanner.next();
                 }
                 if (resultHeight == result.length) {
                     result = Arrays.copyOf(result, result.length * 2);
