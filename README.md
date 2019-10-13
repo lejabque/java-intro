@@ -3,8 +3,39 @@
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/prog-intro/homeworks.html)
 
 
-Домашнее задание 5. Свой сканнер
+Домашнее задание 6. Подсчет слов++
 ----
+
+Исходный код тестов:
+
+* [WordStatIndexTest.java](java/wordStat/WordStatIndexTest.java)
+* [WordStatIndexChecker.java](java/wordStat/WordStatIndexChecker.java)
+
+Откомпилированные тесты: [WordStatIndexTest.jar](artifacts/wordStat/WordStatIndexTest.jar)
+
+
+[Домашнее задание 5. Свой сканнер](hw5)
+----
+
+Модификации
+ * *Transpose*
+    * Рассмотрим входные данные как (не полностью определенную) матрицу,
+      выведите ее в транспонированном виде
+    * Класс должен иметь имя `ReverseTranspose`
+    * [Исходный код тестов](java/reverse/FastReverseTransposeTest.java)
+    * [Откомпилированные тесты](artifacts/reverse/FastReverseTransposeTest.jar)
+ * *Sort*
+    * Строки должны быть отсортированы по сумме в обратном порядке
+      (при равенстве сумм – в порядке обратном следованию во входе).
+      Числа в строке так же должны быть отсортированы в обратном порядке.
+    * [Исходный код тестов](java/reverse/FastReverseSortTest.java)
+    * [Откомпилированные тесты](artifacts/reverse/FastReverseSortTest.jar)
+ * *Min*
+    * Рассмотрим входные данные как (не полностью определенную) матрицу,
+      вместо каждого числа выведите минимум из чисел в его столбце и строке
+    * Класс должен иметь имя `ReverseMin`
+    * [Исходный код тестов](java/reverse/FastReverseMinTest.java)
+    * [Откомпилированные тесты](artifacts/reverse/FastReverseMinTest.jar)
 
 Исходный код тестов:
 
@@ -13,7 +44,7 @@
 Откомпилированные тесты: [FastReverseTest.jar](artifacts/reverse/FastReverseTest.jar)
 
 
-Домашнее задание 4. Подсчет слов
+[Домашнее задание 4. Подсчет слов](hw4)
 ----
 
 Модификации
@@ -41,7 +72,8 @@
 Откомпилированные тесты: [WordStatInputTest.jar](artifacts/wordStat/WordStatInputTest.jar)
 
 
-## Домашнее задание 3. Реверс
+[Домашнее задание 3. Реверс](hw3)
+----
 
 Модификации:
  * *Even*
@@ -67,7 +99,8 @@
 Откомпилированные тесты: [ReverseTest.jar](artifacts/reverse/ReverseTest.jar)
 
 
-## Домашнее задание 2. Сумма чисел
+[Домашнее задание 2. Сумма чисел](hw2)
+----
 
 Модификации
   * *Long*
@@ -113,7 +146,8 @@
 * [Базовые классы](java/base/)
 
 
-## Домашнее задание 1. Запусти меня!
+[Домашнее задание 1. Запусти меня!](hw1)
+----
 
  1. Скачайте исходный код ([RunMe.java](java/RunMe.java))
  1. Откомпилируйте код (должен получиться `RunMe.class`)
