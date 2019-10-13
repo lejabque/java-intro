@@ -56,20 +56,7 @@ public class ReverseSort {
 
         result = Arrays.copyOf(result, resultHeight);
         sums = Arrays.copyOf(sums, resultHeight);
-        Arrays.sort(sums, (p1, p2) -> {
-            if (p1.sum > p2.sum) {
-                return -1;
-            }
-            if (p1.sum < p2.sum) {
-                return 1;
-            }
-            if (p1.num > p2.num) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-
+        Arrays.sort(sums, (p1, p2) -> p1.sum != p2.sum ? Long.compare(p2.sum, p1.sum) : p2.num - p1.num);
         for (int i = 0; i < resultHeight; i++) {
             int index = sums[i].num;
             for (int j = result[index].length - 1; j >= 0; j--) {
