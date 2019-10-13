@@ -32,7 +32,7 @@ class IntList {
 }
 
 public class WordStatIndex {
-    public static boolean wordChecker(char c) {
+    private static boolean wordChecker(char c) {
         return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
     }
 
