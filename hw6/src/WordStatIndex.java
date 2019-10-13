@@ -1,7 +1,6 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,7 +9,7 @@ class IntList {
     private int listSize;
 
     IntList(int x) {
-        list = new int[5];
+        list = new int[1];
         listSize = 0;
         this.add(x);
     }
