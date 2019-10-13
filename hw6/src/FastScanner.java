@@ -1,5 +1,5 @@
+import java.util.*;
 import java.io.*;
-import java.util.NoSuchElementException;
 
 public class FastScanner implements AutoCloseable {
     private InputStreamReader inputReader;
@@ -52,44 +52,21 @@ public class FastScanner implements AutoCloseable {
     }
 
     // custom checkers
-    private interface Checker {
+    public interface Checker {
         boolean check(char c) throws IOException;
     }
 
-    private boolean intChecker(char c) {
-        return (Character.isDigit(c) || c == '-');
-    }
-
-    private boolean wordChecker(char c) {
-        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
-    }
-
     // hasNext methods
-    private boolean hasCustomNext(Checker charChecker) throws IOException, IllegalStateException {
+    public boolean hasCustomNext(Checker charChecker) throws IOException, IllegalStateException {
         return beginCustomNext(charChecker) < bufferSize;
     }
 
-    boolean hasNextInt() throws IOException, IllegalStateException {
-        return hasCustomNext(this::intChecker);
-    }
-
-    boolean hasNextWord() throws IOException, IllegalStateException {
-        return hasCustomNext(this::wordChecker);
-    }
-
-    // custom next methods
-    String nextWord() throws NoSuchElementException, IOException, IllegalStateException {
-        if (!hasCustomNext(this::wordChecker)) {
+    // custom next with parse to int
+    int nextInt(Checker checker) throws NoSuchElementException, IOException, IllegalStateException {
+        if (!hasCustomNext(checker)) {
             throw new NoSuchElementException("Input is empty");
         }
-        return next(this::wordChecker);
-    }
-
-    int nextInt() throws NoSuchElementException, IOException, IllegalStateException {
-        if (!hasCustomNext(this::intChecker)) {
-            throw new NoSuchElementException("Input is empty");
-        }
-        return Integer.parseInt(next(this::intChecker));
+        return Integer.parseInt(next(checker));
     }
 
     // find beginIndex of custom next token
@@ -110,7 +87,7 @@ public class FastScanner implements AutoCloseable {
     }
 
     // common next method
-    private String next(Checker charChecker) throws NoSuchElementException, IOException, IllegalStateException {
+    public String next(Checker charChecker) throws NoSuchElementException, IOException, IllegalStateException {
         int beginNext = beginCustomNext(charChecker);
         if (beginNext >= bufferSize) {
             throw new NoSuchElementException("Input is empty");

@@ -8,13 +8,17 @@ class Pair {
     long sum;
     int num;
 
-    Pair(long new_sum, int new_num) {
-        this.sum = new_sum;
-        this.num = new_num;
+    Pair(long newSum, int newNum) {
+        this.sum = newSum;
+        this.num = newNum;
     }
 }
 
 public class ReverseSort {
+    public static boolean intChecker(char c) {
+        return (Character.isDigit(c) || c == '-');
+    }
+
     public static void main(String[] args) {
         int[][] result = new int[10][]; // NxM array
         int resultHeight = 0;
@@ -25,8 +29,8 @@ public class ReverseSort {
                 int arraySize = 0;
                 long sum = 0;
                 boolean endOfLine = myScanner.lastInLine();
-                while (!endOfLine && myScanner.hasNextInt()) {
-                    int newElement = myScanner.nextInt();
+                while (!endOfLine && myScanner.hasCustomNext(ReverseSort::intChecker)) {
+                    int newElement = myScanner.nextInt(ReverseSort::intChecker);
                     sum += newElement;
                     if (arraySize == intsArray.length) {
                         intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);

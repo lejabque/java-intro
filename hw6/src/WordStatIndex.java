@@ -32,12 +32,16 @@ class IntList {
 }
 
 public class WordStatIndex {
+    public static boolean wordChecker(char c) {
+        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
+    }
+
     public static void main(String[] args) {
         Map<String, IntList> wordCounter = new LinkedHashMap<>();
         try (FastScanner in = new FastScanner(new File(args[0]), "utf-8")) {
             int i = 1;
-            while (in.hasNextWord()) {
-                String word = in.nextWord().toLowerCase();
+            while (in.hasCustomNext(WordStatIndex::wordChecker)) {
+                String word = in.next(WordStatIndex::wordChecker).toLowerCase();
                 IntList foundList = wordCounter.get(word);
                 if (foundList == null) {
                     wordCounter.put(word, new IntList(i));

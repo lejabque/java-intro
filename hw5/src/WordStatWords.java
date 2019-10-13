@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordStatWords {
+    public static boolean wordChecker(char c) {
+        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
+    }
+
     public static void main(String[] args) {
         Map<String, Integer> wordCounter = new HashMap<>();
         try (FastScanner in = new FastScanner(new File(args[0]), "utf-8")) {
-            while (in.hasNextWord()) {
-                wordCounter.merge(in.nextWord().toLowerCase(), 1, Integer::sum);
+            while (in.hasCustomNext(WordStatWords::wordChecker)) {
+                wordCounter.merge(in.next(WordStatWords::wordChecker).toLowerCase(), 1, Integer::sum);
             }
         } catch (UnsupportedEncodingException e) {
             System.err.println("Incorrect encoding: " + e.getMessage());
