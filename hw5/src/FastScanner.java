@@ -25,12 +25,54 @@ public class FastScanner {
         inputReader = new BufferedReader(new InputStreamReader(source, charset));
     }
 
+    private static boolean charInWord(Character c) {
+        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
+    }
+
+    public boolean hasNextWord() throws IOException, IllegalStateException {
+        checkNotClosed();
+        if (!hasNext()) {
+            return false;
+        }
+        boolean res = false;
+        int index = 0;
+        while (!res && index < cachedNext.length()) {
+            res = res || charInWord(cachedNext.charAt(index));
+            index++;
+        }
+        return res;
+    }
+
+    public void skipNext() throws IOException, IllegalStateException {
+        cachedNext = null;
+    }
+    public String nextWord() throws NoSuchElementException, IOException, IllegalStateException {
+        if (!hasNextWord()) {
+            throw new NoSuchElementException("Input is empty");
+        }
+        int index = 0;
+        while (index < cachedNext.length()) {
+            if (charInWord(cachedNext.charAt(index))) {
+                int beginIndex = index;
+                while (index < cachedNext.length() && charInWord(cachedNext.charAt(index))) {
+                    index++;
+                }
+                String newNext = cachedNext.substring(beginIndex, index);
+                cachedNext = cachedNext.substring(index);
+                return newNext;
+            } else {
+                index++;
+            }
+        }
+        return null;
+    }
+
     public void cacheNext() throws IOException, IllegalStateException {
         checkNotClosed();
 
         int charInt = -1;
         lastChar = ' '; // skip all spaces
-        while (lastChar == ' ') {
+        while (Character.isWhitespace(lastChar) && lastChar != '\n') {
             charInt = inputReader.read();
             lastChar = charInt != -1 ? (char) charInt : Character.MIN_VALUE;
         }
@@ -40,7 +82,7 @@ public class FastScanner {
             return;
         }
         StringBuilder newNext = new StringBuilder();
-        while (charInt != -1 && lastChar != ' ' && lastChar != '\n' && lastChar != '\r') {
+        while (charInt != -1 && !Character.isWhitespace(lastChar) && lastChar != '\n' && lastChar != '\r') {
             newNext.append(lastChar);
             charInt = inputReader.read();
             if (charInt != -1) {

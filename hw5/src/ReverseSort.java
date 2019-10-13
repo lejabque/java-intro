@@ -40,7 +40,7 @@ public class ReverseSort {
                 }
                 // skip EOL if string is empty
                 if (endOfLine && arraySize == 0) {
-                    myScanner.next();
+                    myScanner.skipNext();
                 }
                 if (resultHeight == result.length) {
                     result = Arrays.copyOf(result, result.length * 2);

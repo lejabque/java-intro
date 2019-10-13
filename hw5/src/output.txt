@@ -1,7 +1,0 @@
-child 1
-e 1
-face 1
-fair 1
-is 1
-monday's 1
-of 1
