@@ -46,6 +46,7 @@ public class FastScanner {
     public void skipNext() throws IOException, IllegalStateException {
         cachedNext = null;
     }
+
     public String nextWord() throws NoSuchElementException, IOException, IllegalStateException {
         if (!hasNextWord()) {
             throw new NoSuchElementException("Input is empty");
