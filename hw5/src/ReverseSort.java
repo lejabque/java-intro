@@ -22,25 +22,22 @@ public class ReverseSort {
         Pair[] sums = new Pair[10]; // pairs sum:num in stream
         try {
             FastScanner myScanner = new FastScanner(System.in, "utf-8");
-            while (myScanner.hasNext()) {
+            while (myScanner.inputNotEmpty()) {
                 int arraySize = 0;
                 long sum = 0;
                 boolean endOfLine = myScanner.lastInLine();
-                while (myScanner.hasNextInt()) {
-                    endOfLine = myScanner.lastInLine();
+                while (!endOfLine && myScanner.hasNextInt()) {
                     int newElement = myScanner.nextInt();
                     sum += newElement;
                     if (arraySize == intsArray.length) {
                         intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);
                     }
                     intsArray[arraySize++] = newElement;
-                    if (endOfLine) {
-                        break;
-                    }
+                    endOfLine = myScanner.lastInLine();
                 }
                 // skip EOL if string is empty
-                if (endOfLine && arraySize == 0) {
-                    myScanner.skipNext();
+                if (endOfLine) {
+                    myScanner.toNextLine();
                 }
                 if (resultHeight == result.length) {
                     result = Arrays.copyOf(result, result.length * 2);
