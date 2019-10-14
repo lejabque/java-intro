@@ -4,7 +4,7 @@ import java.io.*;
 public class FastScanner implements AutoCloseable {
     private InputStreamReader inputReader;
     private boolean isClosed = false;
-    private char[] buffer = new char[1024];
+    private char[] buffer = new char[128];
     private int bufferPtr = 0;
     private int bufferSize = 0;
 
@@ -44,9 +44,12 @@ public class FastScanner implements AutoCloseable {
     void toNextLine() throws IllegalStateException, IOException {
         checkNotClosed();
         if (lastInLine()) {
-            bufferPtr++;
-            if (bufferPtr == 1024) {
+            bufferPtr += buffer[bufferPtr] == '\r' ? 2 : 1;
+            if (bufferPtr == buffer.length) {
                 updateBuffer();
+            } else if (bufferPtr == buffer.length + 1){
+                updateBuffer();
+                bufferPtr += 1;
             }
         }
     }
@@ -78,7 +81,7 @@ public class FastScanner implements AutoCloseable {
         int nextPtr = bufferPtr;
         while (nextPtr < bufferSize && !charChecker.check(buffer[nextPtr])) {// add checker
             nextPtr++;
-            if (nextPtr == 1024) {
+            if (nextPtr == buffer.length) {
                 updateBuffer();
                 nextPtr = bufferPtr;
             }
@@ -96,7 +99,7 @@ public class FastScanner implements AutoCloseable {
         bufferPtr = beginNext;
         while (bufferPtr < bufferSize && charChecker.check(buffer[bufferPtr])) { //add checker
             bufferPtr++;
-            if (bufferPtr == 1024) {
+            if (bufferPtr == buffer.length) {
                 nextRes.append(buffer, beginNext, bufferPtr - beginNext);
                 updateBuffer();
                 beginNext = bufferPtr;
