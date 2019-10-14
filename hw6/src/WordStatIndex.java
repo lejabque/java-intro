@@ -9,9 +9,13 @@ class IntList {
     private int listSize;
 
     IntList(int x) {
+        this();
+        this.add(x);
+    }
+
+    IntList() {
         list = new int[1];
         listSize = 0;
-        this.add(x);
     }
 
     void add(int x) {
@@ -42,12 +46,7 @@ public class WordStatIndex {
             int i = 1;
             while (in.hasCustomNext(WordStatIndex::wordChecker)) {
                 String word = in.next(WordStatIndex::wordChecker).toLowerCase();
-                IntList foundList = wordCounter.get(word);
-                if (foundList == null) {
-                    wordCounter.put(word, new IntList(i));
-                } else {
-                    foundList.add(i);
-                }
+                wordCounter.computeIfAbsent(word, k -> new IntList()).add(i);
                 i++;
             }
         } catch (UnsupportedEncodingException e) {
