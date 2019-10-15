@@ -1,15 +1,16 @@
-class WordStatTuple extends IntList {
+class WordStatTuple {
     private int counter;
     private int lastLine;
+    private IntList list;
 
     WordStatTuple(int x, int newLastLine) {
-        super(x);
+        list = new IntList(x);
         lastLine = newLastLine;
         updateCounter();
     }
 
     void add(int x, int newLastLine) {
-        super.add(x);
+        list.add(x);
         lastLine = newLastLine;
     }
 
@@ -21,8 +22,7 @@ class WordStatTuple extends IntList {
         counter++;
     }
 
-    @Override
-    String printList() {
-        return counter + super.printList();
+    String tupleToString() {
+        return counter + list.listToString();
     }
 }

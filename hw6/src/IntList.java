@@ -21,7 +21,7 @@ class IntList {
         list[listSize++] = x;
     }
 
-    String printList() {
+    public String listToString() {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < listSize; ++i) {
             res.append(" ").append(list[i]);

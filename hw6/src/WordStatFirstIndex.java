@@ -43,7 +43,7 @@ public class WordStatFirstIndex {
                 new OutputStreamWriter(new FileOutputStream(args[1]), StandardCharsets.UTF_8))) {
             String[] keys = wordCounter.keySet().toArray(new String[0]);
             for (String key : keys) {
-                out.write(key + " " + wordCounter.get(key).printList() + "\n");
+                out.write(key + " " + wordCounter.get(key).tupleToString() + "\n");
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
