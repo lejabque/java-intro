@@ -7,7 +7,6 @@ public class FastScanner implements AutoCloseable {
     private char[] buffer = new char[128];
     private int bufferPtr = 0;
     private int bufferSize = 0;
-
     // constructors
     FastScanner(File file, String charset) throws FileNotFoundException, UnsupportedEncodingException {
         this(new FileInputStream(file), charset);
@@ -47,16 +46,16 @@ public class FastScanner implements AutoCloseable {
             bufferPtr += buffer[bufferPtr] == '\r' ? 2 : 1;
             if (bufferPtr == buffer.length) {
                 updateBuffer();
-            } else if (bufferPtr == buffer.length + 1){
+            } else if (bufferPtr == buffer.length + 1) {
                 updateBuffer();
                 bufferPtr += 1;
             }
         }
     }
 
-    // custom checkers
+    // custom checker
     public interface Checker {
-        boolean check(char c) throws IOException;
+        boolean check(char c);
     }
 
     // hasNext methods
@@ -67,7 +66,7 @@ public class FastScanner implements AutoCloseable {
     // custom next with parse to int
     int nextInt(Checker checker) throws NoSuchElementException, IOException, IllegalStateException {
         if (!hasCustomNext(checker)) {
-            throw new NoSuchElementException("Input is empty");
+            throw new NoSuchElementException("Such element not found");
         }
         return Integer.parseInt(next(checker));
     }
@@ -93,7 +92,7 @@ public class FastScanner implements AutoCloseable {
     public String next(Checker charChecker) throws NoSuchElementException, IOException, IllegalStateException {
         int beginNext = beginCustomNext(charChecker);
         if (beginNext >= bufferSize) {
-            throw new NoSuchElementException("Input is empty");
+            throw new NoSuchElementException("Such element not found");
         }
         StringBuilder nextRes = new StringBuilder();
         bufferPtr = beginNext;

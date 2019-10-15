@@ -15,9 +15,7 @@ class Pair {
 }
 
 public class ReverseSort {
-    public static boolean intChecker(char c) {
-        return (Character.isDigit(c) || c == '-');
-    }
+    private static final FastScanner.Checker CHECKER = c -> (Character.isDigit(c) || c == '-');
 
     public static void main(String[] args) {
         int[][] result = new int[10][]; // NxM array
@@ -29,8 +27,8 @@ public class ReverseSort {
                 int arraySize = 0;
                 long sum = 0;
                 boolean endOfLine = myScanner.lastInLine();
-                while (!endOfLine && myScanner.hasCustomNext(ReverseSort::intChecker)) {
-                    int newElement = myScanner.nextInt(ReverseSort::intChecker);
+                while (!endOfLine && myScanner.hasCustomNext(CHECKER)) {
+                    int newElement = myScanner.nextInt(CHECKER);
                     sum += newElement;
                     if (arraySize == intsArray.length) {
                         intsArray = Arrays.copyOf(intsArray, intsArray.length * 2);

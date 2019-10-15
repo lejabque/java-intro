@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordStatWords {
-    public static boolean wordChecker(char c) {
+    private static boolean wordChecker(char c) {
         return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
     }
 
