@@ -25,6 +25,7 @@ public class WordStatWords {
 
         try (BufferedWriter out = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(args[1]), StandardCharsets.UTF_8))) {
+            
             String[] keys = wordCounter.keySet().toArray(new String[0]);
             Arrays.sort(keys);
             for (String key : keys) {
