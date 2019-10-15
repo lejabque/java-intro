@@ -1,53 +1,35 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class IntList {
-    private int[] list;
-    private int listSize;
-
-    IntList(int x) {
-        this();
-        this.add(x);
-    }
-
-    IntList() {
-        list = new int[1];
-        listSize = 0;
-    }
-
-    void add(int x) {
-        list[listSize++] = x;
-        if (listSize == list.length) {
-            list = Arrays.copyOf(list, listSize * 2);
-        }
-    }
-
-    String printList() {
-        StringBuilder res = new StringBuilder();
-        res.append(listSize);
-        for (int i = 0; i < listSize; ++i) {
-            res.append(" ").append(list[i]);
-        }
-        return res.toString();
-    }
-}
-
-public class WordStatIndex {
-    private static boolean wordChecker(char c) {
-        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || c == '\'';
-    }
+public class WordStatFirstIndex {
+    private static final FastScanner.Checker wordChecker = c -> (Character.isLetter(c)
+            || Character.getType(c) == Character.DASH_PUNCTUATION
+            || c == '\'');
 
     public static void main(String[] args) {
-        Map<String, IntList> wordCounter = new LinkedHashMap<>();
+        Map<String, WordStatTuple> wordCounter = new LinkedHashMap<>();
         try (FastScanner in = new FastScanner(new File(args[0]), "utf-8")) {
+            int lineNum = 1;
             int i = 1;
-            while (in.hasCustomNext(WordStatIndex::wordChecker)) {
-                String word = in.next(WordStatIndex::wordChecker).toLowerCase();
-                wordCounter.computeIfAbsent(word, k -> new IntList()).add(i);
+            while (in.hasCustomNext(wordChecker)) {
+                String word = in.next(wordChecker).toLowerCase();
+                WordStatTuple foundTuple = wordCounter.get(word);
+                if (foundTuple == null) {
+                    wordCounter.put(word, new WordStatTuple(i, lineNum));
+                } else {
+                    if (foundTuple.getLastLine() != lineNum) {
+                        foundTuple.add(i, lineNum);
+                    }
+                    foundTuple.updateCounter();
+
+                }
                 i++;
+                if (in.nothingInLine(wordChecker)) {
+                    lineNum += 1;
+                    i = 1;
+                }
             }
         } catch (UnsupportedEncodingException e) {
             System.err.println("Incorrect encoding: " + e.getMessage());

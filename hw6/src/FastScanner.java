@@ -4,7 +4,7 @@ import java.io.*;
 public class FastScanner implements AutoCloseable {
     private InputStreamReader inputReader;
     private boolean isClosed = false;
-    private char[] buffer = new char[128];
+    private char[] buffer = new char[1];
     private int bufferPtr = 0;
     private int bufferSize = 0;
 
@@ -41,13 +41,26 @@ public class FastScanner implements AutoCloseable {
         return (buffer[bufferPtr] == '\n' || buffer[bufferPtr] == '\r');
     }
 
+    boolean nothingInLine(Checker charChecker) throws IllegalStateException, IOException {
+        checkNotClosed();
+        while (bufferPtr < bufferSize
+                && !charChecker.check(buffer[bufferPtr])
+                && buffer[bufferPtr] != '\n' && buffer[bufferPtr] != '\r') {
+            bufferPtr++;
+            if (bufferPtr == bufferSize) {
+                updateBuffer();
+            }
+        }
+        return (buffer[bufferPtr] == '\n' || buffer[bufferPtr] == '\r');
+    }
+
     void toNextLine() throws IllegalStateException, IOException {
         checkNotClosed();
         if (lastInLine()) {
             bufferPtr += buffer[bufferPtr] == '\r' ? 2 : 1;
             if (bufferPtr == buffer.length) {
                 updateBuffer();
-            } else if (bufferPtr == buffer.length + 1){
+            } else if (bufferPtr == buffer.length + 1) {
                 updateBuffer();
                 bufferPtr += 1;
             }
@@ -56,7 +69,7 @@ public class FastScanner implements AutoCloseable {
 
     // custom checkers
     public interface Checker {
-        boolean check(char c) throws IOException;
+        boolean check(char c);
     }
 
     // hasNext methods
