@@ -16,15 +16,7 @@ public class WordStatFirstIndex {
             while (in.hasCustomNext(wordChecker)) {
                 String word = in.next(wordChecker).toLowerCase();
                 WordStatTuple foundTuple = wordCounter.get(word);
-                if (foundTuple == null) {
-                    wordCounter.put(word, new WordStatTuple(i, lineNum));
-                } else {
-                    if (foundTuple.getLastLine() != lineNum) {
-                        foundTuple.add(i, lineNum);
-                    }
-                    foundTuple.updateCounter();
-
-                }
+                wordCounter.computeIfAbsent(word, k -> new WordStatTuple()).add(i, lineNum);
                 i++;
                 if (in.nothingInLine(wordChecker)) {
                     lineNum += 1;

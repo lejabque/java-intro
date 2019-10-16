@@ -9,7 +9,7 @@ class IntList {
         this.add(x);
     }
 
-    private IntList() {
+    IntList() {
         list = new int[10];
         listSize = 0;
     }

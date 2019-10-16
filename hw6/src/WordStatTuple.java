@@ -3,6 +3,10 @@ class WordStatTuple {
     private int lastLine;
     private IntList list;
 
+    WordStatTuple() {
+        list = new IntList();
+    }
+
     WordStatTuple(int x, int newLastLine) {
         list = new IntList(x);
         lastLine = newLastLine;
@@ -10,8 +14,11 @@ class WordStatTuple {
     }
 
     void add(int x, int newLastLine) {
-        list.add(x);
-        lastLine = newLastLine;
+        if (newLastLine != lastLine) {
+            list.add(x);
+            lastLine = newLastLine;
+        }
+        updateCounter();
     }
 
     int getLastLine() {
