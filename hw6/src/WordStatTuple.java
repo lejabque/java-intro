@@ -25,7 +25,7 @@ class WordStatTuple {
         return lastLine;
     }
 
-    void updateCounter() {
+    private void updateCounter() {
         counter++;
     }
 
