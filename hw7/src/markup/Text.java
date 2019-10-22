@@ -1,9 +1,9 @@
 package markup;
 
-public class Text implements MarkableElement {
+public class Text implements Markable {
     private String element;
 
-    Text(String s) {
+    public Text(String s) {
         this.element = s;
     }
 

@@ -3,7 +3,7 @@ package markup;
 import java.util.List;
 
 public class OrderedList extends AbstractList {
-    OrderedList(List<ListItem> content) {
+    public OrderedList(List<ListItem> content) {
         super(content);
     }
 

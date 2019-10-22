@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-class Strong extends AbstractMarkup {
-    Strong(List<MarkableElement> content) {
+class Strong extends AbstractMarkup implements Markable {
+    public Strong(List<Markable> content) {
         super(content);
     }
 

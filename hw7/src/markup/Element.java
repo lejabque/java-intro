@@ -1,6 +1,6 @@
 package markup;
 
-public interface MarkableElement {
+public interface Element {
     void toMarkdown(StringBuilder sb);
     void toHtml(StringBuilder sb);
 }

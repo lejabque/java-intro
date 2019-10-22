@@ -2,14 +2,14 @@ package markup;
 
 import java.util.List;
 
-abstract class AbstractList implements MarkableElement {
+abstract class AbstractList implements Listable {
     private List<ListItem> content;
 
-    AbstractList(List<ListItem> content) {
+    protected AbstractList(List<ListItem> content) {
         this.content = content;
     }
 
-    public void toHtml(StringBuilder sb, String leftBorder, String rightBorder) {
+    protected void toHtml(StringBuilder sb, String leftBorder, String rightBorder) {
         sb.append(leftBorder);
         for (ListItem el : content) {
             el.toHtml(sb);
