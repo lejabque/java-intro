@@ -10,18 +10,18 @@ class IntList {
     }
 
     IntList() {
-        list = new int[10];
+        list = new int[3];
         listSize = 0;
     }
 
     void add(int x) {
         if (listSize == list.length) {
-            list = Arrays.copyOf(list, listSize * 3 / 2);
+            list = Arrays.copyOf(list, listSize + listSize << 1);
         }
         list[listSize++] = x;
     }
 
-    public String listToString() {
+    String listToString() {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < listSize; ++i) {
             res.append(" ").append(list[i]);

@@ -3,12 +3,17 @@ package markup;
 import java.util.List;
 
 class Strong extends AbstractMarkup {
-    Strong(List<MarkdownElement> content) {
+    Strong(List<MarkableElement> content) {
         super(content);
-        mdBorder = "__";
     }
 
-    Strong(MarkdownElement content) {
-        this(List.of(content));
+    @Override
+    public void toMarkdown(StringBuilder sb) {
+        toMarkdown(sb, "__");
+    }
+
+    @Override
+    public void toHtml(StringBuilder sb) {
+        toHtml(sb, "<strong>", "</strong>");
     }
 }

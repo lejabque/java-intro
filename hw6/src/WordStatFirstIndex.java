@@ -15,7 +15,6 @@ public class WordStatFirstIndex {
             int i = 1;
             while (in.hasCustomNext(wordChecker)) {
                 String word = in.next(wordChecker).toLowerCase();
-                WordStatTuple foundTuple = wordCounter.get(word);
                 wordCounter.computeIfAbsent(word, k -> new WordStatTuple()).add(i, lineNum);
                 i++;
                 if (in.nothingInLine(wordChecker)) {
@@ -33,9 +32,11 @@ public class WordStatFirstIndex {
 
         try (BufferedWriter out = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(args[1]), StandardCharsets.UTF_8))) {
-            String[] keys = wordCounter.keySet().toArray(new String[0]);
-            for (String key : keys) {
-                out.write(key + " " + wordCounter.get(key).tupleToString() + "\n");
+            for (Map.Entry<String, WordStatTuple> entry : wordCounter.entrySet()) {
+                out.write(entry.getKey());
+                out.write(" ");
+                out.write(entry.getValue().tupleToString());
+                out.newLine();
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());

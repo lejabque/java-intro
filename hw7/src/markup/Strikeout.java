@@ -3,12 +3,17 @@ package markup;
 import java.util.List;
 
 class Strikeout extends AbstractMarkup {
-    Strikeout(List<MarkdownElement> content) {
+    Strikeout(List<MarkableElement> content) {
         super(content);
-        mdBorder = "~";
     }
 
-    Strikeout(MarkdownElement content) {
-        this(List.of(content));
+    @Override
+    public void toMarkdown(StringBuilder sb) {
+        toMarkdown(sb, "~");
+    }
+
+    @Override
+    public void toHtml(StringBuilder sb) {
+        toHtml(sb, "<s>", "</s>");
     }
 }

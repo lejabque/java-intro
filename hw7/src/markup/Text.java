@@ -1,6 +1,6 @@
 package markup;
 
-public class Text implements MarkdownElement {
+public class Text implements MarkableElement {
     private String element;
 
     Text(String s) {
@@ -9,6 +9,11 @@ public class Text implements MarkdownElement {
 
     @Override
     public void toMarkdown(StringBuilder sb) {
+        sb.append(element);
+    }
+
+    @Override
+    public void toHtml(StringBuilder sb) {
         sb.append(element);
     }
 }

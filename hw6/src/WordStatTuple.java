@@ -7,22 +7,12 @@ class WordStatTuple {
         list = new IntList();
     }
 
-    WordStatTuple(int x, int newLastLine) {
-        list = new IntList(x);
-        lastLine = newLastLine;
-        updateCounter();
-    }
-
     void add(int x, int newLastLine) {
         if (newLastLine != lastLine) {
             list.add(x);
             lastLine = newLastLine;
         }
         updateCounter();
-    }
-
-    int getLastLine() {
-        return lastLine;
     }
 
     private void updateCounter() {
