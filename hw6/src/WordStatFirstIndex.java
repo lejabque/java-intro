@@ -24,10 +24,13 @@ public class WordStatFirstIndex {
             }
         } catch (UnsupportedEncodingException e) {
             System.err.println("Incorrect encoding: " + e.getMessage());
+            return;
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
+            return;
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());
+            return;
         }
 
         try (BufferedWriter out = new BufferedWriter(
