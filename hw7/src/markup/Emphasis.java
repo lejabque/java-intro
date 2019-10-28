@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-class Emphasis extends AbstractMarkup implements Markable {
-    public Emphasis(List<Markable> content) {
+public class Emphasis extends AbstractContent implements MarkableElement {
+    public Emphasis(List<MarkableElement> content) {
         super(content);
     }
 

@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-class Strikeout extends AbstractMarkup implements Markable {
-    Strikeout(List<Markable> content) {
+public class Strikeout extends AbstractContent implements MarkableElement {
+    Strikeout(List<MarkableElement> content) {
         super(content);
     }
 

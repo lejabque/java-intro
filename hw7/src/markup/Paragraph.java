@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-public class Paragraph extends AbstractMarkup implements Listable {
-    public Paragraph(List<Markable> content) {
+public class Paragraph extends AbstractContent implements ItemableElement {
+    public Paragraph(List<MarkableElement> content) {
         super(content);
     }
 

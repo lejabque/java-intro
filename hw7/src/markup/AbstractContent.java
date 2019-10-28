@@ -2,12 +2,13 @@ package markup;
 
 import java.util.List;
 
-abstract class AbstractMarkup implements Element {
+abstract class AbstractContent implements Element {
     private List<? extends Element> content;
 
-    protected AbstractMarkup(List<? extends Element> content) {
+    protected AbstractContent(List<? extends Element> content) {
         this.content = content;
     }
+
 
     protected void toHtml(StringBuilder sb, String leftBorder, String rightBorder) {
         sb.append(leftBorder);
