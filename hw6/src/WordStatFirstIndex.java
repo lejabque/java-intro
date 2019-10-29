@@ -2,7 +2,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 public class WordStatFirstIndex {
     private static final FastScanner.Checker wordChecker = c -> (Character.isLetter(c)
             || Character.getType(c) == Character.DASH_PUNCTUATION

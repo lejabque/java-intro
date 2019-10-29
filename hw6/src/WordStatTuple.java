@@ -1,13 +1,13 @@
-class WordStatTuple {
+public class WordStatTuple {
     private int counter;
     private int lastLine;
     private IntList list;
 
-    WordStatTuple() {
+    public WordStatTuple() {
         list = new IntList();
     }
 
-    void add(int x, int newLastLine) {
+    public void add(int x, int newLastLine) {
         if (newLastLine != lastLine) {
             list.add(x);
             lastLine = newLastLine;
@@ -19,7 +19,7 @@ class WordStatTuple {
         counter++;
     }
 
-    String tupleToString() {
+    public String tupleToString() {
         return counter + list.listToString();
     }
 }
