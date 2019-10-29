@@ -3,7 +3,7 @@ package markup;
 import java.util.List;
 
 public class ListItem extends AbstractContent {
-    ListItem(List<ItemableElement> content) {
+    public ListItem(List<ItemableElement> content) {
         super(content);
     }
 

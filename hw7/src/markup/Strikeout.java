@@ -3,7 +3,7 @@ package markup;
 import java.util.List;
 
 public class Strikeout extends AbstractContent implements MarkableElement {
-    Strikeout(List<MarkableElement> content) {
+    public Strikeout(List<MarkableElement> content) {
         super(content);
     }
 

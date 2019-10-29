@@ -9,7 +9,6 @@ abstract class AbstractContent implements Element {
         this.content = content;
     }
 
-
     protected void toHtml(StringBuilder sb, String leftBorder, String rightBorder) {
         sb.append(leftBorder);
         for (Element el : content) {
