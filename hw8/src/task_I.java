@@ -27,7 +27,7 @@ public class task_I {
         double h = Math.max(x_r - x_l, y_r - y_l) / 2.0 + 0.5;
         System.out.print((long) x_c + " ");
         System.out.print((long) y_c + " ");
-        if (h < 0) {
+        if (h < 0){
             System.out.println(0);
         } else {
             System.out.println((long) Math.floor(h));
