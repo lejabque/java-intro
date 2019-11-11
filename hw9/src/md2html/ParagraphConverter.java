@@ -30,34 +30,35 @@ public class ParagraphConverter {
         String mdTag = "";
         String htmlTag = "";
         while (paragraphIndex < line.length()) {
-            if (line.charAt(paragraphIndex) == '`') {
+            char curChar = line.charAt(paragraphIndex);
+            if (curChar == '`') {
                 mdTag = "`";
                 htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(paragraphIndex) == '*' || line.charAt(paragraphIndex) == '_') {
+            } else if (curChar == '*' || curChar == '_') {
                 if (paragraphIndex + 1 < line.length() &&
-                        line.charAt(paragraphIndex + 1) == line.charAt(paragraphIndex)) {
+                        line.charAt(paragraphIndex + 1) == curChar) {
                     mdTag = line.substring(paragraphIndex, paragraphIndex + 2);
                     paragraphIndex++;
                 } else {
                     mdTag = line.substring(paragraphIndex, paragraphIndex + 1);
                 }
                 htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(paragraphIndex) == '-' && paragraphIndex + 1 < line.length()
+            } else if (curChar == '-' && paragraphIndex + 1 < line.length()
                     && line.charAt(paragraphIndex + 1) == '-') {
                 mdTag = "--";
                 paragraphIndex++;
                 htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(paragraphIndex) == '\\' && paragraphIndex + 1 < line.length()) {
-                if (anyTags.get(line.substring(paragraphIndex + 1, paragraphIndex + 2)) != null) {
+            } else if (curChar == '\\' && paragraphIndex + 1 < line.length()) {
+                if (anyTags.get(Character.toString(line.charAt(paragraphIndex + 1))) != null) {
                     paragraphIndex++;
                 }
                 resLine.append(line.charAt(paragraphIndex));
             } else {
-                String htmlSymbol = htmlSymbols.get(line.charAt(paragraphIndex));
+                String htmlSymbol = htmlSymbols.get(curChar);
                 if (htmlSymbol != null) {
                     resLine.append(htmlSymbol);
                 } else {
-                    resLine.append(line.charAt(paragraphIndex));
+                    resLine.append(curChar);
                 }
             }
             if (!mdTag.isEmpty() && mdTag.equals(lastTag)) {
