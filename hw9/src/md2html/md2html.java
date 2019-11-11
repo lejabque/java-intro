@@ -1,4 +1,5 @@
 package md2html;
+
 import java.io.*;
 import java.util.*;
 
@@ -49,6 +50,11 @@ public class md2html {
                 mdTag = "--";
                 i++;
                 htmlTag = anyTags.get(mdTag);
+            } else if (line.charAt(i) == '\\' && i + 1 < line.length()) {
+                if (anyTags.get(line.substring(i + 1, i + 2)) != null) {
+                    i++;
+                }
+                resLine.append(line.charAt(i));
             } else {
                 resLine.append(line.charAt(i));
             }
@@ -59,7 +65,8 @@ public class md2html {
             i++;
             if (!mdTag.equals("")) {
                 String addedLine = nextTag(line, mdTag);
-                if (addedLine.substring(addedLine.length() - htmlTag.length() - 1, addedLine.length() - 1).equals(htmlTag)) {
+                if (addedLine.length() - htmlTag.length() > 0 &&
+                        addedLine.substring(addedLine.length() - htmlTag.length() - 1, addedLine.length() - 1).equals(htmlTag)) {
                     resLine.append("<" + htmlTag + ">");
                     i++;
                 } else {
@@ -89,10 +96,11 @@ public class md2html {
                 } else {
                     int headerLevel = getHeaderLevel(line);
                     String editedLine = "";
+                    i = 0;
                     if (headerLevel > 0) {
                         editedLine += "<h" + headerLevel + ">";
+                        i = headerLevel + 1;
                     }
-                    i = headerLevel;
                     editedLine += nextTag(line, "");
                     if (headerLevel > 0) {
                         editedLine += "</h" + headerLevel + ">";
