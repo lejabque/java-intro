@@ -82,6 +82,7 @@ public class md2html {
                         paragraphIndex++;
                     } else {
                         resLine.append(mdTag);
+                        resLine.append(editedLine);
                     }
                     mdTag = "";
                 }
