@@ -1,124 +1,143 @@
 package md2html;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class md2html {
-    private static Map<String, String> anyTags = new HashMap<String, String>();
-    private static int i = 0;
 
-    private static void tagsInit() {
-        anyTags.put("*", "em");
-        anyTags.put("_", "em");
-        anyTags.put("**", "strong");
-        anyTags.put("__", "strong");
-        anyTags.put("`", "code");
-        anyTags.put("--", "s");
-    }
+    static class ParagraphConverter {
+        private Map<String, String> anyTags = new HashMap<String, String>();
+        private int paragraphIndex;
 
-    private static int getHeaderLevel(String line) {
-        int i = 0;
-        int headerLevel = 0;
-        while (i < line.length() && line.charAt(i) == '#') {
-            headerLevel++;
-            i++;
+        ParagraphConverter() {
+            tagsInit();
         }
-        if (i < line.length() && line.charAt(i) == ' ') {
-            return headerLevel;
-        }
-        return 0;
-    }
 
-    public static String nextTag(String line, String lastTag) {
-        StringBuilder resLine = new StringBuilder();
-        String mdTag = "";
-        String htmlTag = "";
-        while (i < line.length()) {
-            if (line.charAt(i) == '`') {
-                mdTag = "`";
-                htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(i) == '*' || line.charAt(i) == '_') {
-                if (i + 1 < line.length() && line.charAt(i + 1) == line.charAt(i)) {
-                    mdTag = line.substring(i, i + 2);
-                    i++;
-                } else {
-                    mdTag = line.substring(i, i + 1);
-                }
-                htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(i) == '-' && i + 1 < line.length() &&
-                    line.charAt(i + 1) == '-') {
-                mdTag = "--";
+        private void tagsInit() {
+            anyTags.put("*", "em");
+            anyTags.put("_", "em");
+            anyTags.put("**", "strong");
+            anyTags.put("__", "strong");
+            anyTags.put("`", "code");
+            anyTags.put("--", "s");
+        }
+
+        private int getHeaderLevel(String line) {
+            int i = 0;
+            int headerLevel = 0;
+            while (i < line.length() && line.charAt(i) == '#') {
+                headerLevel++;
                 i++;
-                htmlTag = anyTags.get(mdTag);
-            } else if (line.charAt(i) == '\\' && i + 1 < line.length()) {
-                if (anyTags.get(line.substring(i + 1, i + 2)) != null) {
-                    i++;
-                }
-                resLine.append(line.charAt(i));
-            } else {
-                resLine.append(line.charAt(i));
             }
-            if (!mdTag.equals("") && mdTag.equals(lastTag)) {
-                resLine.append("</" + htmlTag + ">");
-                return resLine.toString();
+            if (i < line.length() && line.charAt(i) == ' ') {
+                return headerLevel;
             }
-            i++;
-            if (!mdTag.equals("")) {
-                String addedLine = nextTag(line, mdTag);
-                if (addedLine.length() - htmlTag.length() > 0 &&
-                        addedLine.substring(addedLine.length() - htmlTag.length() - 1, addedLine.length() - 1).equals(htmlTag)) {
-                    resLine.append("<" + htmlTag + ">");
-                    i++;
+            return 0;
+        }
+
+
+        private StringBuilder nextTag(String line, StringBuilder resLine, String lastTag) {
+            String mdTag = "";
+            String htmlTag = "";
+            while (paragraphIndex < line.length()) {
+                if (line.charAt(paragraphIndex) == '`') {
+                    mdTag = "`";
+                    htmlTag = anyTags.get(mdTag);
+                } else if (line.charAt(paragraphIndex) == '*' || line.charAt(paragraphIndex) == '_') {
+                    if (paragraphIndex + 1 < line.length() &&
+                            line.charAt(paragraphIndex + 1) == line.charAt(paragraphIndex)) {
+                        mdTag = line.substring(paragraphIndex, paragraphIndex + 2);
+                        paragraphIndex++;
+                    } else {
+                        mdTag = line.substring(paragraphIndex, paragraphIndex + 1);
+                    }
+                    htmlTag = anyTags.get(mdTag);
+                } else if (line.charAt(paragraphIndex) == '-' && paragraphIndex + 1 < line.length() &&
+                        line.charAt(paragraphIndex + 1) == '-') {
+                    mdTag = "--";
+                    paragraphIndex++;
+                    htmlTag = anyTags.get(mdTag);
+                } else if (line.charAt(paragraphIndex) == '\\' && paragraphIndex + 1 < line.length()) {
+                    if (anyTags.get(line.substring(paragraphIndex + 1, paragraphIndex + 2)) != null) {
+                        paragraphIndex++;
+                    }
+                    resLine.append(line.charAt(paragraphIndex));
                 } else {
-                    resLine.append(mdTag);
+                    resLine.append(line.charAt(paragraphIndex));
                 }
-                resLine.append(addedLine);
-                mdTag = "";
+                if (!mdTag.equals("") && mdTag.equals(lastTag)) {
+                    resLine.append("</").append(htmlTag).append(">");
+                    return resLine;
+                }
+                paragraphIndex++;
+                if (!mdTag.equals("")) {
+                    StringBuilder editedLine = new StringBuilder();
+                    nextTag(line, editedLine, mdTag);
+                    if (editedLine.length() - htmlTag.length() > 0 &&
+                            editedLine.substring(editedLine.length() - htmlTag.length() - 1,
+                                    editedLine.length() - 1).equals(htmlTag)) {
+                        resLine.append("<").append(htmlTag).append(">");
+                        resLine.append(editedLine);
+                        paragraphIndex++;
+                    } else {
+                        resLine.append(mdTag);
+                    }
+                    mdTag = "";
+                }
+            }
+            return resLine;
+        }
+
+        public void convert(String paragraph, StringBuilder resLine) {
+            paragraphIndex = 0;
+
+            int headerLevel = getHeaderLevel(paragraph);
+            if (headerLevel > 0) {
+                resLine.append("<h").append(headerLevel).append(">");
+                paragraphIndex = headerLevel + 1;
+            } else {
+                resLine.append("<p>");
+            }
+            nextTag(paragraph, resLine, "");
+            if (headerLevel > 0) {
+                resLine.append("</h").append(headerLevel).append(">");
+            } else {
+                resLine.append("</p>");
             }
         }
-        return resLine.toString();
     }
 
     public static void main(String[] args) {
         String inFile = "/home/lejabque/Desktop/Study/term1/hw/prog-intro-hw/hw9/src/md2html/md.in";
         // String inFile = args[0];
-        tagsInit();
-        List<String> paragraphs = new ArrayList<>();
+        ParagraphConverter converter = new ParagraphConverter();
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
-                        new FileInputStream(new File(inFile)), "utf8"))) {
+                        new FileInputStream(new File(inFile)), StandardCharsets.UTF_8))) {
             String line = in.readLine();
-            StringBuilder paragraph = new StringBuilder();
             while (line != null) {
-                if (line.equals("")) {
-                    paragraphs.add(paragraph.toString());
-                    paragraph = new StringBuilder();
-                } else {
-                    int headerLevel = getHeaderLevel(line);
-                    String editedLine = "";
-                    i = 0;
-                    if (headerLevel > 0) {
-                        editedLine += "<h" + headerLevel + ">";
-                        i = headerLevel + 1;
-                    }
-                    editedLine += nextTag(line, "");
-                    if (headerLevel > 0) {
-                        editedLine += "</h" + headerLevel + ">";
-                    }
-                    paragraph.append(editedLine);
-                    System.out.println(editedLine);
+                StringBuilder paragraph = new StringBuilder();
+                while (line.equals("")) {
+                    line = in.readLine();
                 }
-                line = in.readLine();
-                if (line == null) {
-                    paragraphs.add(paragraph.toString());
+                while (line != null && !line.equals("")) {
+                    if (paragraph.length() != 0) {
+                        paragraph.append('\n');
+                    }
+                    paragraph.append(line);
+                    line = in.readLine();
+                }
+                if (paragraph.length() > 0) {
+                    StringBuilder resParagraph = new StringBuilder();
+                    converter.convert(paragraph.toString(), resParagraph);
+                    System.out.println(resParagraph.toString());
                 }
             }
-
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());
         }
-        System.out.println(paragraphs.size());
     }
 }
