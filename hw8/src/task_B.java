@@ -10,7 +10,6 @@ public class task_B {
         n = in.nextInt();
         for (int i = 0; i < n; ++i) {
             System.out.println(begin);
-            // System.out.println(Math.sin((double) begin));
             begin += 710;
         }
     }

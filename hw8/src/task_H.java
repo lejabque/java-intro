@@ -12,15 +12,15 @@ public class task_H {
         int[] pref = new int[n + 1];
         var f = new int[1_000_000];
         pref[0] = 0;
-        int max_trans = -1;
+        int maxTrans = -1;
         for (int i = 0; i < n; i++) {
             int a = in.nextInt();
             pref[i + 1] = pref[i] + a;
             for (int j = pref[i]; j < pref[i + 1]; j++) {
                 f[j] = i;
             }
-            if (max_trans < a) {
-                max_trans = a;
+            if (maxTrans < a) {
+                maxTrans = a;
             }
         }
 
@@ -29,7 +29,7 @@ public class task_H {
 
         for (int i = 0; i < q; i++) {
             int t = in.nextInt();
-            if (t < max_trans) {
+            if (t < maxTrans) {
                 out.println("Impossible");
             } else if (t >= pref[n]) {
                 out.println(1);

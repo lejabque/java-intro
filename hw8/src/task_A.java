@@ -8,11 +8,11 @@ public class task_A {
         a = in.nextInt();
         b = in.nextInt();
         n = in.nextInt();
-        int x = 2 * ((n - b) / (b - a));
+        int x = 2 * ((n - b) / (b - a)) + 1;
         if ((n - b) % (b - a) == 0) {
             System.out.println(x);
         } else {
-            System.out.println(x + 3);
+            System.out.println(x + 2);
         }
     }
 }
