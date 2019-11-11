@@ -5,25 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParagraphConverter {
-    private Map<String, String> anyTags = new HashMap<String, String>();
-    private Map<Character, String> htmlSymbols = new HashMap<Character, String>();
+    private Map<String, String> anyTags = Map.of("*", "em", "_", "em",
+            "**", "strong", "__", "strong",
+            "`", "code", "--", "s");
+    private Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
+            '>', "&gt;", '&', "&amp;");
     private int paragraphIndex;
 
     ParagraphConverter() {
-        mapsInit();
-    }
-
-    private void mapsInit() {
-        anyTags.put("*", "em");
-        anyTags.put("_", "em");
-        anyTags.put("**", "strong");
-        anyTags.put("__", "strong");
-        anyTags.put("`", "code");
-        anyTags.put("--", "s");
-
-        htmlSymbols.put('<', "&lt;");
-        htmlSymbols.put('>', "&gt;");
-        htmlSymbols.put('&', "&amp;");
     }
 
     private int getHeaderLevel(String line) {
@@ -36,7 +25,6 @@ public class ParagraphConverter {
         }
         return 0;
     }
-
 
     private StringBuilder nextTag(String line, StringBuilder resLine, String lastTag) {
         String mdTag = "";

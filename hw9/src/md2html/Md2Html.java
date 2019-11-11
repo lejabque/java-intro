@@ -2,7 +2,6 @@ package md2html;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 public class Md2Html {
     public static void main(String[] args) {
@@ -37,10 +36,8 @@ public class Md2Html {
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
-            return;
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());
-            return;
         }
     }
 }
