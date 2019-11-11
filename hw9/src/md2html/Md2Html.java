@@ -14,7 +14,7 @@ public class Md2Html {
                 new InputStreamReader(
                         new FileInputStream(
                                 new File(inFile)), StandardCharsets.UTF_8));
-             PrintWriter out = new PrintWriter(new File(outFile))) {
+             BufferedWriter out = new BufferedWriter(new FileWriter(outFile))) {
             String line = in.readLine();
             while (line != null) {
                 StringBuilder paragraph = new StringBuilder();
@@ -31,7 +31,8 @@ public class Md2Html {
                 if (paragraph.length() > 0) {
                     StringBuilder resParagraph = new StringBuilder();
                     converter.convert(paragraph.toString(), resParagraph);
-                    out.println(resParagraph.toString());
+                    out.write(resParagraph.toString());
+                    out.newLine();
                 }
             }
         } catch (FileNotFoundException e) {
