@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class md2Html {
+public class Md2Html {
 
     static class ParagraphConverter {
         private Map<String, String> anyTags = new HashMap<String, String>();

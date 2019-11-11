@@ -14,7 +14,7 @@ public class task_M {
                 a[i] = in.nextInt();
             }
             var C = new HashMap<Integer, Integer>();
-            int ans = 0;` `
+            int ans = 0;
             for (int j = n - 2; j >= 1; --j) {
                 C.merge(a[j + 1], 1, Integer::sum);
                 for (int i = 0; i <= j - 1; ++i) {
