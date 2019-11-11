@@ -8,19 +8,24 @@ public class md2html {
 
     static class ParagraphConverter {
         private Map<String, String> anyTags = new HashMap<String, String>();
+        private Map<Character, String> htmlSymbols = new HashMap<Character, String>();
         private int paragraphIndex;
 
         ParagraphConverter() {
-            tagsInit();
+            mapsInit();
         }
 
-        private void tagsInit() {
+        private void mapsInit() {
             anyTags.put("*", "em");
             anyTags.put("_", "em");
             anyTags.put("**", "strong");
             anyTags.put("__", "strong");
             anyTags.put("`", "code");
             anyTags.put("--", "s");
+
+            htmlSymbols.put('<', "&lt;");
+            htmlSymbols.put('>', "&gt;");
+            htmlSymbols.put('&', "&amp;");
         }
 
         private int getHeaderLevel(String line) {
@@ -64,7 +69,12 @@ public class md2html {
                     }
                     resLine.append(line.charAt(paragraphIndex));
                 } else {
-                    resLine.append(line.charAt(paragraphIndex));
+                    String htmlSymbol = htmlSymbols.get(line.charAt(paragraphIndex));
+                    if (htmlSymbol != null) {
+                        resLine.append(htmlSymbol);
+                    } else {
+                        resLine.append(line.charAt(paragraphIndex));
+                    }
                 }
                 if (!mdTag.equals("") && mdTag.equals(lastTag)) {
                     resLine.append("</").append(htmlTag).append(">");
