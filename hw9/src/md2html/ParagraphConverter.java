@@ -1,11 +1,10 @@
 package md2html;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ParagraphConverter {
-    private Map<String, String> anyTags = Map.of("*", "em", "_", "em",
+    private Map<String, String> md2HtmlTags = Map.of("*", "em", "_", "em",
             "**", "strong", "__", "strong",
             "`", "code", "--", "s");
     private Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
@@ -33,7 +32,7 @@ public class ParagraphConverter {
             char curChar = line.charAt(paragraphIndex);
             if (curChar == '`') {
                 mdTag = "`";
-                htmlTag = anyTags.get(mdTag);
+                htmlTag = md2HtmlTags.get(mdTag);
             } else if (curChar == '*' || curChar == '_') {
                 if (paragraphIndex + 1 < line.length() &&
                         line.charAt(paragraphIndex + 1) == curChar) {
@@ -42,14 +41,14 @@ public class ParagraphConverter {
                 } else {
                     mdTag = line.substring(paragraphIndex, paragraphIndex + 1);
                 }
-                htmlTag = anyTags.get(mdTag);
+                htmlTag = md2HtmlTags.get(mdTag);
             } else if (curChar == '-' && paragraphIndex + 1 < line.length()
                     && line.charAt(paragraphIndex + 1) == '-') {
                 mdTag = "--";
                 paragraphIndex++;
-                htmlTag = anyTags.get(mdTag);
+                htmlTag = md2HtmlTags.get(mdTag);
             } else if (curChar == '\\' && paragraphIndex + 1 < line.length()) {
-                if (anyTags.get(Character.toString(line.charAt(paragraphIndex + 1))) != null) {
+                if (md2HtmlTags.get(Character.toString(line.charAt(paragraphIndex + 1))) != null) {
                     paragraphIndex++;
                 }
                 resLine.append(line.charAt(paragraphIndex));
