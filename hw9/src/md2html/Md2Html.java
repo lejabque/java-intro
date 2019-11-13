@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Md2Html {
     public static void main(String[] args) {
-        // lString inFile = "/home/lejabque/Desktop/Study/term1/hw/prog-intro-hw/hw9/src/md2html/md.in";
+        // String inFile = "/home/lejabque/Desktop/Study/term1/hw/prog-intro-hw/hw9/src/md2html/md.in";
         // String outFile = "/home/lejabque/Desktop/Study/term1/hw/prog-intro-hw/hw9/src/md2html/md.out";
         String inFile = args[0];
         String outFile = args[1];
@@ -29,9 +29,7 @@ public class Md2Html {
                     line = in.readLine();
                 }
                 if (paragraph.length() > 0) {
-                    StringBuilder resParagraph = new StringBuilder();
-                    converter.convert(paragraph.toString(), resParagraph);
-                    out.write(resParagraph.toString());
+                    out.write(converter.convert(paragraph.toString(), new StringBuilder()).toString());
                     out.newLine();
                 }
             }
