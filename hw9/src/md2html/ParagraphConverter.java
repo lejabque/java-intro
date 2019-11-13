@@ -10,6 +10,7 @@ public class ParagraphConverter {
     private Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
             '>', "&gt;", '&', "&amp;");
     private int ind;
+    private int linkStatus = 0;
 
     ParagraphConverter() {
     }
@@ -30,7 +31,15 @@ public class ParagraphConverter {
         String htmlTag = "";
         while (ind < line.length()) {
             char curChar = line.charAt(ind);
-            if (curChar == '`') {
+            if (curChar == '[') {
+                linkStatus = 1;
+                mdTag = "[";
+                htmlTag = "[";
+            } else if (curChar == ']') {
+                linkStatus = 2;
+                mdTag = "]";
+                htmlTag = "]";
+            } else if (curChar == '`') {
                 mdTag = "`";
                 htmlTag = md2htmlTags.get(mdTag);
             } else if (curChar == '*' || curChar == '_') {
@@ -60,21 +69,40 @@ public class ParagraphConverter {
                     resLine.append(curChar);
                 }
             }
-            if (!mdTag.isEmpty() && mdTag.equals(lastTag)) {
+            if (!mdTag.isEmpty() && mdTag.equals(lastTag)) {  // закрываем тег
                 resLine.append("</").append(htmlTag).append(">");
                 return resLine;
             }
             ind++;
-            if (!mdTag.isEmpty()) {
+            if (mdTag.equals("]") && lastTag.equals("[") && ind < line.length() && line.charAt(ind) == '(') {
+                // парс ссылки
+                ind++;
+                StringBuilder link = new StringBuilder();
+                while (ind < line.length() && line.charAt(ind) != ')') {
+                    link.append(line.charAt(ind));
+                    ind++;
+                }
+                if (ind < line.length()) {
+                    ind++;
+                }
                 StringBuilder editedLine = new StringBuilder();
-                nextTag(line, editedLine, mdTag);
-                if (editedLine.length() > htmlTag.length() &&
+                editedLine.append("<a href='").append(link).append("'>").append(resLine).append("</a>");
+                resLine = editedLine;
+                return resLine;
+            }
+            if (!mdTag.isEmpty()) { // открываем тег
+                StringBuilder editedLine = new StringBuilder();
+                editedLine = nextTag(line, editedLine, mdTag);
+                if (editedLine.length() > htmlTag.length() &&  // проверяем, закрылся ли тег
                         editedLine.substring(editedLine.length() - htmlTag.length() - 1,
                                 editedLine.length() - 1).equals(htmlTag)) {
                     resLine.append("<").append(htmlTag).append(">").append(editedLine);
                     ind++;
                 } else {
-                    resLine.append(mdTag).append(editedLine);
+                    if (!mdTag.equals("[")) {
+                        resLine.append(mdTag);
+                    }
+                    resLine.append(editedLine);
                 }
                 mdTag = "";
             }
