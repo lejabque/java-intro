@@ -10,7 +10,6 @@ public class ParagraphConverter {
     private Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
             '>', "&gt;", '&', "&amp;");
     private int ind;
-    private int linkStatus = 0;
 
     ParagraphConverter() {
     }
@@ -32,11 +31,9 @@ public class ParagraphConverter {
         while (ind < line.length()) {
             char curChar = line.charAt(ind);
             if (curChar == '[') {
-                linkStatus = 1;
                 mdTag = "[";
                 htmlTag = "[";
             } else if (curChar == ']') {
-                linkStatus = 2;
                 mdTag = "]";
                 htmlTag = "]";
             } else if (curChar == '`') {
