@@ -33,15 +33,9 @@ public class ParagraphConverter {
             char curChar = line.charAt(ind);
             switch (curChar) {
                 case '[':
-                    mdTag = "[";
-                    htmlTag = md2htmlTags.get(mdTag);
-                    break;
                 case ']':
-                    mdTag = "]";
-                    htmlTag = md2htmlTags.get(mdTag);
-                    break;
                 case '`':
-                    mdTag = "`";
+                    mdTag = Character.toString(curChar);
                     htmlTag = md2htmlTags.get(mdTag);
                     break;
                 case '*':
@@ -55,21 +49,24 @@ public class ParagraphConverter {
                     }
                     htmlTag = md2htmlTags.get(mdTag);
                     break;
-                default:
-                    if (curChar == '-' && ind + 1 < line.length()
+                case '\\':
+                    if (ind + 1 < line.length() &&
+                            md2htmlTags.get(Character.toString(line.charAt(ind + 1))) != null) {
+                        ind++;
+                    }
+                    resLine.append(line.charAt(ind));
+                    break;
+                case '-':
+                    if (ind + 1 < line.length()
                             && line.charAt(ind + 1) == '-') {
                         mdTag = "--";
                         ind++;
                         htmlTag = md2htmlTags.get(mdTag);
-                    } else if (curChar == '\\' && ind + 1 < line.length()) {
-                        if (md2htmlTags.get(Character.toString(line.charAt(ind + 1))) != null) {
-                            ind++;
-                        }
-                        resLine.append(line.charAt(ind));
-                    } else {
-                        String htmlSymbol = htmlSymbols.getOrDefault(curChar, String.valueOf(curChar));
-                        resLine.append(htmlSymbol);
+                        break;
                     }
+                default:
+                    String htmlSymbol = htmlSymbols.getOrDefault(curChar, String.valueOf(curChar));
+                    resLine.append(htmlSymbol);
             }
 
             if (!mdTag.isEmpty() && mdTag.equals(lastTag)) {  // close last tag
