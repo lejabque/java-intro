@@ -40,7 +40,7 @@ public class ParagraphConverter {
                     break;
                 case '*':
                 case '_':
-                    if (ind + 1 < line.length() &&
+                    if (ind + 1 < line.length() && !lastTag.equals(Character.toString(curChar)) &
                             line.charAt(ind + 1) == curChar) {
                         mdTag = line.substring(ind, ind + 2);
                         ind++;
