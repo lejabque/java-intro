@@ -67,12 +67,8 @@ public class ParagraphConverter {
                         }
                         resLine.append(line.charAt(ind));
                     } else {
-                        String htmlSymbol = htmlSymbols.get(curChar);
-                        if (htmlSymbol != null) {
-                            resLine.append(htmlSymbol);
-                        } else {
-                            resLine.append(curChar);
-                        }
+                        String htmlSymbol = htmlSymbols.getOrDefault(curChar, String.valueOf(curChar));
+                        resLine.append(htmlSymbol);
                     }
             }
 
