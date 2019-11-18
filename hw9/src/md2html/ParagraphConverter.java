@@ -82,7 +82,8 @@ public class ParagraphConverter {
                     link.append(line.charAt(endLinkInd));
                     endLinkInd++;
                 }
-                if (endLinkInd < line.length() && line.charAt(endLinkInd) == ')') {
+                if (endLinkInd < line.length() && line.charAt(endLinkInd) == ')'
+                        && line.charAt(endLinkInd) != '[') {
                     resLine.insert(0, md2htmlTags.get("[") + link + "'>").append(md2htmlTags.get("]"));
                     ind = endLinkInd + 1;
                     return resLine;
