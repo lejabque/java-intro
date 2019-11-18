@@ -76,17 +76,20 @@ public class ParagraphConverter {
             ind++;
             // parse link
             if (mdTag.equals("]") && lastTag.equals("[") && ind < line.length() && line.charAt(ind) == '(') {
-                ind++;
                 StringBuilder link = new StringBuilder();
-                while (ind < line.length() && line.charAt(ind) != ')') {
-                    link.append(line.charAt(ind));
-                    ind++;
+                int endLinkInd = ind + 1;
+                while (endLinkInd < line.length() && line.charAt(endLinkInd) != ')') {
+                    link.append(line.charAt(endLinkInd));
+                    endLinkInd++;
                 }
-                if (ind < line.length()) {
-                    ind++;
+                if (endLinkInd < line.length() && line.charAt(endLinkInd) == ')') {
+                    resLine.insert(0, md2htmlTags.get("[") + link + "'>").append(md2htmlTags.get("]"));
+                    ind = endLinkInd + 1;
+                    return resLine;
+                } else {
+                    resLine.insert(0, "[");
+                    System.out.println(resLine.toString());
                 }
-                resLine.insert(0, md2htmlTags.get("[") + link + "'>").append(md2htmlTags.get("]"));
-                return resLine;
             }
 
             if (!mdTag.isEmpty()) { // parse after tag
