@@ -1,18 +1,37 @@
 package md2html;
 
-
 import java.util.Map;
 
 public class ParagraphConverter {
-    private Map<String, String> md2htmlTags = Map.of("*", "em", "_", "em",
+    private final Map<String, String> md2htmlTags = Map.of("*", "em", "_", "em",
             "**", "strong", "__", "strong",
             "`", "code", "--", "s", "[", "<a href='",
             "]", "</a>");
-    private Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
+    private final Map<Character, String> htmlSymbols = Map.of('<', "&lt;",
             '>', "&gt;", '&', "&amp;");
     private int ind;
+    private StringBuilder resLine;
 
-    ParagraphConverter() {
+    public ParagraphConverter(String paragraph) {
+        resLine = new StringBuilder();
+        ind = 0;
+        final int headerLevel = getHeaderLevel(paragraph);
+        if (headerLevel > 0) {
+            resLine.append("<h").append(headerLevel).append(">");
+            ind = headerLevel + 1;
+        } else {
+            resLine.append("<p>");
+        }
+        nextTag(paragraph, resLine, "");
+        if (headerLevel > 0) {
+            resLine.append("</h").append(headerLevel).append(">");
+        } else {
+            resLine.append("</p>");
+        }
+    }
+
+    public StringBuilder getResult() {
+        return resLine;
     }
 
     private int getHeaderLevel(String line) {
@@ -108,24 +127,6 @@ public class ParagraphConverter {
                 }
                 mdTag = "";
             }
-        }
-        return resLine;
-    }
-
-    public StringBuilder convert(String paragraph, StringBuilder resLine) {
-        ind = 0;
-        int headerLevel = getHeaderLevel(paragraph);
-        if (headerLevel > 0) {
-            resLine.append("<h").append(headerLevel).append(">");
-            ind = headerLevel + 1;
-        } else {
-            resLine.append("<p>");
-        }
-        nextTag(paragraph, resLine, "");
-        if (headerLevel > 0) {
-            resLine.append("</h").append(headerLevel).append(">");
-        } else {
-            resLine.append("</p>");
         }
         return resLine;
     }
