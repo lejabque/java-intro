@@ -1,5 +1,6 @@
 package mnkGame;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class MnkBoard implements Board, Position {
 
     @Override
     public Position getPosition() {
-        return this;
+        return new ProxyPosition(this);
     }
 
     @Override
