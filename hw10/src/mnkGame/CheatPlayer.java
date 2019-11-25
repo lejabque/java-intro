@@ -3,16 +3,16 @@ package mnkGame;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class HumanPlayer implements Player {
+public class CheatPlayer implements Player {
     private final PrintStream out;
     private final Scanner in;
 
-    public HumanPlayer(final PrintStream out, final Scanner in) {
+    public CheatPlayer(final PrintStream out, final Scanner in) {
         this.out = out;
         this.in = in;
     }
 
-    public HumanPlayer() {
+    public CheatPlayer() {
         this(System.out, new Scanner(System.in));
     }
 
@@ -24,6 +24,7 @@ public class HumanPlayer implements Player {
             out.println(cell + "'s move");
             out.println("Enter row and column");
             final Move move = new Move(in.nextInt(), in.nextInt(), cell);
+            // cast pos to board
             if (position.isValid(move)) {
                 return move;
             }

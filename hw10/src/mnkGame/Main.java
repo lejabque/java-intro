@@ -1,11 +1,9 @@
 package mnkGame;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
 public class Main {
     public static void main(String[] args) {
-        final Game game = new Game(false, new HumanPlayer(), new HumanPlayer());
+        // cast pos -> board, юзаем move
+        final Game game = new Game(false, new HumanPlayer(), new RandomPlayer());
         int result;
         do {
             result = game.play(new MnkBoard(5, 25, 5));

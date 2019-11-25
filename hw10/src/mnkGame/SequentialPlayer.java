@@ -1,8 +1,5 @@
 package mnkGame;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
 public class SequentialPlayer implements Player {
     @Override
     public Move move(final Position position, final Cell cell) {

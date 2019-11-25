@@ -3,9 +3,6 @@ package mnkGame;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
 public class MnkBoard implements Board, Position {
     private static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
@@ -39,6 +36,29 @@ public class MnkBoard implements Board, Position {
         return turn;
     }
 
+    private boolean checkWin(int row, int column) {
+        int[][] deltas = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
+        for (int[] deltasLine : deltas) {
+            int deltaRow = deltasLine[0];
+            int deltaColumn = deltasLine[1];
+            if (countSymbols(row, column, deltaRow, deltaColumn) +
+                    countSymbols(row, column, -deltaRow, -deltaColumn) + 1 >= k) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int countSymbols(int row, int column, int deltaRow, int deltaColumn) {
+        int count = 0;
+        for (int curRow = row + deltaRow, curColumn = column + deltaColumn;
+             curRow < m && curColumn < n && curRow >= 0 && curColumn >= 0 && getCell(curRow, curColumn) == turn;
+             curRow += deltaRow, curColumn += deltaColumn) {
+            count++;
+        }
+        return count;
+    }
+
     @Override
     public Result makeMove(final Move move) {
         if (!isValid(move)) {
@@ -47,93 +67,7 @@ public class MnkBoard implements Board, Position {
 
         cells[move.getRow()][move.getColumn()] = move.getValue();
         empty--;
-        int inRow = 0;
-        int inColumn = 0;
-        int inDiag1 = 0;
-        int inDiag2 = 0;
-        int row = move.getRow();
-        int column = move.getColumn();
-        int columnCheck = column;
-        // horizontal check
-        while (columnCheck >= 0 && cells[row][columnCheck] == turn) {
-            inRow++;
-            columnCheck--;
-        }
-        columnCheck = column + 1;
-        while (columnCheck < n && cells[row][columnCheck] == turn) {
-            inRow++;
-            columnCheck++;
-        }
-        int rowCheck = row;
-        // vertical check
-        while (rowCheck >= 0 && cells[rowCheck][column] == turn) {
-            inColumn++;
-            rowCheck--;
-        }
-        rowCheck = row + 1;
-        while (rowCheck < m && cells[rowCheck][column] == turn) {
-            inColumn++;
-            rowCheck++;
-        }
-        // diag1 check
-        columnCheck = column;
-        rowCheck = row;
-        while (columnCheck >= 0 && rowCheck >= 0 && cells[rowCheck][columnCheck] == turn) {
-            inDiag1++;
-            columnCheck--;
-            rowCheck--;
-        }
-        columnCheck = column + 1;
-        rowCheck = row + 1;
-        while (columnCheck < n && rowCheck < m && cells[rowCheck][columnCheck] == turn) {
-            inDiag1++;
-            columnCheck++;
-            rowCheck++;
-        }
-
-        // diag2 check
-        columnCheck = column;
-        rowCheck = row;
-        while (columnCheck < n && rowCheck >= 0 && cells[rowCheck][columnCheck] == turn) {
-            inDiag2++;
-            columnCheck++;
-            rowCheck--;
-        }
-        columnCheck = column - 1;
-        rowCheck = row + 1;
-        while (columnCheck >= 0 && rowCheck < m && cells[rowCheck][columnCheck] == turn) {
-            inDiag2++;
-            columnCheck--;
-            rowCheck++;
-        }
-
-
-//        for (int u = 0; u < m; u++) {
-//            int inRow = 0;
-//            int inColumn = 0;
-//            for (int v = 0; v < n; v++) {
-//                if (cells[u][v] == turn) {
-//                    inRow++;
-//                }
-//                if (cells[v][u] == turn) {
-//                    inColumn++;
-//                }
-//                if (cells[u][v] == Cell.E) {
-//                    empty++;
-//                }
-//            }
-//
-//            if (inRow == k || inColumn == k) {
-//                return Result.WIN;
-//            }
-//            if (cells[u][u] == turn) {
-//                inDiag1++;
-//            }
-//            if (cells[u][n - 1 - u] == turn) {
-//                inDiag2++;
-//            }
-//        }
-        if (inRow == k || inColumn == k || inDiag1 == k || inDiag2 == k) {
+        if (checkWin(move.getRow(), move.getColumn())) {
             return Result.WIN;
         }
         if (empty == 0) {
@@ -149,7 +83,7 @@ public class MnkBoard implements Board, Position {
         return 0 <= move.getRow() && move.getRow() < m
                 && 0 <= move.getColumn() && move.getColumn() < n
                 && cells[move.getRow()][move.getColumn()] == Cell.E
-                && turn == getCell();
+                && turn == move.getValue();
     }
 
     @Override

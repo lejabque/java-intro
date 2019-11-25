@@ -1,8 +1,5 @@
 package mnkGame;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
 public class Game {
     private final boolean log;
     private final Player player1, player2;
