@@ -23,13 +23,24 @@ public class HumanPlayer implements Player {
             out.println(position);
             out.println(cell + "'s move");
             out.println("Enter row and column");
-            final Move move = new Move(in.nextInt(), in.nextInt(), cell);
+            int newRow = nextInt();
+            int newColumn = nextInt();
+            final Move move = new Move(newRow, newColumn, cell);
             if (position.isValid(move)) {
                 return move;
             }
             final int row = move.getRow();
             final int column = move.getColumn();
             out.println("Move " + move + " is invalid");
+        }
+    }
+
+    private int nextInt() {
+        while (true) {
+            if (in.hasNextInt()) {
+                return in.nextInt();
+            }
+            in.next();
         }
     }
 }

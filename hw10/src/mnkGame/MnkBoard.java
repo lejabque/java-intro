@@ -36,6 +36,11 @@ public class MnkBoard implements Board, Position {
         return turn;
     }
 
+    @Override
+    public Cell getCell(final int r, final int c) {
+        return cells[r][c];
+    }
+
     private boolean checkWin(int row, int column) {
         int[][] deltas = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
         for (int[] deltasLine : deltas) {
@@ -84,11 +89,6 @@ public class MnkBoard implements Board, Position {
                 && 0 <= move.getColumn() && move.getColumn() < n
                 && cells[move.getRow()][move.getColumn()] == Cell.E
                 && turn == move.getValue();
-    }
-
-    @Override
-    public Cell getCell(final int r, final int c) {
-        return cells[r][c];
     }
 
     @Override
