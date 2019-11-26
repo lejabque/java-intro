@@ -1,10 +1,10 @@
 package mnkGame;
 
 
-public class ProxyPosition implements Position {
+public class PlayerBoard implements Position {
     private final Position board;
 
-    public ProxyPosition(Position board) {
+    public PlayerBoard(Position board) {
         this.board = board;
     }
 
@@ -16,6 +16,16 @@ public class ProxyPosition implements Position {
     @Override
     public Cell getCell(int row, int column) {
         return board.getCell(row, column);
+    }
+
+    @Override
+    public int getM() {
+        return board.getM();
+    }
+
+    @Override
+    public int getN() {
+        return board.getN();
     }
 
     @Override

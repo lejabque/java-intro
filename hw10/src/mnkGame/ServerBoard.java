@@ -3,7 +3,7 @@ package mnkGame;
 import java.util.Arrays;
 import java.util.Map;
 
-public class MnkBoard implements Board, Position {
+public class ServerBoard implements Board, Position {
     private static final Map<Cell, Character> SYMBOLS = Map.of(
             Cell.X, 'X',
             Cell.O, 'O',
@@ -13,13 +13,15 @@ public class MnkBoard implements Board, Position {
     private final Cell[][] cells;
     private Cell turn;
     private int m, n, k, empty;
+    private Position playerBoard;
 
-    public MnkBoard(int m, int n, int k) {
+    public ServerBoard(int m, int n, int k) {
         this.m = m;
         this.n = n;
         this.k = k;
         this.empty = m * n;
         this.cells = new Cell[m][n];
+        this.playerBoard = new PlayerBoard(this);
         for (Cell[] row : cells) {
             Arrays.fill(row, Cell.E);
         }
@@ -28,12 +30,22 @@ public class MnkBoard implements Board, Position {
 
     @Override
     public Position getPosition() {
-        return new ProxyPosition(this);
+        return playerBoard;
     }
 
     @Override
     public Cell getCell() {
         return turn;
+    }
+
+    @Override
+    public int getM() {
+        return m;
+    }
+
+    @Override
+    public int getN() {
+        return n;
     }
 
     @Override
@@ -93,15 +105,16 @@ public class MnkBoard implements Board, Position {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("  ");
+        final int spacesCount = Math.max(String.valueOf(m).length(), String.valueOf(n).length());
+        final StringBuilder sb = new StringBuilder(" ".repeat(spacesCount + 1));
         for (int i = 0; i < n; i++) {
-            sb.append(i).append(" ");
+            sb.append(String.format("%" + spacesCount + "d", i)).append(" ");
         }
         for (int r = 0; r < m; r++) {
             sb.append("\n");
-            sb.append(r).append(" ");
+            sb.append(String.format("%" + spacesCount + "d", r)).append(" ");
             for (int c = 0; c < n; c++) {
-                sb.append(SYMBOLS.get(cells[r][c])).append(" ");
+                sb.append(String.format("%" + spacesCount + "c", SYMBOLS.get(cells[r][c]))).append(" ");
             }
         }
         return sb.toString();
