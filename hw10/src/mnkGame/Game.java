@@ -2,23 +2,20 @@ package mnkGame;
 
 public class Game {
     private final boolean log;
-    private final Player player1, player2;
+    private final Player[] players;
 
-    public Game(final boolean log, final Player player1, final Player player2) {
+    public Game(final boolean log, Player[] players) {
         this.log = log;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.players = players;
     }
 
     public int play(Board board) {
         while (true) {
-            final int result1 = move(board, player1, 1);
-            if (result1 != -1) {
-                return result1;
-            }
-            final int result2 = move(board, player2, 2);
-            if (result2 != -1) {
-                return result2;
+            for (int i = 0; i < players.length; i++) {
+                final int curResult = move(board, players[i], i + 1);
+                if (curResult != -1) {
+                    return curResult;
+                }
             }
         }
     }
@@ -32,8 +29,8 @@ public class Game {
             log("Player " + no + " won");
             return no;
         } else if (result == Result.LOSE) {
-            log("Player " + no + " lose");
-            return 3 - no;
+            log("Move invalid, player " + no + ", try again");
+            return -1;
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;

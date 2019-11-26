@@ -1,31 +1,31 @@
 package mnkGame;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class ServerBoard implements Board, Position {
-    private static final Map<Cell, Character> SYMBOLS = Map.of(
-            Cell.X, 'X',
-            Cell.O, 'O',
-            Cell.E, '.'
-    );
+    private static final List<Cell> CELLS = List.of(Cell.X, Cell.O, Cell.A, Cell.B);
 
     private final Cell[][] cells;
     private Cell turn;
     private int m, n, k, empty;
     private Position playerBoard;
+    private int currentPlayer = 0;
+    private int playersCount;
 
-    public ServerBoard(int m, int n, int k) {
+    public ServerBoard(int m, int n, int k, int playersCount) {
         this.m = m;
         this.n = n;
         this.k = k;
+        this.playersCount = playersCount;
         this.empty = m * n;
         this.cells = new Cell[m][n];
         this.playerBoard = new PlayerBoard(this);
         for (Cell[] row : cells) {
             Arrays.fill(row, Cell.E);
         }
-        turn = Cell.X;
+        turn = CELLS.get(currentPlayer);
     }
 
     @Override
@@ -90,8 +90,8 @@ public class ServerBoard implements Board, Position {
         if (empty == 0) {
             return Result.DRAW;
         }
-
-        turn = turn == Cell.X ? Cell.O : Cell.X;
+        currentPlayer = (currentPlayer + 1) % playersCount;
+        turn = CELLS.get(currentPlayer);
         return Result.UNKNOWN;
     }
 
@@ -114,7 +114,7 @@ public class ServerBoard implements Board, Position {
             sb.append("\n");
             sb.append(String.format("%" + spacesCount + "d", r)).append(" ");
             for (int c = 0; c < n; c++) {
-                sb.append(String.format("%" + spacesCount + "c", SYMBOLS.get(cells[r][c]))).append(" ");
+                sb.append(String.format("%" + spacesCount + "s", cells[r][c].toString())).append(" ");
             }
         }
         return sb.toString();

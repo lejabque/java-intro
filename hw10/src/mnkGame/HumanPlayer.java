@@ -21,7 +21,7 @@ public class HumanPlayer implements Player {
         while (true) {
             out.println("Position");
             out.println(position);
-            out.println(cell + "'s move");
+            out.println(cell.toString() + "'s move");
             out.println("Enter row and column");
             int newRow = nextInt();
             int newColumn = nextInt();
