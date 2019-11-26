@@ -2,7 +2,6 @@ package mnkGame;
 
 public class Main {
     public static void main(String[] args) {
-        // cast pos -> board, юзаем move
         final Game game = new Game(false, new HumanPlayer(), new RandomPlayer());
         int result;
         do {
