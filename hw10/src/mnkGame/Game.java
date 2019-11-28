@@ -29,8 +29,8 @@ public class Game {
             log("Player " + no + " won");
             return no;
         } else if (result == Result.LOSE) {
-            log("Move invalid, player " + no + ", try again");
-            return -1;
+            log("Someone is cheater. It's player:" + no + ", GAME OVER");
+            return -2;
         } else if (result == Result.DRAW) {
             log("Draw");
             return 0;

@@ -1,15 +1,14 @@
 package mnkGame;
 
-import java.util.List;
 import java.util.Map;
 
 public enum Cell {
-    X, O, E, A, B, C, D;
+    player1, player2, player3, player4, E;
     private static final Map<Cell, Character> SYMBOLS = Map.of(
-            X, 'X',
-            O, 'O',
-            A, '|',
-            B, '-',
+            player1, 'X',
+            player2, 'O',
+            player3, '|',
+            player4, '-',
             E, '.'
     );
 

@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ServerBoard implements Board, Position {
-    private static final List<Cell> CELLS = List.of(Cell.X, Cell.O, Cell.A, Cell.B);
-
+    private static final Cell[] CELLS = Cell.values();
     private final Cell[][] cells;
     private Cell turn;
     private int m, n, k, empty;
@@ -25,7 +24,7 @@ public class ServerBoard implements Board, Position {
         for (Cell[] row : cells) {
             Arrays.fill(row, Cell.E);
         }
-        turn = CELLS.get(currentPlayer);
+        turn = CELLS[currentPlayer];
     }
 
     @Override
@@ -91,7 +90,7 @@ public class ServerBoard implements Board, Position {
             return Result.DRAW;
         }
         currentPlayer = (currentPlayer + 1) % playersCount;
-        turn = CELLS.get(currentPlayer);
+        turn = CELLS[currentPlayer];
         return Result.UNKNOWN;
     }
 
