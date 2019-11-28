@@ -2,6 +2,57 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/prog-intro/homeworks.html)
 
+
+[Домашнее задание 11. Выражения](hw11)
+
+Модификации
+ * *Базовая*
+    * Реализуйте интерфейс [Expression](java/expression/Expression.java)
+    * [Исходный код тестов](java/expression/ExpressionTest.java)
+        * Запускать c аргументом `easy` или `hard`
+
+
+[Домашнее задание 10. Игра n,m,k](hw10)
+
+Модификации
+ * *Турнир*
+    * Добавьте поддержку кругового турнира из _c_ кругов
+    * Выведите таблицу очков по схеме:
+        * 3 очка за победу
+        * 1 очко за ничью
+        * 0 очков за поражение
+ * *Multiplayer*
+    * Добавьте поддержку значков `-` и `|`
+    * Добавьте возможность игры для 3 и 4 игроков
+
+[Домашнее задание 9. Markdown to HTML](hw9)
+
+Модификации
+ * *Underline*
+    * Добавьте поддержку `++подчеркивания++`: `<u>подчеркивания</u>`
+    * [Исходный код тестов](java/md2html/Md2HtmlUnderlineTest.java)
+    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlUnderlineTest.jar)
+
+ * *Link*
+    * Добавьте поддержку ```[ссылок с _выделением_](https://kgeorgiy.info)```:
+        ```&lt;a href='https://kgeorgiy.info'>ссылок с &lt;em>выделением&lt;/em>&lt;/a>```
+    * [Исходный код тестов](java/md2html/Md2HtmlLinkTest.java)
+    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlLinkTest.jar)
+ * *Mark*
+    * Добавьте поддержку `~выделения цветом~`: `<mark>выделения цветом</mark>`
+    * [Исходный код тестов](java/md2html/Md2HtmlMarkTest.java)
+    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlMarkTest.jar)
+ * *Image*
+    * Добавьте поддержку ```![картинок](http://www.ifmo.ru/images/menu/small/p10.jpg)```:
+        ```&lt;img alt='картинок' src='http://www.ifmo.ru/images/menu/small/p10.jpg'&gt;```
+    * [Исходный код тестов](java/md2html/Md2HtmlImageTest.java)
+    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlImageTest.jar)
+
+Исходный код тестов: [Md2HtmlTest.java](java/md2html/Md2HtmlTest.java)
+
+Откомпилированные тесты: [Md2HtmlTest.jar](artifacts/md2html/Md2HtmlTest.jar)
+
+
 [Домашнее задание 7. Разметка](hw7)
 ----
 Модификации
