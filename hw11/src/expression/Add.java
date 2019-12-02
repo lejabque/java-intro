@@ -2,7 +2,7 @@ package expression;
 
 public class Add extends Operation {
 
-    public Add(Expression first, Expression second) {
+    public Add(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
@@ -14,5 +14,10 @@ public class Add extends Operation {
     @Override
     protected String getOperationType() {
         return "+";
+    }
+
+    @Override
+    public int getPriority() {
+        return 0;
     }
 }

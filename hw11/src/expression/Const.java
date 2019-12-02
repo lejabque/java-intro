@@ -1,6 +1,6 @@
 package expression;
 
-public class Const implements Expression {
+public class Const implements PriorityExpression {
     int value;
 
     public Const(int value) {
@@ -20,5 +20,20 @@ public class Const implements Expression {
     @Override
     public String toString() {
         return String.valueOf(value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Const) {
+            Const second = (Const) obj;
+            return value == second.value;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(value);
     }
 }

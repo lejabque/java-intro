@@ -2,7 +2,7 @@ package expression;
 
 public class Subtract extends Operation {
 
-    public Subtract(Expression first, Expression second) {
+    public Subtract(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
@@ -14,5 +14,10 @@ public class Subtract extends Operation {
     @Override
     protected String getOperationType() {
         return "-";
+    }
+
+    @Override
+    public int getPriority() {
+        return 0;
     }
 }

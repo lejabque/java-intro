@@ -1,6 +1,8 @@
 package expression;
 
-public class Variable implements Expression {
+import java.util.Objects;
+
+public class Variable implements PriorityExpression {
     String var;
 
     public Variable(String var) {
@@ -11,7 +13,6 @@ public class Variable implements Expression {
         return var;
     }
 
-    @Override
     public int evaluate(int x) {
         return x;
     }
@@ -24,5 +25,21 @@ public class Variable implements Expression {
     @Override
     public String toString() {
         return var;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Variable) {
+            Variable second = (Variable) obj;
+            return Objects.equals(var, second.var);
+        } else {
+            return false;
+        }
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(var);
     }
 }

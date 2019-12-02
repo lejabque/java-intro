@@ -2,7 +2,7 @@ package expression;
 
 public class Divide extends Operation {
 
-    public Divide(Expression first, Expression second) {
+    public Divide(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
@@ -14,5 +14,10 @@ public class Divide extends Operation {
     @Override
     protected String getOperationType() {
         return "/";
+    }
+
+    @Override
+    public int getPriority() {
+        return 1;
     }
 }
