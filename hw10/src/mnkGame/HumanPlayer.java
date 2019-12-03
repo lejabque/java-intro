@@ -25,6 +25,7 @@ public class HumanPlayer implements Player {
             out.println("Enter row and column");
             int newRow = nextInt();
             int newColumn = nextInt();
+            in.nextLine();
             final Move move = new Move(newRow, newColumn, cell);
             if (position.isValid(move)) {
                 return move;
