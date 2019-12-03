@@ -3,14 +3,10 @@ package expression;
 import java.util.Objects;
 
 public class Variable implements PriorityExpression {
-    String var;
+    private final String var;
 
     public Variable(String var) {
         this.var = var;
-    }
-
-    public String getValue(String var) {
-        return var;
     }
 
     public int evaluate(int x) {

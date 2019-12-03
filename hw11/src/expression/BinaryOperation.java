@@ -2,23 +2,28 @@ package expression;
 
 import java.util.Objects;
 
-public abstract class Operation implements PriorityExpression {
+public abstract class BinaryOperation implements PriorityExpression {
     protected final PriorityExpression first, second;
 
-    public Operation(PriorityExpression first, PriorityExpression second) {
+    public BinaryOperation(PriorityExpression first, PriorityExpression second) {
         this.first = first;
         this.second = second;
     }
 
-    @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Operation) {
-            Operation new_second = (Operation) obj;
+        if (obj instanceof BinaryOperation) {
+            BinaryOperation new_second = (BinaryOperation) obj;
             return Objects.equals(first, new_second.first) && Objects.equals(second, new_second.second)
                     && Objects.equals(getOperationType(), new_second.getOperationType());
         } else {
             return false;
         }
+    }
+
+    protected abstract int calculate(int x, int y);
+
+    public int evaluate(int x) {
+        return calculate(first.evaluate(x), second.evaluate(x));
     }
 
     @Override
@@ -39,7 +44,6 @@ public abstract class Operation implements PriorityExpression {
         return expr instanceof Divide || expr instanceof Subtract;
     }
 
-    @Override
     public String toMiniString() {
         StringBuilder sb = new StringBuilder();
         if (first.getPriority() < this.getPriority()) {

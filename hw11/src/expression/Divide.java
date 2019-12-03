@@ -1,14 +1,14 @@
 package expression;
 
-public class Divide extends Operation {
+public class Divide extends BinaryOperation {
 
     public Divide(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
     @Override
-    public int evaluate(int x) {
-        return first.evaluate(x) / second.evaluate(x);
+    protected int calculate(int x, int y) {
+        return x / y;
     }
 
     @Override

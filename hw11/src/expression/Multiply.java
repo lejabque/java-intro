@@ -1,14 +1,14 @@
 package expression;
 
-public class Multiply extends Operation {
+public class Multiply extends BinaryOperation {
 
     public Multiply(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
     @Override
-    public int evaluate(int x) {
-        return first.evaluate(x) * second.evaluate(x);
+    protected int calculate(int x, int y) {
+        return x * y;
     }
 
     @Override
