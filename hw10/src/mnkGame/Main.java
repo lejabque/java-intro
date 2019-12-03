@@ -13,7 +13,7 @@ public class Main {
             } else if (result == -2) {
                 System.out.println("Game ended because someone tried to cheat.");
             } else {
-                Syqstem.out.println("DRAW");
+                System.out.println("DRAW");
             }
         } while (result != 0);
     }

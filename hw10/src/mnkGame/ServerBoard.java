@@ -52,22 +52,19 @@ public class ServerBoard implements Board, Position {
         return cells[r][c];
     }
 
-    private boolean checkWin(int row, int column) {
-        int[][] deltas = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
-        for (int[] deltasLine : deltas) {
-            int deltaRow = deltasLine[0];
-            int deltaColumn = deltasLine[1];
-            if (countSymbols(row, column, deltaRow, deltaColumn) +
-                    countSymbols(row, column, -deltaRow, -deltaColumn) + 1 >= k) {
-                return true;
-            }
-        }
-        return false;
+    private boolean checkWin(Move move) {
+        return isWin(move, 1, 0) || isWin(move, 0, 1)
+                || isWin(move, 1, 1) || isWin(move, -1, 1);
     }
 
-    private int countSymbols(int row, int column, int deltaRow, int deltaColumn) {
+    private boolean isWin(Move move, int deltaRow, int deltaColumn) {
+        return countSymbols(move, deltaRow, deltaColumn) +
+                countSymbols(move, -deltaRow, -deltaColumn) + 1 >= k;
+    }
+
+    private int countSymbols(Move move, int deltaRow, int deltaColumn) {
         int count = 0;
-        for (int curRow = row + deltaRow, curColumn = column + deltaColumn;
+        for (int curRow = move.getRow() + deltaRow, curColumn = move.getColumn() + deltaColumn;
              curRow < m && curColumn < n && curRow >= 0 && curColumn >= 0 && getCell(curRow, curColumn) == turn;
              curRow += deltaRow, curColumn += deltaColumn) {
             count++;
@@ -83,7 +80,7 @@ public class ServerBoard implements Board, Position {
 
         cells[move.getRow()][move.getColumn()] = move.getValue();
         empty--;
-        if (checkWin(move.getRow(), move.getColumn())) {
+        if (checkWin(move)) {
             return Result.WIN;
         }
         if (empty == 0) {
