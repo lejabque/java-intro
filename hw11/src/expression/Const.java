@@ -1,6 +1,6 @@
 package expression;
 
-public class Const implements PriorityExpression {
+public final class Const implements PriorityExpression {
     private final int value;
 
     public Const(int value) {

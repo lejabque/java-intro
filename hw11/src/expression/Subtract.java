@@ -1,6 +1,6 @@
 package expression;
 
-public class Subtract extends BinaryOperation {
+public final class Subtract extends BinaryOperation {
 
     public Subtract(PriorityExpression first, PriorityExpression second) {
         super(first, second);

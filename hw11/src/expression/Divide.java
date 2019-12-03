@@ -1,6 +1,6 @@
 package expression;
 
-public class Divide extends BinaryOperation {
+public final class Divide extends BinaryOperation {
 
     public Divide(PriorityExpression first, PriorityExpression second) {
         super(first, second);

@@ -1,6 +1,6 @@
 package expression;
 
-public class Multiply extends BinaryOperation {
+public final class Multiply extends BinaryOperation {
 
     public Multiply(PriorityExpression first, PriorityExpression second) {
         super(first, second);

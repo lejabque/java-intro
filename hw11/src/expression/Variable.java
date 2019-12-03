@@ -3,7 +3,7 @@ package expression;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class Variable implements PriorityExpression {
+public final class Variable implements PriorityExpression {
     private final String var;
 
     public Variable(String var) {

@@ -1,6 +1,6 @@
 package expression;
 
-public class Add extends BinaryOperation {
+public final class Add extends BinaryOperation {
 
     public Add(PriorityExpression first, PriorityExpression second) {
         super(first, second);
