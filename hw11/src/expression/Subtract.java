@@ -20,4 +20,9 @@ public class Subtract extends BinaryOperation {
     public int getPriority() {
         return 0;
     }
+
+    @Override
+    public boolean isImportant() {
+        return true;
+    }
 }

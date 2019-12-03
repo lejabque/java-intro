@@ -7,6 +7,12 @@ public class Const implements PriorityExpression {
         this.value = value;
     }
 
+    @Override
+    public int evaluate(int x, int y, int z) {
+        return value;
+    }
+
+    @Override
     public int evaluate(int x) {
         return value;
     }
@@ -14,6 +20,11 @@ public class Const implements PriorityExpression {
     @Override
     public int getPriority() {
         return 1000;
+    }
+
+    @Override
+    public boolean isImportant() {
+        return false;
     }
 
     @Override

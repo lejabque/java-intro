@@ -1,5 +1,6 @@
 package expression;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class Variable implements PriorityExpression {
@@ -9,6 +10,20 @@ public class Variable implements PriorityExpression {
         this.var = var;
     }
 
+    @Override
+    public int evaluate(int x, int y, int z) {
+        switch (var) {
+            case "x":
+                return x;
+            case "y":
+                return y;
+            case "z":
+                return z;
+        }
+        throw new NoSuchElementException("Incorrect variable");
+    }
+
+    @Override
     public int evaluate(int x) {
         return x;
     }
@@ -16,6 +31,11 @@ public class Variable implements PriorityExpression {
     @Override
     public int getPriority() {
         return 1000;
+    }
+
+    @Override
+    public boolean isImportant() {
+        return false;
     }
 
     @Override

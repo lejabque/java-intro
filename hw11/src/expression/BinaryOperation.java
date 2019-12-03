@@ -10,38 +10,27 @@ public abstract class BinaryOperation implements PriorityExpression {
         this.second = second;
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof BinaryOperation) {
-            BinaryOperation new_second = (BinaryOperation) obj;
-            return Objects.equals(first, new_second.first) && Objects.equals(second, new_second.second)
-                    && Objects.equals(getOperationType(), new_second.getOperationType());
-        } else {
-            return false;
-        }
-    }
-
     protected abstract int calculate(int x, int y);
 
+    @Override
+    public int evaluate(int x, int y, int z) {
+        return calculate(first.evaluate(x, y, z), second.evaluate(x, y, z));
+    }
+
+    @Override
     public int evaluate(int x) {
         return calculate(first.evaluate(x), second.evaluate(x));
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(").append(first).append(" ").append(getOperationType()).
-                append(" ").append(second).append(")");
-        return sb.toString();
+        return "(" + first + " " + getOperationType() + " " + second + ")";
     }
 
     private boolean requireBrackets(PriorityExpression expr) {
         return second.getPriority() < this.getPriority() ||
                 second.getPriority() == this.getPriority() &&
-                        (isImportantOperation(second) || isImportantOperation(this));
-    }
-
-    private boolean isImportantOperation(PriorityExpression expr) {
-        return expr instanceof Divide || expr instanceof Subtract;
+                        (second.isImportant() || this.isImportant());
     }
 
     @Override
@@ -66,6 +55,17 @@ public abstract class BinaryOperation implements PriorityExpression {
 
     @Override
     public int hashCode() {
-        return (Objects.hashCode(first) * 31 + Objects.hashCode(second)) * 31 + Objects.hashCode(getOperationType());
+        return Objects.hash(first, second, getOperationType());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BinaryOperation) {
+            BinaryOperation new_second = (BinaryOperation) obj;
+            return Objects.equals(first, new_second.first) && Objects.equals(second, new_second.second)
+                    && Objects.equals(getOperationType(), new_second.getOperationType());
+        } else {
+            return false;
+        }
     }
 }

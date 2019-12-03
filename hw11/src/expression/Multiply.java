@@ -20,4 +20,9 @@ public class Multiply extends BinaryOperation {
     public int getPriority() {
         return 1;
     }
+
+    @Override
+    public boolean isImportant() {
+        return false;
+    }
 }
