@@ -3,7 +3,6 @@ package expression;
 public class Main {
 
     public static void main(String[] args) {
-
-        System.out.println( new Add(new Variable("x"), new Variable("x")).evaluate(2, 3, 4));
+        System.out.println(new Add(new Const(2), new Subtract(new Variable("x"), new Variable("x"))).toMiniString());
     }
 }
