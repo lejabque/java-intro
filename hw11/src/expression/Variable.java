@@ -33,7 +33,6 @@ public class Variable implements PriorityExpression {
         }
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hashCode(var);

@@ -44,6 +44,7 @@ public abstract class BinaryOperation implements PriorityExpression {
         return expr instanceof Divide || expr instanceof Subtract;
     }
 
+    @Override
     public String toMiniString() {
         StringBuilder sb = new StringBuilder();
         if (first.getPriority() < this.getPriority()) {
@@ -51,6 +52,7 @@ public abstract class BinaryOperation implements PriorityExpression {
         } else {
             sb.append(first.toMiniString());
         }
+
         sb.append(" ").append(getOperationType()).append(" ");
         if (requireBrackets(second)) {
             sb.append("(").append(second.toMiniString()).append(")");
