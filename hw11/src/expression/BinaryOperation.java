@@ -3,7 +3,7 @@ package expression;
 import java.util.Objects;
 
 public abstract class BinaryOperation implements PriorityExpression {
-    protected final PriorityExpression first, second;
+    private final PriorityExpression first, second;
 
     public BinaryOperation(PriorityExpression first, PriorityExpression second) {
         this.first = first;
@@ -36,34 +36,34 @@ public abstract class BinaryOperation implements PriorityExpression {
     @Override
     public String toMiniString() {
         StringBuilder sb = new StringBuilder();
-        if (first.getPriority() < this.getPriority()) {
-            sb.append("(").append(first.toMiniString()).append(")");
-        } else {
-            sb.append(first.toMiniString());
-        }
-
+        PriorityExpression op = this.first;
+        termToString(sb, op, op.getPriority() < this.getPriority());
         sb.append(" ").append(getOperationType()).append(" ");
-        if (requireBrackets(second)) {
-            sb.append("(").append(second.toMiniString()).append(")");
-        } else {
-            sb.append(second.toMiniString());
-        }
+        termToString(sb, second, requireBrackets(second));
         return sb.toString();
+    }
+
+    private void termToString(StringBuilder sb, PriorityExpression op, boolean brackets) {
+        if (brackets) {
+            sb.append("(").append(op.toMiniString()).append(")");
+        } else {
+            sb.append(op.toMiniString());
+        }
     }
 
     protected abstract String getOperationType();
 
     @Override
     public int hashCode() {
-        return Objects.hash(first, second, getOperationType());
+        return Objects.hash(first, second, this.getClass());
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof BinaryOperation) {
-            BinaryOperation new_second = (BinaryOperation) obj;
-            return Objects.equals(first, new_second.first) && Objects.equals(second, new_second.second)
-                    && Objects.equals(getOperationType(), new_second.getOperationType());
+            BinaryOperation newSecond = (BinaryOperation) obj;
+            return Objects.equals(this.getClass(), obj.getClass()) &&
+                    Objects.equals(first, newSecond.first) && Objects.equals(second, newSecond.second);
         } else {
             return false;
         }
