@@ -9,6 +9,7 @@ public class BaseParser {
 
     protected BaseParser(final ExpressionSource source) {
         this.source = source;
+        nextChar();
     }
 
     public BaseParser() {
@@ -54,5 +55,33 @@ public class BaseParser {
 
     protected boolean between(final char from, final char to) {
         return from <= ch && ch <= to;
+    }
+
+
+
+    protected void copyDigits(final StringBuilder sb) {
+        while (between('0', '9')) {
+            sb.append(ch);
+            nextChar();
+        }
+    }
+
+    protected void copyInteger(final StringBuilder sb) {
+        if (test('-')) {
+            sb.append('-');
+        }
+        if (test('0')) {
+            sb.append('0');
+        } else if (between('1', '9')) {
+            copyDigits(sb);
+        } else {
+            throw error("Invalid number");
+        }
+    }
+
+    protected void skipWhitespace() {
+        while (test(' ') || test('\r') || test('\n') || test('\t')) {
+            // skip
+        }
     }
 }

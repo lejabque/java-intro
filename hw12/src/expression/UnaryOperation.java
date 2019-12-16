@@ -2,7 +2,7 @@ package expression;
 
 import java.util.Objects;
 
-public abstract class UnaryOperation implements PriorityExpression {
+public abstract class UnaryOperation implements CommonExpression {
     protected final PriorityExpression first;
 
     public UnaryOperation(PriorityExpression first) {

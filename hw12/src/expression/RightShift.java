@@ -1,28 +1,28 @@
 package expression;
 
-public final class Subtract extends BinaryOperation {
+public final class RightShift extends BinaryOperation {
 
-    public Subtract(PriorityExpression first, PriorityExpression second) {
+    public RightShift(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
     @Override
     protected int calculate(int x, int y) {
-        return x - y;
+        return x >> y;
     }
 
     @Override
     protected String getOperationType() {
-        return "-";
+        return ">>";
     }
 
     @Override
     public int getPriority() {
-        return 1;
+        return 0;
     }
 
     @Override
     public boolean isImportant() {
-        return true;
+        return false;
     }
 }

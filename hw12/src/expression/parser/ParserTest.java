@@ -19,6 +19,7 @@ public class ParserTest extends BaseTest {
     private final static int D = 5;
 
     private final static List<Integer> TEST_VALUES = new ArrayList<>();
+
     static {
         addRange(TEST_VALUES, D, D);
         addRange(TEST_VALUES, D, -D);
@@ -189,7 +190,7 @@ public class ParserTest extends BaseTest {
     }
 
     private static Test p(final Test t) {
-        return new Test("("  + t.expr + ")", t.answer);
+        return new Test("(" + t.expr + ")", t.answer);
     }
 
     private Test binary(final List<Op<LongBinaryOperator>> ops, final Test t1, final Test t2) {
@@ -204,7 +205,7 @@ public class ParserTest extends BaseTest {
         final Op<LongUnaryOperator> op = random(unary);
         return new Test(op.name + " " + arg.expr, arg.answer.flatMapRight(a -> eval(() -> op.f.applyAsLong(a))));
     }
- 
+
     private Test genValue(final int depth, final int coefficient, final int[] vars) {
         if (makeNewBranch(depth, coefficient)) {
             return p(genExpression(depth + 1, coefficient, vars, 0));

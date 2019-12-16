@@ -2,7 +2,7 @@ package expression;
 
 public final class UnaryMinus extends UnaryOperation {
 
-    public UnaryMinus(PriorityExpression first, PriorityExpression second) {
+    public UnaryMinus(PriorityExpression first) {
         super(first);
     }
 

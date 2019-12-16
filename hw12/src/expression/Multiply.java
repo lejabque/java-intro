@@ -18,7 +18,7 @@ public final class Multiply extends BinaryOperation {
 
     @Override
     public int getPriority() {
-        return 1;
+        return 2;
     }
 
     @Override

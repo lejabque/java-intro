@@ -14,35 +14,69 @@ public class ExpressionParser extends BaseParser implements Parser {
 
 
     @Override
-    public TripleExpression parse(String expression) {
+    public CommonExpression parse(String expression) {
         changeSource(new StringSource(expression));
         nextChar();
         return parseExpression();
     }
 
+
     public CommonExpression parseExpression() {
-        final CommonExpression left = parseTerm();
-        return addRightPart(left);
+        skipWhitespace();
+        return parseTerm(0);
     }
 
-    public CommonExpression addRightPart(CommonExpression left) {
+    private CommonExpression parseTerm(int priority) {
         skipWhitespace();
-        if (!hasNext() || test(')')) {
-            return left;
+        CommonExpression parsed = null;
+        if (priority == Operation.operToPriority.get(Operation.CONST)) {
+            return parseValue();
         }
-        final Operation operation = parseOperation();
-        final CommonExpression right = parseTerm();
-        left = buildExpression(left, operation, right);
+        int nextPriority = priority + 1;
+        parsed = parseTerm(nextPriority);
+
+        while (true) {
+            skipWhitespace();
+            Operation curOperation = Operation.stringToOper.get(Character.toString(ch));
+            int curPriority = curOperation == null ? -1000 : Operation.operToPriority.get(curOperation);
+            if (curOperation == null || priority != curPriority) {
+                return parsed;
+            }
+            nextPriority = curPriority + 1;
+            if (curPriority == 0) {
+                nextChar();
+            }
+            nextChar();
+            skipWhitespace();
+            parsed = buildOperation(parsed, parseTerm(nextPriority), curOperation);
+        }
+    }
+
+    private CommonExpression parseValue() {
         skipWhitespace();
-        if (test(')') || test('\0')) {
-            return left;
+        if (test('(')) {
+            CommonExpression parsed = parseExpression();
+            skipWhitespace();
+            expect(')');
+            return parsed;
+        }
+        if (test('-')) {
+            skipWhitespace();
+            if (between('0', '9')) {
+                return parseConst(false);
+            }
+            return new UnaryMinus(parseValue());
+        }
+        if (between('0', '9')) {
+            return parseConst(true);
         } else {
-            return addRightPart(left);
+            return parseVariable();
         }
     }
 
-    private CommonExpression buildExpression(CommonExpression left, Operation operation, CommonExpression right) {
-        switch (operation) {
+    private CommonExpression buildOperation(CommonExpression left, CommonExpression right,
+                                            Operation oper) {
+        switch (oper) {
             case ADD:
                 return new Add(left, right);
             case SUB:
@@ -51,88 +85,31 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return new Multiply(left, right);
             case DIV:
                 return new Divide(left, right);
+            case LEFTSHIFT:
+                return new LeftShift(left, right);
+            case RIGHTSHIFT:
+                return new RightShift(left, right);
         }
-        throw error("Unknown operation");
+        return null;
     }
 
-    private Operation parseOperation() {
+    private CommonExpression parseVariable() {
         skipWhitespace();
-        if (test('+')) {
-            return Operation.ADD;
-        }
-        if (test('-')) {
-            return Operation.SUB;
-        }
-        if (test('/')) {
-            return Operation.DIV;
-        }
-        if (test('*')) {
-            return Operation.MUL;
-        }
-        throw error("Unrecognized operation");
-    }
-
-    // (expression) or [const] or [var]
-    public CommonExpression parseTerm() {
-        skipWhitespace();
-        if (test('(')) {
-            return parseExpression();
-        }
-        if (between('x', 'z')) {
-            return parseVariable();
-        }
-        if (test('-')) {
-            return parseConst(false);
-        }
-        return parseConst(true);
-    }
-
-    private Variable parseVariable() {
-        skipWhitespace();
-        String variable = Character.toString(ch);
+        String var = Character.toString(ch);
         nextChar();
-        return new Variable(variable);
+        return new Variable(var);
     }
 
-    private Const parseConst(boolean positive) {
-        return new Const(positive ? parseNumber() : -parseNumber());
-    }
-
-    private int parseNumber() {
+    private CommonExpression parseConst(boolean positive) {
         final StringBuilder sb = new StringBuilder();
-        copyInteger(sb);
-        try {
-            return Integer.parseInt(sb.toString());
-        } catch (NumberFormatException e) {
-            throw error("Invalid number " + sb);
-        }
-    }
-
-
-    private void copyDigits(final StringBuilder sb) {
-        while (between('0', '9')) {
-            sb.append(ch);
-            nextChar();
-        }
-    }
-
-    private void copyInteger(final StringBuilder sb) {
-        skipWhitespace();
-        if (test('-')) {
+        if (!positive) {
             sb.append('-');
         }
-        if (test('0')) {
-            sb.append('0');
-        } else if (between('1', '9')) {
-            copyDigits(sb);
-        } else {
-            throw error("Invalid number");
-        }
-    }
-
-    private void skipWhitespace() {
-        while (test(' ') || test('\r') || test('\n') || test('\t')) {
-            // skip
+        copyInteger(sb);
+        try {
+            return new Const(Integer.parseInt(sb.toString()));
+        } catch (NumberFormatException e) {
+            throw error("Invalid number " + sb);
         }
     }
 }
