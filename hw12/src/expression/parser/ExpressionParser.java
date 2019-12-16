@@ -26,7 +26,7 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseTerm(int priority) {
         skipWhitespace();
-        CommonExpression parsed = null;
+        CommonExpression parsed;
         if (priority == Operation.operToPriority.get(Operation.CONST)) {
             return parseValue();
         }
