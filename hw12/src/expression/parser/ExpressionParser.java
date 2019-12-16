@@ -40,12 +40,13 @@ public class ExpressionParser extends BaseParser implements Parser {
             if (curOperation == null || priority != curPriority) {
                 return parsed;
             }
-
             nextPriority = curPriority + 1;
-            if (curPriority == 0) {
-                nextChar();
-            }
             nextChar();
+            if (curOperation == Operation.LEFTSHIFT){
+                expect('<');
+            } else if (curOperation == Operation.RIGHTSHIFT){
+                expect('>');
+            }
             parsed = buildOperation(parsed, parseTerm(nextPriority), curOperation);
         }
     }
