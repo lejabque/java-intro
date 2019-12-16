@@ -12,14 +12,12 @@ public class ExpressionParser extends BaseParser implements Parser {
         super();
     }
 
-
     @Override
     public CommonExpression parse(String expression) {
         changeSource(new StringSource(expression));
         nextChar();
         return parseExpression();
     }
-
 
     public CommonExpression parseExpression() {
         skipWhitespace();
@@ -42,18 +40,17 @@ public class ExpressionParser extends BaseParser implements Parser {
             if (curOperation == null || priority != curPriority) {
                 return parsed;
             }
+
             nextPriority = curPriority + 1;
             if (curPriority == 0) {
                 nextChar();
             }
             nextChar();
-            skipWhitespace();
             parsed = buildOperation(parsed, parseTerm(nextPriority), curOperation);
         }
     }
 
     private CommonExpression parseValue() {
-        skipWhitespace();
         if (test('(')) {
             CommonExpression parsed = parseExpression();
             skipWhitespace();

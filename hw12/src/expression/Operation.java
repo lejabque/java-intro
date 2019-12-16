@@ -1,7 +1,4 @@
 package expression;
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public enum Operation {
@@ -9,7 +6,6 @@ public enum Operation {
     MUL, DIV,
     CONST, VAR,
     LEFTSHIFT, RIGHTSHIFT;
-    private static Operation[] vals = values();
 
     public static Map<Operation, Integer> operToPriority = Map.of(
             LEFTSHIFT, 0, RIGHTSHIFT, 0,
@@ -23,10 +19,4 @@ public enum Operation {
             "<", LEFTSHIFT, ">", RIGHTSHIFT,
             "*", MUL, "/", DIV
     );
-
-    public static List<Operation> operationsPriority = List.of(LEFTSHIFT, ADD, MUL, CONST);
-
-    public Operation next(){
-        return operationsPriority.get((operationsPriority.indexOf(this) + 1) % operationsPriority.size());
-    }
 }
