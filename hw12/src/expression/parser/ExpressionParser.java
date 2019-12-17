@@ -26,12 +26,11 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseTerm(int priority) {
         skipWhitespace();
-        CommonExpression parsed;
         if (priority == Operation.operToPriority.get(Operation.CONST)) {
             return parseValue();
         }
         int nextPriority = priority + 1;
-        parsed = parseTerm(nextPriority);
+        CommonExpression parsed = parseTerm(nextPriority);
 
         while (true) {
             skipWhitespace();
@@ -93,9 +92,9 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseVariable() {
         skipWhitespace();
-        String var = Character.toString(ch);
+        String variable = Character.toString(ch);
         nextChar();
-        return new Variable(var);
+        return new Variable(variable);
     }
 
     private CommonExpression parseConst(boolean positive) {

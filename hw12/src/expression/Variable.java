@@ -4,15 +4,15 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public final class Variable implements CommonExpression {
-    private final String var;
+    private final String variable;
 
     public Variable(String var) {
-        this.var = var;
+        this.variable = var;
     }
 
     @Override
     public int evaluate(int x, int y, int z) {
-        switch (var) {
+        switch (variable) {
             case "x":
                 return x;
             case "y":
@@ -40,14 +40,14 @@ public final class Variable implements CommonExpression {
 
     @Override
     public String toString() {
-        return var;
+        return variable;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Variable) {
             Variable second = (Variable) obj;
-            return Objects.equals(var, second.var);
+            return Objects.equals(variable, second.variable);
         } else {
             return false;
         }
@@ -55,6 +55,6 @@ public final class Variable implements CommonExpression {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(var);
+        return Objects.hashCode(variable);
     }
 }
