@@ -41,9 +41,9 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             nextPriority = curPriority + 1;
             nextChar();
-            if (curOperation == Operation.LEFTSHIFT){
+            if (curOperation == Operation.LEFTSHIFT) {
                 expect('<');
-            } else if (curOperation == Operation.RIGHTSHIFT){
+            } else if (curOperation == Operation.RIGHTSHIFT) {
                 expect('>');
             }
             parsed = buildOperation(parsed, parseTerm(nextPriority), curOperation);
@@ -56,6 +56,16 @@ public class ExpressionParser extends BaseParser implements Parser {
             skipWhitespace();
             expect(')');
             return parsed;
+        }
+        if (test('r')) {
+            expect("everse");
+            skipWhitespace();
+            return new Reverse(parseValue());
+        }
+        if (test('d')) {
+            expect("igits");
+            skipWhitespace();
+            return new Digits(parseValue());
         }
         if (test('-')) {
             skipWhitespace();
