@@ -1,7 +1,6 @@
 # file: ~/.gitignore_global
 .DS_Store
 .idea
-prog-intro-2019
 *.class
 *.jar
 out

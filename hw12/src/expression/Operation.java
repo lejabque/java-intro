@@ -7,7 +7,7 @@ public enum Operation {
     CONST, VAR,
     LEFTSHIFT, RIGHTSHIFT;
 
-    public static Map<Operation, Integer> operToPriority = Map.of(
+    public static Map<Operation, Integer> PRIORITIES = Map.of(
             LEFTSHIFT, 0, RIGHTSHIFT, 0,
             ADD, 1, SUB, 1,
             MUL, 2, DIV, 2,

@@ -8,10 +8,6 @@ public class ExpressionParser extends BaseParser implements Parser {
         super(stringSource);
     }
 
-    public ExpressionParser() {
-        super();
-    }
-
     @Override
     public CommonExpression parse(String expression) {
         changeSource(new StringSource(expression));
@@ -26,27 +22,25 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseTerm(int priority) {
         skipWhitespace();
-        if (priority == Operation.operToPriority.get(Operation.CONST)) {
+        if (priority == Operation.PRIORITIES.get(Operation.CONST)) {
             return parseValue();
         }
-        int nextPriority = priority + 1;
-        CommonExpression parsed = parseTerm(nextPriority);
+
+        CommonExpression parsed = parseTerm(priority + 1);
 
         while (true) {
             skipWhitespace();
             Operation curOperation = Operation.stringToOper.get(Character.toString(ch));
-            int curPriority = curOperation == null ? -1000 : Operation.operToPriority.get(curOperation);
-            if (curOperation == null || priority != curPriority) {
+            if (curOperation == null || priority < Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
-            nextPriority = curPriority + 1;
             nextChar();
             if (curOperation == Operation.LEFTSHIFT) {
                 expect('<');
             } else if (curOperation == Operation.RIGHTSHIFT) {
                 expect('>');
             }
-            parsed = buildOperation(parsed, parseTerm(nextPriority), curOperation);
+            parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
     }
 
@@ -56,25 +50,21 @@ public class ExpressionParser extends BaseParser implements Parser {
             skipWhitespace();
             expect(')');
             return parsed;
-        }
-        if (test('r')) {
+        } else if (test('r')) {
             expect("everse");
             skipWhitespace();
             return new Reverse(parseValue());
-        }
-        if (test('d')) {
+        } else if (test('d')) {
             expect("igits");
             skipWhitespace();
             return new Digits(parseValue());
-        }
-        if (test('-')) {
+        } else if (test('-')) {
             skipWhitespace();
             if (between('0', '9')) {
                 return parseConst(false);
             }
             return new UnaryMinus(parseValue());
-        }
-        if (between('0', '9')) {
+        } else if (between('0', '9')) {
             return parseConst(true);
         } else {
             return parseVariable();
