@@ -30,7 +30,7 @@ public class ExpressionParser extends BaseParser implements Parser {
 
         while (true) {
             skipWhitespace();
-            Operation curOperation = Operation.stringToOper.get(Character.toString(ch));
+            Operation curOperation = Operation.STRINGOPERANDS.get(Character.toString(ch));
             if (curOperation == null || priority < Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
@@ -44,6 +44,18 @@ public class ExpressionParser extends BaseParser implements Parser {
         }
     }
 
+    private CommonExpression parseDigits(){
+        expect("igits");
+        skipWhitespace();
+        return new Digits(parseValue());
+    }
+
+    private CommonExpression parseReverse(){
+        expect("everse");
+        skipWhitespace();
+        return new Reverse(parseValue());
+    }
+
     private CommonExpression parseValue() {
         if (test('(')) {
             CommonExpression parsed = parseExpression();
@@ -51,13 +63,9 @@ public class ExpressionParser extends BaseParser implements Parser {
             expect(')');
             return parsed;
         } else if (test('r')) {
-            expect("everse");
-            skipWhitespace();
-            return new Reverse(parseValue());
+            return parseReverse();
         } else if (test('d')) {
-            expect("igits");
-            skipWhitespace();
-            return new Digits(parseValue());
+            return parseDigits();
         } else if (test('-')) {
             skipWhitespace();
             if (between('0', '9')) {

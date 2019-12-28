@@ -14,7 +14,7 @@ public enum Operation {
             CONST, 3, VAR, 3
     );
 
-    public static Map<String, Operation> stringToOper = Map.of(
+    public static Map<String, Operation> STRINGOPERANDS = Map.of(
            "+", ADD, "-", SUB,
             "<", LEFTSHIFT, ">", RIGHTSHIFT,
             "*", MUL, "/", DIV
