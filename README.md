@@ -2,221 +2,317 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/prog-intro/homeworks.html)
 
+[Домашнее задание 13. Обработка ошибок](hw13)
+----
+1. Добавьте в программу вычисляющую выражения обработку ошибок, в том числе:
+- ошибки разбора выражений;
+- ошибки вычисления выражений.
+2. Для выражения ```1000000*x*x*x*x*x/(x-1)``` вывод программы должен иметь следующий вид:
+```
+x       f
+0       0
+1       division by zero
+2       32000000
+3       121500000
+4       341333333
+5       overflow
+6       overflow
+7       overflow
+8       overflow
+9       overflow
+10      overflow
+```
+3. Результат division by zero (overflow) означает, что в процессе вычисления произошло деление на ноль (переполнение).
+
+4. При выполнении задания следует обратить внимание на дизайн и обработку исключений.
+
+5. Человеко-читаемые сообщения об ошибках должны выводится на консоль.
+
+6. Программа не должна «вылетать» с исключениями (как стандартными, так и добавленными).
+
+Модификации
+ * *Базовая*
+    * Класс `ExpressionParser` должен реализовывать интерфейс
+        [Parser](tests/java/expression/exceptions/Parser.java)
+    * Классы `CheckedAdd`, `CheckedSubtract`, `CheckedMultiply`,
+        `CheckedDivide` и `CheckedNegate` должны реализовывать интерфейс
+        [TripleExpression](tests/java/expression/TripleExpression.java)
+    * Нельзя использовать типы `long` и `double`
+    * Нельзя использовать методы классов `Math` и `StrictMath`
+    * [Исходный код тестов](tests/java/expression/exceptions/ExceptionsTest.java)
+    
+[Домашнее задание 12. Разбор выражений](hw12)
+----
+1. Доработайте предыдущее домашнее задание, так что бы выражение строилось по записи вида
+x * (x - 2)*x + 1
+
+2. В записи выражения могут встречаться: умножение *, деление /, сложение +, вычитание -, унарный минус -, целочисленные константы (в десятичной системе счисления, которые помещаются в 32-битный знаковый целочисленный тип), круглые скобки, переменные (x) и произвольное число пробельных символов в любом месте (но не внутри констант).
+
+3. Приоритет операторов, начиная с наивысшего:
+- унарный минус;
+- умножение и деление;
+- сложение и вычитание.
+
+Разбор выражений рекомендуется производить методом рекурсивного спуска. Алгоритм должен работать за линейное время.
+
+Модификации
+ * *Базовая*
+    * Класс `ExpressionParser` должен реализовывать интерфейс
+        [Parser](java/expression/parser/Parser.java)
+    * Результат разбора должен реализовывать интерфейс
+        [TripleExpression](tests/java/expression/TripleExpression.java)
+    * [Исходный код тестов](tests/java/expression/parser/ParserTest.java)
+ * *Shifts*
+    * Дополнительно реализуйте бинарные операции:
+        * `<<` – сдвиг влево, минимальный приоритет (`1 << 5 + 3` равно `1 << (5 + 3)` равно 256);
+        * `>>` – сдвиг вправо, минимальный приоритет (`1024 >> 5 + 3` равно `1024 >> (5 + 3)` равно 4);
+    * [Исходный код тестов](tests/java/expression/parser/ParserShiftsTest.java)
+ * *ReverseDigits*
+    * Реализуйте операции из модификации *Shifts*.
+    * Дополнительно реализуйте унарные операции (приоритет как у унарного минуса):
+        * `reverse` – число с переставленными цифрами, `reverse -12345` равно -54321;
+        * `digits` – сумма цифр числа, `digits -12345` равно 15.
+    * [Исходный код тестов](tests/java/expression/parser/ParserReverseDigitsTest.java)
+
 
 [Домашнее задание 11. Выражения](hw11)
 ----
+1. Разработайте классы Const, Variable, Add, Subtract, Multiply, Divide для вычисления выражений с одной переменной.
+
+2. Классы должны позволять составлять выражения вида
+```
+new Subtract(
+    new Multiply(
+        new Const(2),
+        new Variable("x")
+    ),
+    new Const(3)
+).evaluate(5)
+```
+
+3. Метод toString должен выдавать запись выражения в полноскобочной форме. Например
+```
+new Subtract(
+    new Multiply(
+        new Const(2),
+        new Variable("x")
+    ),
+    new Const(3)
+).toString()
+```
+должен выдавать ((2 * x) - 3).
+
+4. Метод toMiniString должен выдавать выражение с минимальным числом скобок. Например
+```
+new Subtract(
+    new Multiply(
+        new Const(2),
+        new Variable("x")
+    ),
+    new Const(3)
+).toMiniString()
+```
+
+5. Реализуйте метод equals, проверяющий, что два выражения совпадают. 
+
+6. При выполнение задания следует обратить внимание на:
+
+- Выделение общего интерфейса создаваемых классов.
+
+- Выделение абстрактного базового класса для бинарных операций.
+
 Модификации
  * *Базовая*
-    * Реализуйте интерфейс [Expression](java/expression/Expression.java)
-    * [Исходный код тестов](java/expression/ExpressionTest.java)
+    * Реализуйте интерфейс [Expression](tests/java/expression/Expression.java)
+    * [Исходный код тестов](tests/java/expression/ExpressionTest.java)
         * Запускать c аргументом `easy` или `hard`
-
+ * *Triple*
+    * Дополнительно реализуйте интерфейс [TripleExpression](tests/java/expression/TripleExpression.java)
+    * [Исходный код тестов](tests/java/expression/TripleExpressionTest.java)
 
 [Домашнее задание 10. Игра n,m,k](hw10)
 ----
+1. Реализуйте игру m,n,k.
+
+2. Добавьте обработку ошибок ввода пользователя.
+
+3. Проверку выигрыша нужно производить за O(k).
+
+4. Предотвратите жульничество: у игрока не должно быть возможности достать Board из Position.
+
 Модификации
- * *Турнир*
-    * Добавьте поддержку кругового турнира из _c_ кругов
-    * Выведите таблицу очков по схеме:
-        * 3 очка за победу
-        * 1 очко за ничью
-        * 0 очков за поражение
  * *Multiplayer*
     * Добавьте поддержку значков `-` и `|`
     * Добавьте возможность игры для 3 и 4 игроков
 
 [Домашнее задание 9. Markdown to HTML](hw9)
 ----
-Модификации
- * *Underline*
-    * Добавьте поддержку `++подчеркивания++`: `<u>подчеркивания</u>`
-    * [Исходный код тестов](java/md2html/Md2HtmlUnderlineTest.java)
-    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlUnderlineTest.jar)
+1. Разработайте конвертер из Markdown-разметки в HTML.
 
+2. Конвертер должен называться Md2Html и принимать два аргумента: название входного файла с Markdown-разметкой и название выходного файла c HTML-разметкой.
+
+Модификации
  * *Link*
     * Добавьте поддержку ```[ссылок с _выделением_](https://kgeorgiy.info)```:
         ```&lt;a href='https://kgeorgiy.info'>ссылок с &lt;em>выделением&lt;/em>&lt;/a>```
-    * [Исходный код тестов](java/md2html/Md2HtmlLinkTest.java)
-    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlLinkTest.jar)
+    * [Исходный код тестов](tests/java/md2html/Md2HtmlLinkTest.java)
+    * [Откомпилированные тесты](tests/artifacts/md2html/Md2HtmlLinkTest.jar)
  * *Mark*
     * Добавьте поддержку `~выделения цветом~`: `<mark>выделения цветом</mark>`
-    * [Исходный код тестов](java/md2html/Md2HtmlMarkTest.java)
-    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlMarkTest.jar)
- * *Image*
-    * Добавьте поддержку ```![картинок](http://www.ifmo.ru/images/menu/small/p10.jpg)```:
-        ```&lt;img alt='картинок' src='http://www.ifmo.ru/images/menu/small/p10.jpg'&gt;```
-    * [Исходный код тестов](java/md2html/Md2HtmlImageTest.java)
-    * [Откомпилированные тесты](artifacts/md2html/Md2HtmlImageTest.jar)
+    * [Исходный код тестов](tests/java/md2html/Md2HtmlMarkTest.java)
+    * [Откомпилированные тесты](tests/artifacts/md2html/Md2HtmlMarkTest.jar)
 
-Исходный код тестов: [Md2HtmlTest.java](java/md2html/Md2HtmlTest.java)
+Исходный код тестов: [Md2HtmlTest.java](tests/java/md2html/Md2HtmlTest.java)
 
-Откомпилированные тесты: [Md2HtmlTest.jar](artifacts/md2html/Md2HtmlTest.jar)
+Откомпилированные тесты: [Md2HtmlTest.jar](tests/artifacts/md2html/Md2HtmlTest.jar)
 
 
 [Домашнее задание 7. Разметка](hw7)
 ----
+1. Разработайте набор классов для текстовой разметки.
+
+2. Класс Paragraph может содержать произвольное число других элементов разметки и текстовых элементов.
+
+3. Класс Text – текстовый элемент.
+
+4. Классы разметки Emphasis, Strong, Strikeout – выделение, сильное выделение и зачеркивание. Элементы разметки могут содержать произвольное число других элементов разметки и текстовых элементов.
+
+5. Все классы должны реализовывать метод toMarkdown(StringBuilder), которой должен генерировать Markdown-разметку по следующим правилам.
+
 Модификации
  * *HTML*
     * Дополнительно реализуйте метод `toHtml`, генерирующий HTML-разметку:
       * выделеный текст окружается тегом `em`;
       * сильно выделеный текст окружается тегом `strong`;
       * зачеркнутый текст окружается тегом `s`.
-    * [Исходный код тестов](java/markup/HtmlTest.java)
+    * [Исходный код тестов](tests/java/markup/HtmlTest.java)
  * *HTML списки*
     * Добавьте поддержку:
       * Нумерованных списков (класс `OrderedList`, тег `ol`): последовательность элементов
       * Ненумерованных списков (класс `UnorderedList`, тег `ul`): последовательность элементов
       * Элементов списка (класс `ListItem`, тег `li`: последовательность абзацев и списков
     * Для новых классов поддержка Markdown не требуется
-    * [Исходный код тестов](java/markup/HtmlListTest.java)
+    * [Исходный код тестов](tests/java/markup/HtmlListTest.java)
 
 Исходный код тестов:
 
- * [MarkdownTest.java](java/markup/MarkdownTest.java)
- * [AbstractTest.java](java/markup/AbstractTest.java)
+ * [MarkdownTest.java](tests/java/markup/MarkdownTest.java)
+ * [AbstractTest.java](tests/java/markup/AbstractTest.java)
 
 
 [Домашнее задание 6. Подсчет слов++](hw6)
 ----
+1. Разработайте класс WordStatIndex, который будет подсчитывать статистику встречаемости слов во входном файле.
+
+2. Выходной файл должен содержать все различные слова, встречающиеся во входном файле, в порядке их появления. Для каждого слова должна быть выведена одна строка, содержащая слово, число его вхождений во входной файл и номера вхождений этого слова среди всех слов во входном файле.
+
+3. Программа должна работать за линейное от размера входного файла время.
+
+4. Для реализации программы используйте Collections Framework.
+
+5. Реализуйте и примените класс IntList, компактно хранящий список целых чисел.
 
 Исходный код тестов:
 
-* [WordStatIndexTest.java](java/wordStat/WordStatIndexTest.java)
-* [WordStatIndexChecker.java](java/wordStat/WordStatIndexChecker.java)
+* [WordStatIndexTest.java](tests/java/wordStat/WordStatIndexTest.java)
+* [WordStatIndexChecker.java](tests/java/wordStat/WordStatIndexChecker.java)
 
-Откомпилированные тесты: [WordStatIndexTest.jar](artifacts/wordStat/WordStatIndexTest.jar)
+Откомпилированные тесты: [WordStatIndexTest.jar](tests/artifacts/wordStat/WordStatIndexTest.jar)
 
 
 [Домашнее задание 5. Свой сканнер](hw5)
 ----
+1. Реализуйте свой аналог класса Scanner на основе Reader.
+
+2. Примените разработанный Scanner для решения заданий «Реверс» и «Статистика слов».
+
+3. Код, управляющий чтением должен быть общим.
+
+4. Код, выделяющий числа и слова должен быть общим.
 
 Модификации
- * *Transpose*
-    * Рассмотрим входные данные как (не полностью определенную) матрицу,
-      выведите ее в транспонированном виде
-    * Класс должен иметь имя `ReverseTranspose`
-    * [Исходный код тестов](java/reverse/FastReverseTransposeTest.java)
-    * [Откомпилированные тесты](artifacts/reverse/FastReverseTransposeTest.jar)
  * *Sort*
     * Строки должны быть отсортированы по сумме в обратном порядке
       (при равенстве сумм – в порядке обратном следованию во входе).
       Числа в строке так же должны быть отсортированы в обратном порядке.
-    * [Исходный код тестов](java/reverse/FastReverseSortTest.java)
-    * [Откомпилированные тесты](artifacts/reverse/FastReverseSortTest.jar)
- * *Min*
-    * Рассмотрим входные данные как (не полностью определенную) матрицу,
-      вместо каждого числа выведите минимум из чисел в его столбце и строке
-    * Класс должен иметь имя `ReverseMin`
-    * [Исходный код тестов](java/reverse/FastReverseMinTest.java)
-    * [Откомпилированные тесты](artifacts/reverse/FastReverseMinTest.jar)
-
+    * [Исходный код тестов](tests/java/reverse/FastReverseSortTest.java)
+    * [Откомпилированные тесты](tests/artifacts/reverse/FastReverseSortTest.jar)
+ 
 Исходный код тестов:
 
-* [FastReverseTest.java](java/reverse/FastReverseTest.java)
+* [FastReverseTest.java](tests/java/reverse/FastReverseTest.java)
 
-Откомпилированные тесты: [FastReverseTest.jar](artifacts/reverse/FastReverseTest.jar)
+Откомпилированные тесты: [FastReverseTest.jar](tests/artifacts/reverse/FastReverseTest.jar)
 
 
 [Домашнее задание 4. Подсчет слов](hw4)
 ----
+Разработайте класс WordStat, который будет подсчитывать статистику встречаемости слов во входном файле.
+
+Словом называется непрерывная последовательность букв, апострофов и тире (Unicode category Punctuation, Dash).
+Для подсчета статистики, слова приводятся к нижнему регистру.
 
 Модификации
  * *Words*
     * В выходном файле слова должны быть упорядочены в лексикографическом порядке
     * Класс должен иметь имя `WordStatWords`
-    * [Исходный код тестов](java/wordStat/WordStatWordsTest.java)
-    * [Откомпилированные тесты](artifacts/wordStat/WordStatWordsTest.jar)
+    * [Исходный код тестов](tests/java/wordStat/WordStatWordsTest.java)
+    * [Откомпилированные тесты](tests/artifacts/wordStat/WordStatWordsTest.jar)
  * *Sort*
     * Пусть _n_ – число слов во входном файле,
       тогда программа должна работать за O(_n_ log _n_).
- * *Count*
-    * В выходном файле слова должны быть упорядочены по возрастанию числа
-      вхождений, а при равном числе вхождений – по порядку первого вхождения
-      во входном файле
-    * Класс должен иметь имя `WordStatCount`
-    * [Исходный код тестов](java/wordStat/WordStatCountTest.java)
-    * [Откомпилированные тесты](artifacts/wordStat/WordStatCountTest.jar)
 
 Исходный код тестов:
 
-* [WordStatInputTest.java](java/wordStat/WordStatInputTest.java)
-* [WordStatChecker.java](java/wordStat/WordStatChecker.java)
+* [WordStatInputTest.java](tests/java/wordStat/WordStatInputTest.java)
+* [WordStatChecker.java](tests/java/wordStat/WordStatChecker.java)
 
-Откомпилированные тесты: [WordStatInputTest.jar](artifacts/wordStat/WordStatInputTest.jar)
+Откомпилированные тесты: [WordStatInputTest.jar](tests/artifacts/wordStat/WordStatInputTest.jar)
 
 
 [Домашнее задание 3. Реверс](hw3)
 ----
+Разработайте класс Reverse, читающий числа из стандартного входа, и выводящий их на стандартный вывод в обратном порядке.
 
 Модификации:
  * *Even*
     * Выведите только четные числа (в реверсивном порядке)
     * Класс должен иметь имя `ReverseEven`
-    * [Исходный код тестов](java/reverse/ReverseEvenTest.java)
-    * [Откомпилированные тесты](artifacts/reverse/ReverseEvenTest.jar)
+    * [Исходный код тестов](tests/java/reverse/ReverseEvenTest.java)
+    * [Откомпилированные тесты](tests/artifacts/reverse/ReverseEvenTest.jar)
  * *Linear*
     * Пусть _n_ – сумма числа чисел и строк во входе,
       тогда программе разрешается потратить не более 5_n_+O(1) памяти
- * *Sum*
-    * Рассмотрим входные данные как (не полностью определенную) матрицу,
-      вместо каждого числа выведите сумму чисел в его столбце и строке
-    * Класс должен иметь имя `ReverseSum`
-    * [Исходный код тестов](java/reverse/ReverseSumTest.java)
-    * [Откомпилированные тесты](artifacts/reverse/ReverseSumTest.jar)
 
 Исходный код тестов:
 
-* [ReverseTest.java](java/reverse/ReverseTest.java)
-* [ReverseChecker.java](java/reverse/ReverseChecker.java)
+* [ReverseTest.java](tests/java/reverse/ReverseTest.java)
+* [ReverseChecker.java](tests/java/reverse/ReverseChecker.java)
 
-Откомпилированные тесты: [ReverseTest.jar](artifacts/reverse/ReverseTest.jar)
+Откомпилированные тесты: [ReverseTest.jar](tests/artifacts/reverse/ReverseTest.jar)
 
 
 [Домашнее задание 2. Сумма чисел](hw2)
 ----
+Разработайте класс Sum, который при запуске из командной строки будет складывать переданные в качестве аргументов целые числа и выводить их сумму на консоль.
 
 Модификации
   * *Long*
     * Входные данные являются 64-битными целыми числами
     * Класс должен иметь имя `SumLong`
-    * [Исходный код тестов](java/sum/SumLongTest.java)
-    * [Откомпилированные тесты](artifacts/sum/SumLongTest.jar)
+    * [Исходный код тестов](tests/java/sum/SumLongTest.java)
+    * [Откомпилированные тесты](tests/artifacts/sum/SumLongTest.jar)
  * *Hex*
     * Шестнадцатеричные числа имеют префикс `0x`
     * Класс должен иметь имя `SumHex`
     * [Исходный код тестов](java/sum/SumHexTest.java)
-    * [Откомпилированные тесты](artifacts/sum/SumHexTest.jar)
- * *Double*
-    * Входные данные являются 64-битными числами с формате с плавающей точкой
-    * Класс должен иметь имя `SumDouble`
-    * [Исходный код тестов](java/sum/SumDoubleTest.java)
-    * [Откомпилированные тесты](artifacts/sum/SumDoubleTest.jar)
- * *LongHex*
-    * Входные данные являются 64-битными целыми числами
-    * Шестнадцатеричные числа имеют префикс `0x`
-    * Класс должен иметь имя `SumLongHex`
-    * [Исходный код тестов](java/sum/SumLongHexTest.java)
-    * [Откомпилированные тесты](artifacts/sum/SumLongHexTest.jar)
-
-Для того, чтобы протестировать исходную программу:
-
- 1. Скачайте откомпилированные тесты ([SumTest.jar](artifacts/sum/SumTest.jar))
- * Откомпилируйте `Sum.java`
- * Проверьте, что создался `Sum.class`
- * В каталоге, в котором находится `Sum.class` выполните команду
-    ```
-       java -jar <путь к SumTest.jar>
-    ```
-    * Например, если `SumTest.jar` находится в текущем каталоге, выполните команду
-    ```
-        java -jar SumTest.jar
-    ```
+    * [Откомпилированные тесты](tests/artifacts/sum/SumHexTest.jar)
 
 Исходный код тестов:
 
-* [SumTest.java](java/sum/SumTest.java)
-* [SumChecker.java](java/sum/SumChecker.java)
-* [Базовые классы](java/base/)
+* [SumTest.java](tests/java/sum/SumTest.java)
+* [SumChecker.java](tests/java/sum/SumChecker.java)
+* [Базовые классы](tests/java/base/)
 
 
 [Домашнее задание 1. Запусти меня!](hw1)
