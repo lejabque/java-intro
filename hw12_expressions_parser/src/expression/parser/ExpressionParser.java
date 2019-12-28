@@ -30,7 +30,7 @@ public class ExpressionParser extends BaseParser implements Parser {
 
         while (true) {
             skipWhitespace();
-            Operation curOperation = Operation.STRINGOPERANDS.get(Character.toString(ch));
+            Operation curOperation = Operation.CHAROPERANDS.get(ch);
             if (curOperation == null || priority < Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }

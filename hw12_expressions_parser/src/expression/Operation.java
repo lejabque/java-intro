@@ -14,9 +14,9 @@ public enum Operation {
             CONST, 3, VAR, 3
     );
 
-    public static Map<String, Operation> STRINGOPERANDS = Map.of(
-           "+", ADD, "-", SUB,
-            "<", LEFTSHIFT, ">", RIGHTSHIFT,
-            "*", MUL, "/", DIV
+    public static Map<Character, Operation> CHAROPERANDS = Map.of(
+           '+', ADD, '-', SUB,
+            '<', LEFTSHIFT, '>', RIGHTSHIFT,
+            '*', MUL, '/', DIV
     );
 }
