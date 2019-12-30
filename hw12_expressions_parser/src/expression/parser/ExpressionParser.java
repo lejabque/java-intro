@@ -30,8 +30,8 @@ public class ExpressionParser extends BaseParser implements Parser {
 
         while (true) {
             skipWhitespace();
-            Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (curOperation == null || priority < Operation.PRIORITIES.get(curOperation)) {
+            final Operation curOperation = Operation.CHAROPERANDS.get(ch);
+            if (curOperation == null || priority != Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
             nextChar();
@@ -100,7 +100,7 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseVariable() {
         skipWhitespace();
-        String variable = Character.toString(ch);
+        final String variable = Character.toString(ch);
         nextChar();
         return new Variable(variable);
     }
