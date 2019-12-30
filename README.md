@@ -41,7 +41,7 @@ x       f
     * Нельзя использовать методы классов `Math` и `StrictMath`
     * [Исходный код тестов](tests/java/expression/exceptions/ExceptionsTest.java)
     
-[Домашнее задание 12. Разбор выражений](hw12)
+[Домашнее задание 12. Разбор выражений](hw12_expressions_parser)
 ----
 1. Доработайте предыдущее домашнее задание, так что бы выражение строилось по записи вида
 ``` x * (x - 2)* x + 1 ```
@@ -75,7 +75,7 @@ x       f
     * [Исходный код тестов](tests/java/expression/parser/ParserReverseDigitsTest.java)
 
 
-[Домашнее задание 11. Выражения](hw11)
+[Домашнее задание 11. Выражения](hw11_expressions)
 ----
 1. Разработайте классы Const, Variable, Add, Subtract, Multiply, Divide для вычисления выражений с одной переменной.
 
@@ -131,7 +131,7 @@ new Subtract(
     * Дополнительно реализуйте интерфейс [TripleExpression](tests/java/expression/TripleExpression.java)
     * [Исходный код тестов](tests/java/expression/TripleExpressionTest.java)
 
-[Домашнее задание 10. Игра n,m,k](hw10)
+[Домашнее задание 10. Игра n,m,k](hw10_mnk_game)
 ----
 1. Реализуйте игру m,n,k.
 
@@ -146,7 +146,7 @@ new Subtract(
     * Добавьте поддержку значков `-` и `|`
     * Добавьте возможность игры для 3 и 4 игроков
 
-[Домашнее задание 9. Markdown to HTML](hw9)
+[Домашнее задание 9. Markdown to HTML](hw9_md2html)
 ----
 1. Разработайте конвертер из Markdown-разметки в HTML.
 
@@ -168,7 +168,7 @@ new Subtract(
 Откомпилированные тесты: [Md2HtmlTest.jar](tests/artifacts/md2html/Md2HtmlTest.jar)
 
 
-[Домашнее задание 7. Разметка](hw7)
+[Домашнее задание 7. Разметка](hw7_markup)
 ----
 1. Разработайте набор классов для текстовой разметки.
 
@@ -201,7 +201,7 @@ new Subtract(
  * [AbstractTest.java](tests/java/markup/AbstractTest.java)
 
 
-[Домашнее задание 6. Подсчет слов++](hw6)
+[Домашнее задание 6. Подсчет слов++](hw6_wordstat++)
 ----
 1. Разработайте класс WordStatIndex, который будет подсчитывать статистику встречаемости слов во входном файле.
 
@@ -221,7 +221,7 @@ new Subtract(
 Откомпилированные тесты: [WordStatIndexTest.jar](tests/artifacts/wordStat/WordStatIndexTest.jar)
 
 
-[Домашнее задание 5. Свой сканнер](hw5)
+[Домашнее задание 5. Свой сканнер](hw5_scanner)
 ----
 1. Реализуйте свой аналог класса Scanner на основе Reader.
 
@@ -246,7 +246,7 @@ new Subtract(
 Откомпилированные тесты: [FastReverseTest.jar](tests/artifacts/reverse/FastReverseTest.jar)
 
 
-[Домашнее задание 4. Подсчет слов](hw4)
+[Домашнее задание 4. Подсчет слов](hw4_wordstat)
 ----
 Разработайте класс WordStat, который будет подсчитывать статистику встречаемости слов во входном файле.
 
@@ -271,7 +271,7 @@ new Subtract(
 Откомпилированные тесты: [WordStatInputTest.jar](tests/artifacts/wordStat/WordStatInputTest.jar)
 
 
-[Домашнее задание 3. Реверс](hw3)
+[Домашнее задание 3. Реверс](hw3_reverse)
 ----
 Разработайте класс Reverse, читающий числа из стандартного входа, и выводящий их на стандартный вывод в обратном порядке.
 
@@ -293,7 +293,7 @@ new Subtract(
 Откомпилированные тесты: [ReverseTest.jar](tests/artifacts/reverse/ReverseTest.jar)
 
 
-[Домашнее задание 2. Сумма чисел](hw2)
+[Домашнее задание 2. Сумма чисел](hw2_sum)
 ----
 Разработайте класс Sum, который при запуске из командной строки будет складывать переданные в качестве аргументов целые числа и выводить их сумму на консоль.
 
@@ -316,7 +316,7 @@ new Subtract(
 * [Базовые классы](tests/java/base/)
 
 
-[Домашнее задание 1. Запусти меня!](hw1)
+[Домашнее задание 1. Запусти меня!](hw1_runme)
 ----
 
  1. Скачайте исходный код ([RunMe.java](java/RunMe.java))
