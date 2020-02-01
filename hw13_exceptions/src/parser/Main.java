@@ -10,7 +10,7 @@ public class Main {
         ExpressionParser parser = new ExpressionParser(new StringSource("1000000*x*x*x*x*x/(x-1)"));
         PriorityExpression result = parser.parseExpression();
         System.out.println("x f");
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 110; i++) {
             System.out.print(Integer.toString(i) + " ");
             try {
                 System.out.println(result.evaluate(i));

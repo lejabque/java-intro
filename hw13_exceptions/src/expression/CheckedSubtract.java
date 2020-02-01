@@ -10,13 +10,14 @@ public final class CheckedSubtract extends BinaryOperation {
 
     @Override
     protected int calculate(int x, int y) throws OverflowException {
-        if (y < 0 && x > Integer.MAX_VALUE + y) {
+        int res = x - y;
+        if (x > 0 && y < 0 && res <= 0) {
             throw new OverflowException();
         }
-        if (y > 0 && x < Integer.MIN_VALUE + y){
+        if (x < 0 && y > 0 && res >= 0) {
             throw new OverflowException();
         }
-        return x - y;
+        return res;
     }
 
     @Override
