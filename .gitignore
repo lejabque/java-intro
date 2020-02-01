@@ -5,7 +5,12 @@
 *.jar
 out
 *.iml
-hw7/src/base
-hw11/src/base
-hw11/src/expression/ExpressionTest.java
-hw11/src/expression/BaseTest.java
+hw7_markup/src/base
+hw11_expressions/src/base
+hw11_expressions/src/expression/ExpressionTest.java
+hw11_expressions/src/expression/BaseTest.java
+hw12_expressions_parser/example
+hw12_expressions_parser/src/tests
+hw13_exceptions/src/tests
+
+
