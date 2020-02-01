@@ -7,16 +7,18 @@ import expression.PriorityExpression;
 
 public class Main {
     public static void main(String[] args) {
-        ExpressionParser parser = new ExpressionParser(new StringSource("x / y"));
+        ExpressionParser parser = new ExpressionParser(new StringSource("1000000*x*x*x*x*x/(x-1)"));
         PriorityExpression result = parser.parseExpression();
-        try {
-            System.out.println(result.evaluate(Integer.MIN_VALUE, 0, 1));
-        } catch (ZeroDivisionException e) {
-            e.printStackTrace();
-            System.out.println("ыыы");
-        } catch (OverflowException e) {
-            e.printStackTrace();
-            System.out.println("ыыы переполнение");
+        System.out.println("x f");
+        for (int i = 0; i < 11; i++) {
+            System.out.print(Integer.toString(i) + " ");
+            try {
+                System.out.println(result.evaluate(i));
+            } catch (ZeroDivisionException e) {
+                System.out.println("division by zero");
+            } catch (OverflowException e) {
+                System.out.println("overflow");
+            }
         }
     }
 }

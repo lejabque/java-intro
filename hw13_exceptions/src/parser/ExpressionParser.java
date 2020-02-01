@@ -85,7 +85,7 @@ public class ExpressionParser extends BaseParser implements Parser {
             case ADD:
                 return new CheckedAdd(left, right);
             case SUB:
-                return new CheckedMultiply(left, right);
+                return new CheckedSubtract(left, right);
             case MUL:
                 return new CheckedMultiply(left, right);
             case DIV:
