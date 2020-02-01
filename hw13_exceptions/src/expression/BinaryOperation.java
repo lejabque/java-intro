@@ -1,5 +1,9 @@
 package expression;
 
+import exceptions.EvaluatingException;
+import exceptions.OverflowException;
+import exceptions.ZeroDivisionException;
+
 import java.util.Objects;
 
 public abstract class BinaryOperation implements CommonExpression {
@@ -10,15 +14,15 @@ public abstract class BinaryOperation implements CommonExpression {
         this.second = second;
     }
 
-    protected abstract int calculate(int x, int y);
+    protected abstract int calculate(int x, int y) throws EvaluatingException;
 
     @Override
-    public int evaluate(int x, int y, int z) {
+    public int evaluate(int x, int y, int z) throws EvaluatingException {
         return calculate(first.evaluate(x, y, z), second.evaluate(x, y, z));
     }
 
     @Override
-    public int evaluate(int x) {
+    public int evaluate(int x) throws EvaluatingException {
         return calculate(first.evaluate(x), second.evaluate(x));
     }
 
@@ -27,7 +31,7 @@ public abstract class BinaryOperation implements CommonExpression {
         return "(" + first + " " + getOperationType() + " " + second + ")";
     }
 
-    private boolean requireBrackets(PriorityExpression expr) {
+    private boolean requireBrackets() {
         return second.getPriority() < this.getPriority() ||
                 second.getPriority() == this.getPriority() &&
                         (second.isImportant() || this.isImportant());
@@ -43,7 +47,7 @@ public abstract class BinaryOperation implements CommonExpression {
         }
 
         sb.append(" ").append(getOperationType()).append(" ");
-        if (requireBrackets(second)) {
+        if (requireBrackets()) {
             sb.append("(").append(second.toMiniString()).append(")");
         } else {
             sb.append(second.toMiniString());

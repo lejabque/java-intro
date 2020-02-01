@@ -1,8 +1,7 @@
 package expression;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
+import exceptions.EvaluatingException;
+
 public interface Expression extends ToMiniString {
-    int evaluate(int x);
+    int evaluate(int x) throws EvaluatingException;
 }
