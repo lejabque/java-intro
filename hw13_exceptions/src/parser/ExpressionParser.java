@@ -1,5 +1,7 @@
 package parser;
 
+import exceptions.IllegalConstException;
+import exceptions.ParsingException;
 import expression.*;
 
 public class ExpressionParser extends BaseParser implements Parser {
@@ -9,18 +11,18 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     @Override
-    public CommonExpression parse(String expression) {
+    public CommonExpression parse(String expression) throws ParsingException {
         changeSource(new StringSource(expression));
         nextChar();
         return parseExpression();
     }
 
-    public CommonExpression parseExpression() {
+    public CommonExpression parseExpression() throws ParsingException {
         skipWhitespace();
         return parseTerm(0);
     }
 
-    private CommonExpression parseTerm(int priority) {
+    private CommonExpression parseTerm(int priority) throws ParsingException {
         skipWhitespace();
         if (priority == Operation.PRIORITIES.get(Operation.CONST)) {
             return parseValue();
@@ -44,19 +46,19 @@ public class ExpressionParser extends BaseParser implements Parser {
         }
     }
 
-    private CommonExpression parseDigits(){
+    private CommonExpression parseDigits() throws ParsingException {
         expect("igits");
         skipWhitespace();
         return new Digits(parseValue());
     }
 
-    private CommonExpression parseReverse(){
+    private CommonExpression parseReverse() throws ParsingException {
         expect("everse");
         skipWhitespace();
         return new Reverse(parseValue());
     }
 
-    private CommonExpression parseValue() {
+    private CommonExpression parseValue() throws ParsingException {
         if (test('(')) {
             CommonExpression parsed = parseExpression();
             skipWhitespace();
@@ -105,7 +107,7 @@ public class ExpressionParser extends BaseParser implements Parser {
         return new Variable(variable);
     }
 
-    private CommonExpression parseConst(boolean positive) {
+    private CommonExpression parseConst(boolean positive) throws IllegalConstException {
         final StringBuilder sb = new StringBuilder();
         if (!positive) {
             sb.append('-');
@@ -114,7 +116,8 @@ public class ExpressionParser extends BaseParser implements Parser {
         try {
             return new Const(Integer.parseInt(sb.toString()));
         } catch (NumberFormatException e) {
-            throw error("Invalid number " + sb);
+            throw new IllegalConstException("Illegal const (possible overflow): " + sb.toString());
         }
+
     }
 }

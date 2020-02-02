@@ -14,18 +14,6 @@ public final class CheckedMultiply extends BinaryOperation {
         if (x != 0 && y != 0 && (res / y != x || res / x != y)){
             throw new OverflowException();
         }
-//        if (x > 0 && y > 0 && x > Integer.MAX_VALUE / y) {
-//            throw new OverflowException();
-//        }
-//        if (x < 0 && y < 0 && x < Integer.MAX_VALUE / y) {
-//            throw new OverflowException();
-//        }
-//        if (x > 0 && y < 0 && y < Integer.MIN_VALUE / x) {
-//            throw new OverflowException();
-//        }
-//        if (x < 0 && y > 0 && x < Integer.MIN_VALUE / y) {
-//            throw new OverflowException();
-//        }
         return res;
     }
 
