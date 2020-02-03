@@ -11,7 +11,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     public ExpressionParser() {
-        
+
     }
 
     @Override
@@ -38,19 +38,24 @@ public class ExpressionParser extends BaseParser implements Parser {
         while (true) {
             skipWhitespace();
             final Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (ch == '\u0000' && bracketsBalance == 0) {
-                return parsed;
-            } else if (bracketsBalance > 0 && ch == ')'){
-                return parsed;
-            } else if (bracketsBalance <= 0 && ch == ')'){
-                throw new SourceException("Unexpected closing parentheses.");
-            } else if (ch == '\u0000' && bracketsBalance > 0) {
-                throw new SourceException("Missed closing parentheses.");
+            if (ch == '\u0000') {
+                if (bracketsBalance == 0) {
+                    return parsed;
+                } else {
+                    throw new SourceException("Missed closing parentheses.");
+                }
+            } else if (ch == ')') {
+                if (bracketsBalance > 0) {
+                    return parsed;
+                } else {
+                    throw new SourceException("Unexpected closing parentheses.");
+                }
             } else if (curOperation == null) {
                 throw new InvalidOperationException("Invalid operation: '" + ch + "'");
             } else if (priority != Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
+
             nextChar();
             if (curOperation == Operation.LEFTSHIFT) {
                 expect('<');
