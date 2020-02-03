@@ -8,13 +8,13 @@ import expression.PriorityExpression;
 
 public class Main {
     public static void main(String[] args) {
-        ExpressionParser parser = new ExpressionParser(new StringSource(Integer.MAX_VALUE + 1L + ""));
+        ExpressionParser parser = new ExpressionParser(new StringSource("(())"));
         PriorityExpression result = null;
         try {
             result = parser.parseExpression();
         } catch (ParsingException e) {
             e.printStackTrace();
         }
-        System.out.println(result.evaluate(1, 2, 3));
+        System.out.println(result.evaluate(3, 1, 2));
     }
 }

@@ -12,7 +12,7 @@ public final class CheckedNegate extends UnaryOperation {
 
     @Override
     protected int calculate(int x) throws OverflowException {
-        if (x == Integer.MAX_VALUE){
+        if (x == Integer.MIN_VALUE){
             throw new OverflowException();
         }
         return -x;

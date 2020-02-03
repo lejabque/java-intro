@@ -1,17 +1,22 @@
 package parser;
 
-import exceptions.IllegalConstException;
-import exceptions.ParsingException;
+import exceptions.*;
 import expression.*;
 
 public class ExpressionParser extends BaseParser implements Parser {
+    public int bracketsBalance = 0;
 
     public ExpressionParser(StringSource stringSource) {
         super(stringSource);
     }
 
+    public ExpressionParser() {
+        
+    }
+
     @Override
     public CommonExpression parse(String expression) throws ParsingException {
+        this.bracketsBalance = 0;
         changeSource(new StringSource(expression));
         nextChar();
         return parseExpression();
@@ -33,7 +38,17 @@ public class ExpressionParser extends BaseParser implements Parser {
         while (true) {
             skipWhitespace();
             final Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (curOperation == null || priority != Operation.PRIORITIES.get(curOperation)) {
+            if (ch == '\u0000' && bracketsBalance == 0) {
+                return parsed;
+            } else if (bracketsBalance > 0 && ch == ')'){
+                return parsed;
+            } else if (bracketsBalance <= 0 && ch == ')'){
+                throw new SourceException("Unexpected closing parentheses.");
+            } else if (ch == '\u0000' && bracketsBalance > 0) {
+                throw new SourceException("Missed closing parentheses.");
+            } else if (curOperation == null) {
+                throw new InvalidOperationException("Invalid operation: '" + ch + "'");
+            } else if (priority != Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
             nextChar();
@@ -60,9 +75,11 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseValue() throws ParsingException {
         if (test('(')) {
+            bracketsBalance++;
             CommonExpression parsed = parseExpression();
             skipWhitespace();
             expect(')');
+            bracketsBalance--;
             return parsed;
         } else if (test('r')) {
             return parseReverse();
@@ -100,11 +117,14 @@ public class ExpressionParser extends BaseParser implements Parser {
         return null;
     }
 
-    private CommonExpression parseVariable() {
+    private CommonExpression parseVariable() throws InvalidVariableException {
         skipWhitespace();
         final String variable = Character.toString(ch);
         nextChar();
-        return new Variable(variable);
+        if (variable.equals("x") || variable.equals("y") || variable.equals("z")) {
+            return new Variable(variable);
+        }
+        throw new InvalidVariableException("Invalid or missed variable: '" + variable + "'");
     }
 
     private CommonExpression parseConst(boolean positive) throws IllegalConstException {

@@ -17,6 +17,9 @@ public final class CheckedSubtract extends BinaryOperation {
         if (x < 0 && y > 0 && res >= 0) {
             throw new OverflowException();
         }
+        if (x == 0 && y == Integer.MIN_VALUE) {
+            throw new OverflowException();
+        }
         return res;
     }
 
