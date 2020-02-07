@@ -1,9 +1,7 @@
 package expression.exceptions;
 
-import expression.exceptions.*;
 import expression.*;
 import expression.parser.BaseParser;
-import expression.exceptions.Parser;
 import expression.parser.StringSource;
 
 public class ExpressionParser extends BaseParser implements Parser {
@@ -72,22 +70,6 @@ public class ExpressionParser extends BaseParser implements Parser {
         }
     }
 
-    private CommonExpression parseDigits() throws ParsingException {
-        if (!expect("igits")) {
-            throw new InvalidOperatorException(ch, getParsingInfo());
-        }
-        skipWhitespace();
-        return new Digits(parseValue());
-    }
-
-    private CommonExpression parseReverse() throws ParsingException {
-        if (!expect("everse")) {
-            throw new InvalidOperatorException(ch, getParsingInfo());
-        }
-        skipWhitespace();
-        return new Reverse(parseValue());
-    }
-
     private CommonExpression parseValue() throws ParsingException {
         if (test('(')) {
             bracketsBalance++;
@@ -98,10 +80,6 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             bracketsBalance--;
             return parsed;
-        } else if (test('r')) {
-            return parseReverse();
-        } else if (test('d')) {
-            return parseDigits();
         } else if (test('-')) {
             skipWhitespace();
             if (between('0', '9')) {
