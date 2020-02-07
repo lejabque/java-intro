@@ -1,4 +1,4 @@
-package exceptions;
+package expression.exceptions;
 
 public class ZeroDivisionException extends EvaluatingException {
     public ZeroDivisionException() {

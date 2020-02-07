@@ -1,4 +1,4 @@
-package exceptions;
+package expression.exceptions;
 
 public class OverflowException extends EvaluatingException {
     public OverflowException() {

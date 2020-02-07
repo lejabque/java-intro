@@ -1,6 +1,8 @@
-package expression;
+package expression.exceptions;
 
-import exceptions.OverflowException;
+import expression.BinaryOperation;
+import expression.PriorityExpression;
+import expression.exceptions.OverflowException;
 
 public final class CheckedMultiply extends BinaryOperation {
 

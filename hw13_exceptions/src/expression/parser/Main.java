@@ -1,9 +1,7 @@
-package parser;
+package expression.parser;
 
-import exceptions.EvaluatingException;
-import exceptions.OverflowException;
-import exceptions.ParsingException;
-import exceptions.ZeroDivisionException;
+import expression.exceptions.ExpressionParser;
+import expression.exceptions.ParsingException;
 import expression.PriorityExpression;
 
 public class Main {

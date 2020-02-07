@@ -1,4 +1,4 @@
-package exceptions;
+package expression.exceptions;
 
 public class InvalidOperatorException extends ParsingException {
     public InvalidOperatorException(char cur, String message) {

@@ -1,4 +1,4 @@
-package exceptions;
+package expression.exceptions;
 
 public class MissingOpeningParenthesis extends ParsingException {
     public MissingOpeningParenthesis(String message) {

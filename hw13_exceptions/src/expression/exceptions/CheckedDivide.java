@@ -1,7 +1,9 @@
-package expression;
+package expression.exceptions;
 
-import exceptions.OverflowException;
-import exceptions.ZeroDivisionException;
+import expression.BinaryOperation;
+import expression.PriorityExpression;
+import expression.exceptions.OverflowException;
+import expression.exceptions.ZeroDivisionException;
 
 public final class CheckedDivide extends BinaryOperation {
 

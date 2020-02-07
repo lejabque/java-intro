@@ -1,6 +1,6 @@
-package parser;
+package expression.parser;
 
-import exceptions.ParsingException;
+import expression.exceptions.ParsingException;
 import expression.TripleExpression;
 
 public interface Parser {

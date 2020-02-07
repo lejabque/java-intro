@@ -1,8 +1,8 @@
-package expression;
+package expression.exceptions;
 
-import exceptions.OverflowException;
 import expression.PriorityExpression;
 import expression.UnaryOperation;
+import expression.exceptions.OverflowException;
 
 public final class CheckedNegate extends UnaryOperation {
 

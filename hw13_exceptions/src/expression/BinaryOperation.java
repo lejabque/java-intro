@@ -1,8 +1,6 @@
 package expression;
 
-import exceptions.EvaluatingException;
-import exceptions.OverflowException;
-import exceptions.ZeroDivisionException;
+import expression.exceptions.EvaluatingException;
 
 import java.util.Objects;
 

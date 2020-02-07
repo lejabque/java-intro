@@ -1,7 +1,10 @@
-package parser;
+package expression.exceptions;
 
-import exceptions.*;
+import expression.exceptions.*;
 import expression.*;
+import expression.parser.BaseParser;
+import expression.exceptions.Parser;
+import expression.parser.StringSource;
 
 public class ExpressionParser extends BaseParser implements Parser {
     public int bracketsBalance = 0;
