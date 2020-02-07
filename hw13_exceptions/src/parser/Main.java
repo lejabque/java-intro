@@ -8,7 +8,7 @@ import expression.PriorityExpression;
 
 public class Main {
     public static void main(String[] args) {
-        ExpressionParser parser = new ExpressionParser(new StringSource("(())"));
+        ExpressionParser parser = new ExpressionParser(new StringSource("x * y@"));
         PriorityExpression result = null;
         try {
             result = parser.parseExpression();

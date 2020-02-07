@@ -11,7 +11,6 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     public ExpressionParser() {
-
     }
 
     @Override
@@ -38,42 +37,50 @@ public class ExpressionParser extends BaseParser implements Parser {
         while (true) {
             skipWhitespace();
             final Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (ch == '\u0000') {
+            if (ch == 0) {
                 if (bracketsBalance == 0) {
                     return parsed;
                 } else {
-                    throw new SourceException("Missed closing parentheses.");
+                    throw new MissingClosingParenthesis(getParsingInfo());
                 }
             } else if (ch == ')') {
                 if (bracketsBalance > 0) {
                     return parsed;
                 } else {
-                    throw new SourceException("Unexpected closing parentheses.");
+                    throw new MissingOpeningParenthesis(getParsingInfo());
                 }
             } else if (curOperation == null) {
-                throw new InvalidOperationException("Invalid operation: '" + ch + "'");
+                throw new InvalidOperatorException(ch, getParsingInfo());
             } else if (priority != Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
 
             nextChar();
             if (curOperation == Operation.LEFTSHIFT) {
-                expect('<');
+                if (!expect('<')) {
+                    throw new InvalidOperatorException(ch, getParsingInfo());
+                }
             } else if (curOperation == Operation.RIGHTSHIFT) {
-                expect('>');
+                if (!expect('>')) {
+                    throw new InvalidOperatorException(ch, getParsingInfo());
+                }
             }
             parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
     }
 
     private CommonExpression parseDigits() throws ParsingException {
-        expect("igits");
+        if (!expect("igits")) {
+            throw new InvalidOperatorException(ch, getParsingInfo());
+        }
         skipWhitespace();
         return new Digits(parseValue());
     }
 
     private CommonExpression parseReverse() throws ParsingException {
-        expect("everse");
+        if (!expect("everse")) {
+            throw new InvalidOperatorException(ch, getParsingInfo());
+        }
         skipWhitespace();
         return new Reverse(parseValue());
     }
@@ -83,7 +90,9 @@ public class ExpressionParser extends BaseParser implements Parser {
             bracketsBalance++;
             CommonExpression parsed = parseExpression();
             skipWhitespace();
-            expect(')');
+            if (!expect(')')) {
+                throw new MissingClosingParenthesis(getParsingInfo());
+            }
             bracketsBalance--;
             return parsed;
         } else if (test('r')) {
@@ -129,10 +138,10 @@ public class ExpressionParser extends BaseParser implements Parser {
         if (variable.equals("x") || variable.equals("y") || variable.equals("z")) {
             return new Variable(variable);
         }
-        throw new InvalidVariableException("Invalid or missed variable: '" + variable + "'");
+        throw new InvalidVariableException(variable, getParsingInfo());
     }
 
-    private CommonExpression parseConst(boolean positive) throws IllegalConstException {
+    private CommonExpression parseConst(boolean positive) throws ParsingException {
         final StringBuilder sb = new StringBuilder();
         if (!positive) {
             sb.append('-');
@@ -141,8 +150,7 @@ public class ExpressionParser extends BaseParser implements Parser {
         try {
             return new Const(Integer.parseInt(sb.toString()));
         } catch (NumberFormatException e) {
-            throw new IllegalConstException("Illegal const (possible overflow): " + sb.toString());
+            throw new IllegalConstException(sb.toString(), getParsingInfo());
         }
-
     }
 }

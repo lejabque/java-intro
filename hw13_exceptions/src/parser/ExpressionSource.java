@@ -1,7 +1,11 @@
 package parser;
 
+import exceptions.ParsingException;
+
 public interface ExpressionSource {
     boolean hasNext();
     char next();
-    ExpressionException error(final String message);
+    int getPos();
+    String getParsingInfo();
+    ParsingException error(final String message);
 }

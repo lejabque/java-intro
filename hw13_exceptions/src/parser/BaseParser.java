@@ -1,7 +1,10 @@
 package parser;
 
+import exceptions.ParsingException;
+
 public class BaseParser {
     private ExpressionSource source;
+
     protected char ch;
 
     protected BaseParser(final ExpressionSource source) {
@@ -33,27 +36,39 @@ public class BaseParser {
         return false;
     }
 
-    protected void expect(final char c) {
+    protected boolean expect(final char c) {
         if (ch != c) {
-            throw error("Expected '" + c + "', found '" + ch + "'");
+            return false;
         }
         nextChar();
+        return true;
     }
 
-    protected void expect(final String value) {
+    protected boolean expect(final String value) {
         for (char c : value.toCharArray()) {
-            expect(c);
+            if (!expect(c)) {
+                return false;
+            }
+            ;
         }
+        return true;
     }
 
-    protected ExpressionException error(final String message) {
+    protected int getPosFromSource() {
+        return source.getPos();
+    }
+
+    protected String getParsingInfo(){
+        return source.getParsingInfo();
+    }
+
+    protected ParsingException error(final String message) {
         return source.error(message);
     }
 
     protected boolean between(final char from, final char to) {
         return from <= ch && ch <= to;
     }
-
 
 
     protected void copyDigits(final StringBuilder sb) {
@@ -63,7 +78,7 @@ public class BaseParser {
         }
     }
 
-    protected void copyInteger(final StringBuilder sb) {
+    protected void copyInteger(final StringBuilder sb) throws ParsingException {
         if (test('-')) {
             sb.append('-');
         }
