@@ -57,15 +57,6 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
 
             nextChar();
-            if (curOperation == Operation.LEFTSHIFT) {
-                if (!expect('<')) {
-                    throw new InvalidOperatorException(ch, getParsingInfo());
-                }
-            } else if (curOperation == Operation.RIGHTSHIFT) {
-                if (!expect('>')) {
-                    throw new InvalidOperatorException(ch, getParsingInfo());
-                }
-            }
             parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
     }
