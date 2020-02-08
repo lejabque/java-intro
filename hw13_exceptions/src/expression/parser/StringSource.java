@@ -32,9 +32,7 @@ public class StringSource implements ExpressionSource {
         return new ParsingException(pos + ": " + message);
     }
 
-    public String getParsingInfo() {
-        return "Error in pos: " + pos + " Part with error: " + data.substring(Math.max(pos - 10, 0), pos - 1)
-                + ANSI_RED + data.substring(pos - 1, pos) + ANSI_RESET
-                + data.substring(pos, Math.min(pos + 5, data.length()));
+    public String getErrorMessage() {
+        return "Error in pos: " + pos + " Part with error: " + data.substring(Math.max(pos - 10, 0), Math.min(pos + 5, data.length()));
     }
 }

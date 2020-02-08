@@ -59,7 +59,7 @@ public class BaseParser {
     }
 
     protected String getParsingInfo(){
-        return source.getParsingInfo();
+        return source.getErrorMessage();
     }
 
     protected ParsingException error(final String message) {

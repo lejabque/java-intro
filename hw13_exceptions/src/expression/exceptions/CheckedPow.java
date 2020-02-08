@@ -3,17 +3,14 @@ package expression.exceptions;
 import expression.BinaryOperation;
 import expression.PriorityExpression;
 
-public final class CheckedLog extends BinaryOperation {
+public final class CheckedPow extends BinaryOperation {
 
-    public CheckedLog(PriorityExpression first, PriorityExpression second) {
+    public CheckedPow(PriorityExpression first, PriorityExpression second) {
         super(first, second);
     }
 
     @Override
-    protected int calculate(int x, int y) throws LogarithmException {
-        if (x < 1 || y <= 0 || y == 1) {
-            throw new LogarithmException();
-        }
+    protected int calculate(int x, int y) throws OverflowException {
         int res = 0;
         int cur = 1;
         while (cur * x < y) {
@@ -24,7 +21,7 @@ public final class CheckedLog extends BinaryOperation {
 
     @Override
     protected String getOperationType() {
-        return "//";
+        return "**";
     }
 
     @Override

@@ -19,7 +19,12 @@ public class ExpressionParser extends BaseParser implements Parser {
         this.bracketsBalance = 0;
         changeSource(new StringSource(expression));
         nextChar();
-        return parseExpression();
+        skipWhitespace();
+        CommonExpression result = parseTerm(0);
+        if (ch == ')') {
+            throw new ParsingException("ZZZ");
+        }
+        return result;
     }
 
     public CommonExpression parseExpression() throws ParsingException {
@@ -32,31 +37,34 @@ public class ExpressionParser extends BaseParser implements Parser {
         if (priority == Operation.PRIORITIES.get(Operation.CONST)) {
             return parseValue();
         }
-
         CommonExpression parsed = parseTerm(priority + 1);
 
         while (true) {
             skipWhitespace();
-            final Operation curOperation = Operation.CHAROPERANDS.get(ch);
+            Operation curOperation = Operation.CHAROPERANDS.get(ch);
             if (ch == 0) {
-                if (bracketsBalance == 0) {
-                    return parsed;
-                } else {
-                    throw new MissingClosingParenthesis(getParsingInfo());
-                }
+                return parsed;
             } else if (ch == ')') {
-                if (bracketsBalance > 0) {
-                    return parsed;
-                } else {
-                    throw new MissingOpeningParenthesis(getParsingInfo());
-                }
+                return parsed;
+//                if (bracketsBalance > 0) {
+//                    return parsed;
+//                } else {
+//                    throw new MissingOpeningParenthesis(getParsingInfo());
+//                }
             } else if (curOperation == null) {
                 throw new InvalidOperatorException(ch, getParsingInfo());
             } else if (priority != Operation.PRIORITIES.get(curOperation)) {
                 return parsed;
             }
-
             nextChar();
+
+            if (ch == '*' && curOperation == Operation.MUL) {
+                curOperation = Operation.POW;
+                nextChar();
+            } else if (ch == '/' && curOperation == Operation.DIV) {
+                curOperation = Operation.LOG;
+                nextChar();
+            }
             parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
     }
@@ -95,10 +103,10 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return new CheckedMultiply(left, right);
             case DIV:
                 return new CheckedDivide(left, right);
-            case LEFTSHIFT:
-                return new LeftShift(left, right);
-            case RIGHTSHIFT:
-                return new RightShift(left, right);
+            case LOG:
+                return new CheckedLog(left, right);
+            case POW:
+                return new CheckedPow(left, right);
         }
         return null;
     }
