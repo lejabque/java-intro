@@ -12,7 +12,7 @@ public final class CheckedPow extends BinaryOperation {
     @Override
     protected int calculate(int x, int y) throws OverflowException {
         if (x == 0 && y == 0 || y < 0) {
-            throw new LogarithmException();
+            throw new PowerException();
         }
         if (x == 0) {
             return 0;

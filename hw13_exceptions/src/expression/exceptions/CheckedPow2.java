@@ -12,7 +12,7 @@ public final class CheckedPow2 extends UnaryOperation {
     @Override
     protected int calculate(int y) throws OverflowException {
         if (y < 0) {
-            throw new LogarithmException();
+            throw new PowerException();
         }
         int res = 0;
         int cur = 1;

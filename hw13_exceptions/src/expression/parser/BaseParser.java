@@ -11,6 +11,7 @@ public class BaseParser {
     protected BaseParser(final ExpressionSource source) {
         this.source = source;
         nextChar();
+        nextChar();
     }
 
     public BaseParser() {
