@@ -11,8 +11,16 @@ public final class CheckedLog2 extends UnaryOperation {
 
     @Override
     protected int calculate(int x) throws LogarithmException {
-        // change
-        return -x;
+        if (x < 1) {
+            throw new LogarithmException();
+        }
+        int res = 0;
+        int cur = 1;
+        while (cur <= x / 2) {
+            res += 1;
+            cur *= 2;
+        }
+        return res;
     }
 
     @Override

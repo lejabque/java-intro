@@ -10,9 +10,21 @@ public final class CheckedPow2 extends UnaryOperation {
     }
 
     @Override
-    protected int calculate(int x) throws OverflowException {
-        // change
-        return -x;
+    protected int calculate(int y) throws OverflowException {
+        if (y < 0) {
+            throw new LogarithmException();
+        }
+        int res = 0;
+        int cur = 1;
+        while (res < y) {
+            res += 1;
+            if (((2 * cur) / cur != 2 || (2 * cur) / 2 != cur)) {
+                throw new OverflowException();
+            }
+            cur *= 2;
+
+        }
+        return cur;
     }
 
     @Override

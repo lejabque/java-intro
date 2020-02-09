@@ -11,12 +11,23 @@ public final class CheckedPow extends BinaryOperation {
 
     @Override
     protected int calculate(int x, int y) throws OverflowException {
+        if (x == 0 && y == 0 || y < 0) {
+            throw new LogarithmException();
+        }
+        if (x == 0) {
+            return 0;
+        }
         int res = 0;
         int cur = 1;
-        while (cur * x < y) {
+        while (res < y) {
             res += 1;
+            if (((x * cur) / cur != x || (x * cur) / x != cur)) {
+                throw new OverflowException();
+            }
+            cur *= x;
+
         }
-        return res;
+        return cur;
     }
 
     @Override

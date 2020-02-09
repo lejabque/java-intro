@@ -6,6 +6,7 @@ public class BaseParser {
     private ExpressionSource source;
 
     protected char ch;
+    protected char ch_next;
 
     protected BaseParser(final ExpressionSource source) {
         this.source = source;
@@ -21,7 +22,8 @@ public class BaseParser {
     }
 
     protected void nextChar() {
-        ch = source.hasNext() ? source.next() : '\0';
+        ch = ch_next;
+        ch_next = source.hasNext() ? source.next() : '\0';
     }
 
     protected boolean hasNext() {

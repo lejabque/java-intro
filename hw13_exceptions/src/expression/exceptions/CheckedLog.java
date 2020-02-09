@@ -16,8 +16,9 @@ public final class CheckedLog extends BinaryOperation {
         }
         int res = 0;
         int cur = 1;
-        while (cur * x < y) {
+        while (cur <= x / y) {
             res += 1;
+            cur *= y;
         }
         return res;
     }

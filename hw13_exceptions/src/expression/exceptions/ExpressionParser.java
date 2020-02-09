@@ -5,7 +5,6 @@ import expression.parser.BaseParser;
 import expression.parser.StringSource;
 
 public class ExpressionParser extends BaseParser implements Parser {
-    public int bracketsBalance = 0;
 
     public ExpressionParser(StringSource stringSource) {
         super(stringSource);
@@ -16,13 +15,12 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     @Override
     public CommonExpression parse(String expression) throws ParsingException {
-        this.bracketsBalance = 0;
         changeSource(new StringSource(expression));
         nextChar();
-        skipWhitespace();
-        CommonExpression result = parseTerm(0);
+        nextChar();
+        CommonExpression result = parseExpression();
         if (ch == ')') {
-            throw new ParsingException("ZZZ");
+            throw new MissingOpeningParenthesis(getParsingInfo());
         }
         return result;
     }
@@ -42,43 +40,44 @@ public class ExpressionParser extends BaseParser implements Parser {
         while (true) {
             skipWhitespace();
             Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (ch == 0) {
+            if (ch == 0 || ch == ')') {
                 return parsed;
-            } else if (ch == ')') {
-                return parsed;
-//                if (bracketsBalance > 0) {
-//                    return parsed;
-//                } else {
-//                    throw new MissingOpeningParenthesis(getParsingInfo());
-//                }
             } else if (curOperation == null) {
                 throw new InvalidOperatorException(ch, getParsingInfo());
             } else if (priority != Operation.PRIORITIES.get(curOperation)) {
-                return parsed;
+                if (ch_next == '*' && curOperation == Operation.MUL) {
+                    curOperation = Operation.POW;
+                    nextChar();
+                } else if (ch_next == '/' && curOperation == Operation.DIV) {
+                    curOperation = Operation.LOG;
+                    nextChar();
+                }
+                if (priority != Operation.PRIORITIES.get(curOperation)) {
+                    return parsed;
+                }
             }
             nextChar();
 
-            if (ch == '*' && curOperation == Operation.MUL) {
-                curOperation = Operation.POW;
-                nextChar();
-            } else if (ch == '/' && curOperation == Operation.DIV) {
-                curOperation = Operation.LOG;
-                nextChar();
-            }
             parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
     }
 
     private CommonExpression parseValue() throws ParsingException {
         if (test('(')) {
-            bracketsBalance++;
             CommonExpression parsed = parseExpression();
             skipWhitespace();
             if (!expect(')')) {
                 throw new MissingClosingParenthesis(getParsingInfo());
             }
-            bracketsBalance--;
             return parsed;
+        } else if (test('l')) {
+            expect("og2");
+            skipWhitespace();
+            return new CheckedLog2(parseValue());
+        } else if (test('p')) {
+            expect("ow2");
+            skipWhitespace();
+            return new CheckedPow2(parseValue());
         } else if (test('-')) {
             skipWhitespace();
             if (between('0', '9')) {

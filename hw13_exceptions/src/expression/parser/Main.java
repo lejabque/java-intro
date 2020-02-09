@@ -11,11 +11,11 @@ public class Main {
         ExpressionParser parser = new ExpressionParser();
         PriorityExpression result = null;
         try {
-            result = parser.parse("(x*y))");
+            result = parser.parse("10");
         } catch (ParsingException e) {
             e.printStackTrace();
         }
-        System.out.println(result.evaluate(3, 1, 2));
+        System.out.println(result.evaluate(-170439996, 1234510033, -1182702066));
 //        ExpressionParser parser = new ExpressionParser(new StringSource("1000000*x*x*x*x*x/(x-1)"));
 //        PriorityExpression result = null;
 //        try {
