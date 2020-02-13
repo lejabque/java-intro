@@ -6,34 +6,77 @@ public class BaseParser {
     private ExpressionSource source;
 
     protected char ch;
-    protected char ch_next;
+    protected char[] buffer;
+    protected int head = 0;
+    protected int size = 0;
 
-    protected BaseParser(final ExpressionSource source) {
+    protected BaseParser(final ExpressionSource source, final int bufferLength) {
         this.source = source;
-        nextChar();
-        nextChar();
+        buffer = new char[bufferLength];
+        updateBuffer();
     }
 
-    public BaseParser() {
+    protected BaseParser(final ExpressionSource source) {
+        this(source, 1);
+    }
 
+    protected BaseParser(final int bufferLength) {
+        buffer = new char[bufferLength];
+    }
+
+    private void flushBuffer() {
+        size = 0;
+        head = 0;
+    }
+
+    private void updateBuffer() {
+        while (source.hasNext() && size < buffer.length) {
+            buffer[(head + size) % buffer.length] = source.next();
+            size++;
+        }
+        ch = size > 0 ? buffer[head % buffer.length] : '\0';
     }
 
     protected void changeSource(final ExpressionSource source) {
         this.source = source;
+        flushBuffer();
+        updateBuffer();
     }
 
     protected void nextChar() {
-        ch = ch_next;
-        ch_next = source.hasNext() ? source.next() : '\0';
+        ch = size > 0 ? buffer[(head + 1) % buffer.length] : '\0';
+        if (size > 0) {
+            size--;
+            head = (head + 1) % buffer.length;
+            updateBuffer();
+        }
     }
 
     protected boolean hasNext() {
-        return source.hasNext();
+        return size > 0;
     }
 
     protected boolean test(char expected) {
         if (ch == expected) {
             nextChar();
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean test(String expected) {
+        updateBuffer();
+        if (size >= expected.length()) {
+            int ind = 0;
+            while (ind < expected.length()) {
+                if (expected.charAt(ind) != buffer[(head + ind) % buffer.length]) {
+                    return false;
+                }
+                ind++;
+            }
+            head = (head + ind) % buffer.length;
+            size -= ind;
+            updateBuffer();
             return true;
         }
         return false;
@@ -52,16 +95,11 @@ public class BaseParser {
             if (!expect(c)) {
                 return false;
             }
-            ;
         }
         return true;
     }
 
-    protected int getPosFromSource() {
-        return source.getPos();
-    }
-
-    protected String getParsingInfo(){
+    protected String getParsingInfo() {
         return source.getErrorMessage();
     }
 
@@ -72,7 +110,6 @@ public class BaseParser {
     protected boolean between(final char from, final char to) {
         return from <= ch && ch <= to;
     }
-
 
     protected void copyDigits(final StringBuilder sb) {
         while (between('0', '9')) {

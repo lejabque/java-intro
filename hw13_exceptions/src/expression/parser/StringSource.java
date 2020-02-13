@@ -23,11 +23,6 @@ public class StringSource implements ExpressionSource {
     }
 
     @Override
-    public int getPos() {
-        return pos;
-    }
-
-    @Override
     public ParsingException error(final String message) {
         return new ParsingException(pos + ": " + message);
     }

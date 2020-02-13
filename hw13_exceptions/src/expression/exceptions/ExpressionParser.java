@@ -7,19 +7,18 @@ import expression.parser.StringSource;
 public class ExpressionParser extends BaseParser implements Parser {
 
     public ExpressionParser(StringSource stringSource) {
-        super(stringSource);
+        super(stringSource, 10);
     }
 
     public ExpressionParser() {
+        super(2);
     }
 
     @Override
     public CommonExpression parse(String expression) throws ParsingException {
         changeSource(new StringSource(expression));
-        nextChar();
-        nextChar();
         CommonExpression result = parseExpression();
-        if (ch == ')') {
+        if (hasNext() && ch != '\0') {
             throw new MissingOpeningParenthesis(getParsingInfo());
         }
         return result;
@@ -36,30 +35,27 @@ public class ExpressionParser extends BaseParser implements Parser {
             return parseValue();
         }
         CommonExpression parsed = parseTerm(priority + 1);
-
-        while (true) {
-            skipWhitespace();
-            Operation curOperation = Operation.CHAROPERANDS.get(ch);
-            if (ch == 0 || ch == ')') {
+        while (ch != '0' && ch != ')') {
+            Operation curOperation = getOperation(priority);
+            if (curOperation == null) {
                 return parsed;
-            } else if (curOperation == null) {
-                throw new InvalidOperatorException(ch, getParsingInfo());
-            } else if (priority != Operation.PRIORITIES.get(curOperation)) {
-                if (ch_next == '*' && curOperation == Operation.MUL) {
-                    curOperation = Operation.POW;
-                    nextChar();
-                } else if (ch_next == '/' && curOperation == Operation.DIV) {
-                    curOperation = Operation.LOG;
-                    nextChar();
-                }
-                if (priority != Operation.PRIORITIES.get(curOperation)) {
-                    return parsed;
-                }
             }
-            nextChar();
-
             parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
         }
+        return parsed;
+    }
+
+    private Operation getOperation(int priority) {
+        skipWhitespace();
+        if (priority > 0) {
+            for (Operation op :
+                    Operation.PRIORITIESLIST.get(priority - 1)) {
+                if (test(Operation.OPERATORS.get(op))) {
+                    return op;
+                }
+            }
+        }
+        return null;
     }
 
     private CommonExpression parseValue() throws ParsingException {
@@ -91,6 +87,8 @@ public class ExpressionParser extends BaseParser implements Parser {
         }
     }
 
+    // private CommonExpression
+
     private CommonExpression buildOperation(CommonExpression left, CommonExpression right,
                                             Operation oper) {
         switch (oper) {
@@ -112,12 +110,12 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression parseVariable() throws InvalidVariableException {
         skipWhitespace();
-        final String variable = Character.toString(ch);
-        nextChar();
-        if (variable.equals("x") || variable.equals("y") || variable.equals("z")) {
+        if (between('x', 'z')) {
+            final String variable = Character.toString(ch);
+            nextChar();
             return new Variable(variable);
         }
-        throw new InvalidVariableException(variable, getParsingInfo());
+        throw new InvalidVariableException(Character.toString(ch), getParsingInfo());
     }
 
     private CommonExpression parseConst(boolean positive) throws ParsingException {

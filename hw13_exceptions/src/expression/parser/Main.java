@@ -16,7 +16,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        System.out.println(result.evaluate(-170439996, 1234510033, -1182702066));
-        ExpressionParser parser = new ExpressionParser(new StringSource("1000000*x*x*x*x*x/(x-1)"));
+        ExpressionParser parser = new ExpressionParser(new StringSource("2147483647"));
         PriorityExpression result = null;
         try {
             result = parser.parseExpression();
@@ -24,15 +24,15 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println("x f");
-        for (int i = 0; i < 11; i++) {
-            try {
-                System.out.println(i + " " + result.evaluate(i));
-            } catch (OverflowException e) {
-                System.out.println(i + " overflow");
-            } catch (ZeroDivisionException e) {
-                System.out.println(i + " division by zero");
-            }
-        }
-//        System.out.println(result.evaluate(3, 1, 2));
+//        for (int i = 0; i < 11; i++) {
+//            try {
+//                System.out.println(i + " " + result.evaluate(i));
+//            } catch (OverflowException e) {
+//                System.out.println(i + " overflow");
+//            } catch (ZeroDivisionException e) {
+//                System.out.println(i + " division by zero");
+//            }
+//        }
+        System.out.println(result.evaluate(3, 3, 2));
     }
 }
