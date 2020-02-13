@@ -14,17 +14,10 @@ public final class CheckedPow2 extends UnaryOperation {
         if (y < 0) {
             throw new PowerException();
         }
-        int res = 0;
-        int cur = 1;
-        while (res < y) {
-            res += 1;
-            if (((2 * cur) / cur != 2 || (2 * cur) / 2 != cur)) {
-                throw new OverflowException();
-            }
-            cur *= 2;
-
+        if (y >= 31){
+            throw new OverflowException();
         }
-        return cur;
+        return 2 << y;
     }
 
     @Override
