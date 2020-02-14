@@ -10,7 +10,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     public ExpressionParser() {
-        super(4);
+        super(4);  // max len of operator
     }
 
     @Override
