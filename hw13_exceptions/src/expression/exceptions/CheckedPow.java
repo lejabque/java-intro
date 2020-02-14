@@ -9,11 +9,12 @@ public final class CheckedPow extends BinaryOperation {
         super(first, second);
     }
 
-    private void checkOverflow(int x, int y) {
+    private int checkOverflow(int x, int y) {
         int cur = x * y;
         if (x != 0 && y != 0 && (cur / x != y || cur / y != x)){
             throw new OverflowException();
         }
+        return cur;
     }
 
     @Override
@@ -27,14 +28,11 @@ public final class CheckedPow extends BinaryOperation {
         int res = 1;
         while (y != 0) {
             if (y % 2 == 1) {
-                checkOverflow(res, x);
-                res = res * x;
+                res = checkOverflow(res, x);
                 y--;
-            }
-            else {
+            } else {
                 y = y / 2;
-                checkOverflow(x, x);
-                x = x * x;
+                x = checkOverflow(x, x);
             }
         }
         return res;

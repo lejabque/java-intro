@@ -10,7 +10,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     public ExpressionParser() {
-        super(4);  // max len of operator
+        super(2);  // max len of binary operator
     }
 
     @Override
@@ -34,14 +34,13 @@ public class ExpressionParser extends BaseParser implements Parser {
             return parseValue();
         }
         CommonExpression parsed = parseTerm(priority + 1);
-        while (ch != '0' && ch != ')') {
+        while (true) {
             Operation curOperation = getBinaryOperator(priority);
             if (curOperation == null) {
                 return parsed;
             }
             parsed = buildBinaryOperation(parsed, parseTerm(priority + 1), curOperation);
         }
-        return parsed;
     }
 
     private CommonExpression parseValue() throws ParsingException {
@@ -62,34 +61,18 @@ public class ExpressionParser extends BaseParser implements Parser {
         } else if (between('0', '9')) {
             return parseConst(true);
         } else {
-            Operation operation = parseUnaryOperator();
+            String token = parseToken();
+            Operation operation = Operation.STRING_TO_UNARY.get(token);
             if (operation != null) {
-                if ((ch == '-' || ch == '(' || Character.isWhitespace(ch))) {
-                    return buildUnaryOperation(parseValue(), operation);
-                } else {
-                    throw new InvalidOperatorException(Operation.OPERATORS_STRING.get(operation) + Character.toString(ch),
-                            getParsingInfo());
-                }
+                return buildUnaryOperation(parseValue(), operation);
             }
+            return getVariable(token);
         }
-        return parseVariable();
     }
 
     private Operation getBinaryOperator(int priority) {
         skipWhitespace();
-        if (priority > 0) {
-            for (Operation operation : Operation.PRIORITY_TO_OPER.get(priority - 1)) {
-                if (test(Operation.OPERATORS_STRING.get(operation))) {
-                    return operation;
-                }
-            }
-        }
-        return null;
-    }
-
-    private Operation parseUnaryOperator() {
-        skipWhitespace();
-        for (Operation operation : Operation.UNARY_OPERATORS) {
+        for (Operation operation : Operation.PRIORITY_TO_OPER.get(priority)) {
             if (test(Operation.OPERATORS_STRING.get(operation))) {
                 return operation;
             }
@@ -117,7 +100,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     private CommonExpression buildUnaryOperation(CommonExpression expr,
-                                                 Operation operation    ) {
+                                                 Operation operation) {
         switch (operation) {
             case LOG2:
                 return new CheckedLog2(expr);
@@ -127,14 +110,11 @@ public class ExpressionParser extends BaseParser implements Parser {
         return null;
     }
 
-    private CommonExpression parseVariable() throws InvalidVariableException {
-        skipWhitespace();
-        if (between('x', 'z')) {
-            final String variable = Character.toString(ch);
-            nextChar();
-            return new Variable(variable);
+    private CommonExpression getVariable(String token) throws InvalidVariableException {
+        if (Operation.VARIABLES.contains(token)) {
+            return new Variable(token);
         }
-        throw new InvalidVariableException(Character.toString(ch), getParsingInfo());
+        throw new InvalidVariableException(token, getParsingInfo());
     }
 
     private CommonExpression parseConst(boolean positive) throws ParsingException {
