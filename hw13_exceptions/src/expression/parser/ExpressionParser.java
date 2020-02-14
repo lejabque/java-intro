@@ -39,21 +39,9 @@ public class ExpressionParser extends BaseParser implements Parser {
             if (curOperation == null) {
                 return parsed;
             }
-            parsed = buildOperation(parsed, parseTerm(priority + 1), curOperation);
+            parsed = buildBinaryOperation(parsed, parseTerm(priority + 1), curOperation);
         }
         return parsed;
-    }
-
-    private Operation getBinaryOperator(int priority) {
-        skipWhitespace();
-        if (priority > 0) {
-            for (Operation op : Operation.PRIORITY_TO_OPER.get(priority - 1)) {
-                if (test(Operation.OPERATORS_STRING.get(op))) {
-                    return op;
-                }
-            }
-        }
-        return null;
     }
 
     private CommonExpression parseValue() throws ParsingException {
@@ -74,17 +62,12 @@ public class ExpressionParser extends BaseParser implements Parser {
         } else if (between('0', '9')) {
             return parseConst(true);
         } else {
-            Operation op = parseUnaryOperator();
-            if (op != null) {
+            Operation operation = parseUnaryOperator();
+            if (operation != null) {
                 if ((ch == '-' || ch == '(' || Character.isWhitespace(ch))) {
-                    switch (op) {
-                        case LOG2:
-                            return new CheckedLog2(parseValue());
-                        case POW2:
-                            return new CheckedPow2(parseValue());
-                    }
+                    return buildUnaryOperation(parseValue(), operation);
                 } else {
-                    throw new InvalidOperatorException(Operation.OPERATORS_STRING.get(op) + Character.toString(ch),
+                    throw new InvalidOperatorException(Operation.OPERATORS_STRING.get(operation) + Character.toString(ch),
                             getParsingInfo());
                 }
             }
@@ -92,19 +75,31 @@ public class ExpressionParser extends BaseParser implements Parser {
         return parseVariable();
     }
 
-    private Operation parseUnaryOperator() {
+    private Operation getBinaryOperator(int priority) {
         skipWhitespace();
-        for (Operation op : Operation.UNARY_OPERATORS) {
-            if (test(Operation.OPERATORS_STRING.get(op))) {
-                return op;
+        if (priority > 0) {
+            for (Operation operation : Operation.PRIORITY_TO_OPER.get(priority - 1)) {
+                if (test(Operation.OPERATORS_STRING.get(operation))) {
+                    return operation;
+                }
             }
         }
         return null;
     }
 
-    private CommonExpression buildOperation(CommonExpression left, CommonExpression right,
-                                            Operation oper) {
-        switch (oper) {
+    private Operation parseUnaryOperator() {
+        skipWhitespace();
+        for (Operation operation : Operation.UNARY_OPERATORS) {
+            if (test(Operation.OPERATORS_STRING.get(operation))) {
+                return operation;
+            }
+        }
+        return null;
+    }
+
+    private CommonExpression buildBinaryOperation(CommonExpression left, CommonExpression right,
+                                                  Operation operation) {
+        switch (operation) {
             case ADD:
                 return new CheckedAdd(left, right);
             case SUB:
@@ -117,6 +112,17 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return new CheckedLog(left, right);
             case POW:
                 return new CheckedPow(left, right);
+        }
+        return null;
+    }
+
+    private CommonExpression buildUnaryOperation(CommonExpression expr,
+                                                 Operation operation    ) {
+        switch (operation) {
+            case LOG2:
+                return new CheckedLog2(expr);
+            case POW2:
+                return new CheckedPow2(expr);
         }
         return null;
     }
