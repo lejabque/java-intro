@@ -12,12 +12,12 @@ public final class CheckedPow2 extends UnaryOperation {
     @Override
     protected int calculate(int y) throws OverflowException {
         if (y < 0) {
-            throw new PowerException();
+            throw new PowArgumentException(2, y);
         }
         if (y >= 31){
             throw new OverflowException();
         }
-        return 2 << y;
+        return 1 << y;
     }
 
     @Override

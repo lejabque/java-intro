@@ -3,6 +3,8 @@ package expression.exceptions;
 import expression.TripleExpression;
 import expression.Variable;
 import expression.parser.Either;
+import expression.parser.ExpressionParser;
+import expression.parser.Parser;
 import expression.parser.ParserTest;
 
 import java.util.ArrayList;

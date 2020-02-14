@@ -10,9 +10,9 @@ public final class CheckedLog2 extends UnaryOperation {
     }
 
     @Override
-    protected int calculate(int x) throws LogarithmException {
+    protected int calculate(int x) throws LogArgumentException {
         if (x < 1) {
-            throw new LogarithmException();
+            throw new LogArgumentException(x, 2);
         }
         int res = 0;
         int cur = 1;

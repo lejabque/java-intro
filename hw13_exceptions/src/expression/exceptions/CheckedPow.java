@@ -9,7 +9,7 @@ public final class CheckedPow extends BinaryOperation {
         super(first, second);
     }
 
-    private void CheckException(int x, int y) {
+    private void checkOverflow(int x, int y) {
         int cur = x * y;
         if (x != 0 && y != 0 && (cur / x != y || cur / y != x)){
             throw new OverflowException();
@@ -19,7 +19,7 @@ public final class CheckedPow extends BinaryOperation {
     @Override
     protected int calculate(int x, int y) throws OverflowException {
         if (x == 0 && y == 0 || y < 0) {
-            throw new PowerException();
+            throw new PowArgumentException(x, y);
         }
         if (x == 0) {
             return 0;
@@ -27,13 +27,13 @@ public final class CheckedPow extends BinaryOperation {
         int res = 1;
         while (y != 0) {
             if (y % 2 == 1) {
-                CheckException(res, x);
+                checkOverflow(res, x);
                 res = res * x;
                 y--;
             }
             else {
                 y = y / 2;
-                CheckException(x, x);
+                checkOverflow(x, x);
                 x = x * x;
             }
         }

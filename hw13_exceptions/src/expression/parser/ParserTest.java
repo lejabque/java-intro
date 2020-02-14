@@ -3,7 +3,6 @@ package expression.parser;
 import expression.BaseTest;
 import expression.CommonExpression;
 import expression.TripleExpression;
-import expression.exceptions.ExpressionParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +133,7 @@ public class ParserTest extends BaseTest {
         try {
             final int actual = expression.evaluate(vars[0], vars[1], vars[2]);
             assert answer.isRight() : String.format("Error expected for x=%d, y=%d, z=%d", vars[0], vars[1], vars[2]);
-            assertEquals(String.format("f(%d, %d, %d)\n%s", vars[0], vars[1], vars[2], expression), answer.getRight(), actual);
+            assertEquals(String.format("f(%d, %d, %d)\n%s", vars[0], vars[1], vars[2], expression), (int) answer.getRight(), actual);
         } catch (final Exception e) {
             if (answer.isRight()) {
                 throw new AssertionError(String.format("No error expected for x=%d, y=%d, z=%d", vars[0], vars[1], vars[2]), e);

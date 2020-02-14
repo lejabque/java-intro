@@ -1,7 +1,7 @@
 package expression.exceptions;
 
 public class InvalidOperatorException extends ParsingException {
-    public InvalidOperatorException(char cur, String message) {
+    public InvalidOperatorException(String cur, String message) {
         super("Invalid operator: '" + cur + "'. " + message);
     }
 }

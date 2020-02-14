@@ -1,10 +1,7 @@
 package expression.parser;
 
-import expression.exceptions.ExpressionParser;
-import expression.exceptions.OverflowException;
 import expression.exceptions.ParsingException;
 import expression.PriorityExpression;
-import expression.exceptions.ZeroDivisionException;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +13,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        System.out.println(result.evaluate(-170439996, 1234510033, -1182702066));
-        ExpressionParser parser = new ExpressionParser(new StringSource("2147483647"));
+        ExpressionParser parser = new ExpressionParser(new StringSource("log2x"));
         PriorityExpression result = null;
         try {
             result = parser.parseExpression();
