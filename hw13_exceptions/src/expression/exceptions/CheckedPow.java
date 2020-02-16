@@ -45,7 +45,7 @@ public final class CheckedPow extends BinaryOperation {
 
     @Override
     public int getPriority() {
-        return 100;
+        return 2;
     }
 
     @Override

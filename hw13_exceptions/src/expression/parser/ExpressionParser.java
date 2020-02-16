@@ -6,7 +6,7 @@ import expression.exceptions.*;
 public class ExpressionParser extends BaseParser implements Parser {
 
     public ExpressionParser(StringSource stringSource) {
-        super(stringSource, 10);
+        super(stringSource, 2);
     }
 
     public ExpressionParser() {

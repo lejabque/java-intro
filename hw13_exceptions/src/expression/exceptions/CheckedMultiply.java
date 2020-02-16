@@ -26,7 +26,7 @@ public final class CheckedMultiply extends BinaryOperation {
 
     @Override
     public int getPriority() {
-        return 2;
+        return 1;
     }
 
     @Override

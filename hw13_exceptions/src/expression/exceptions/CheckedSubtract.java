@@ -32,7 +32,7 @@ public final class CheckedSubtract extends BinaryOperation {
 
     @Override
     public int getPriority() {
-        return 1;
+        return 0;
     }
 
     @Override

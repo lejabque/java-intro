@@ -33,7 +33,6 @@ public enum Operation {
             "x", "y", "z"
     );
 
-
     public static final List<List<Operation>> PRIORITY_TO_OPER = List.of(
             List.of(ADD, SUB),
             List.of(MUL, DIV),

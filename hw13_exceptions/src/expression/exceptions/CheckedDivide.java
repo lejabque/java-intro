@@ -29,7 +29,7 @@ public final class CheckedDivide extends BinaryOperation {
 
     @Override
     public int getPriority() {
-        return 2;
+        return 1;
     }
 
     @Override
