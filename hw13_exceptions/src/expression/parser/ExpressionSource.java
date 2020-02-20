@@ -5,6 +5,6 @@ import expression.exceptions.ParsingException;
 public interface ExpressionSource {
     boolean hasNext();
     char next();
-    String getErrorMessage();
+    String getPart();
     ParsingException error(final String message);
 }

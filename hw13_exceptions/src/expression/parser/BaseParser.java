@@ -6,9 +6,10 @@ public class BaseParser {
     private ExpressionSource source;
 
     protected char ch;
-    protected char[] buffer;
-    protected int head = 0;
-    protected int size = 0;
+    private char[] buffer;
+    private int head = 0;
+    private int size = 0;
+    private int pos = 0;
 
     protected BaseParser(final ExpressionSource source, final int bufferLength) {
         this.source = source;
@@ -46,6 +47,7 @@ public class BaseParser {
     protected void nextChar() {
         ch = size > 0 ? buffer[(head + 1) % buffer.length] : '\0';
         if (size > 0) {
+            pos++;
             size--;
             head = (head + 1) % buffer.length;
             updateBuffer();
@@ -63,9 +65,10 @@ public class BaseParser {
         }
         return false;
     }
-    protected String parseToken(){
+
+    protected String parseToken() {
         StringBuilder parsed = new StringBuilder();
-        while (between('0', '9') || between('A', 'z')){
+        while (between('0', '9') || between('A', 'z')) {
             parsed.append(ch);
             nextChar();
         }
@@ -108,7 +111,7 @@ public class BaseParser {
     }
 
     protected String getParsingInfo() {
-        return source.getErrorMessage();
+        return "Current pos: " + pos + "Current part" + source.getPart();
     }
 
     protected ParsingException error(final String message) {

@@ -26,7 +26,7 @@ public class StringSource implements ExpressionSource {
     }
 
     @Override
-    public String getErrorMessage() {
-        return "Error in pos: " + pos + " Part with error: " + data.substring(Math.max(pos - 10, 0), Math.min(pos + 5, data.length()));
+    public String getPart() {
+        return data.substring(Math.max(pos - 10, 0), Math.min(pos + 5, data.length()));
     }
 }
