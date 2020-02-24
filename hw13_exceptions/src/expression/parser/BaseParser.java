@@ -111,7 +111,7 @@ public class BaseParser {
     }
 
     protected String getParsingInfo() {
-        return "Current pos: " + pos + "Current part" + source.getPart();
+        return "Current pos: " + pos + " Current part: " + source.getPart();
     }
 
     protected ParsingException error(final String message) {

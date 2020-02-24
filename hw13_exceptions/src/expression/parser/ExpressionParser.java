@@ -10,7 +10,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     public ExpressionParser() {
-        super(2);  // max len of binary operator
+        super(2);  // max length of binary operator
     }
 
     @Override
@@ -53,7 +53,8 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             return parsed;
         } else if (test('-')) {
-            skipWhitespace();
+            // - 10
+            //skipWhitespace();
             if (between('0', '9')) {
                 return parseConst(false);
             }

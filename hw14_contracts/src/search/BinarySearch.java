@@ -1,6 +1,7 @@
 package search;
 
 public class BinarySearch {
+    // Pre:
     public static void main(String[] args) {
         int n = args.length;
         int x = Integer.parseInt(args[0]);
@@ -12,46 +13,53 @@ public class BinarySearch {
         // System.out.println(BinaryRecursive(numbers, -1, numbers.length, x));
     }
 
-    // Pre: forall i > j in [0..arr.length - 1]: arr[i] <= arr[j]
-    public static int BinaryIterative(int[] arr, int x) {
+    // Pre: forall i > j in [0..a.length - 1]: a[i] <= a[j]
+    public static int BinaryIterative(int[] a, int x) {
         int l = -1;
-        int r = arr.length;
-        // l = -1 && r = arr.length
-        // I: l < r && (l >= 0 -> arr[l] > x) && (r >= 0 -> arr[r] <= x)
+        int r = a.length;
+        // l = -1 && r = a.length && l <= r - 1
+
+        // I: (l >= 0 -> a[l] > x) && (r <= a.length - 1 -> a[r] <= x)
         while (l < r - 1) {
             // I && l < r - 1
             int m = (l + r) / 2;
-            // I && m = (l + r)/2 && l < r - 1
-            if (arr[m] > x) {
-                // I && arr[m] > x  && l < r - 1
+            // I && l < r - 1 && m = (l + r)/2
+            if (a[m] > x) {
+                // I && l < r - 1 && a[m] > x
                 l = m;
-                // I && arr[m] > x && L = m
+                // I && l' = (l + r) / 2 && a[l'] > x
             } else {
-                // I && arr[m] <= x && l < r - 1
+                // I && l < r - 1 && a[m] <= x
                 r = m;
-                // I && arr[m] <= x && R = m
+                // I && r' = m && a[r'] <= x
             }
-            // I && (L > l || R < r) && (R - L < r - l)
+            // I && (l' > l || r' < r) && (0 < r' - l' < r - l)
         }
-        // l = r - 1
+        // (l = r - 1 && (l >= 0 -> a[l] > x)) -> (a[r-1] > x))
+        // && (l = r - 1 && (r <= a.length - 1 -> a[r] <= x)) -> (a[r] <= x))
+
         return r;
-        // Post: (arr.length == 0 -> r = 0) || (arr.length > 0 -> (arr[r] <= x && (r > 0 -> arr[r - 1] > x))
+        // Post: (a.length == 0 -> r = 0)
+        //        && (a.length > 0 -> (a[r] <= x && (r > 0 -> a[r - 1] > x)))
     }
 
-    // Pre: (forall i > j in [0..arr.length - 1]: arr[i] <= arr[j])
-    public static int BinaryRecursive(int[] arr, int l, int r, int x) {
+    // Pre: r >= 0 && l <= r <= a.length && forall i > j in [0..a.length - 1]: a[i] <= a[j]
+    public static int BinaryRecursive(int[] a, int l, int r, int x) {
         if (l < r - 1) {
             // l < r - 1
             int m = (l + r) / 2;
-            if (arr[m] > x) {
-                // arr[m] > x  && l < r - 1
-                r = BinaryRecursive(arr, m, r, x);
+            // l < r - 1 && m = (l + r)/2
+            if (a[m] > x) {
+                // l < r - 1 && a[m] > x
+                r = BinaryRecursive(a, m, r, x);
+                // r' = BinaryRecursive(a, (l+r)/2, r, x)
             } else {
-                // arr[m] <= x  && l < r - 1
-                r = BinaryRecursive(arr, l, m, x);
+                // l < r - 1 && a[m] <= x
+                r = BinaryRecursive(a, l, m, x);
+                // r' = BinaryRecursive(a, l, (l + r)/2, x)
             }
         }
         return r;
-        // Post: (arr.length == 0 -> r = 0) || (arr.length > 0 -> (arr[r] <= x && (r > 0 -> arr[r - 1] > x))
+        // Post: R: (r - l <= 1 -> R = r) && (r - l > 1 -> (a[R] <= x && (R > 0 -> a[R - 1] > x))
     }
 }
