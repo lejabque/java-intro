@@ -62,11 +62,11 @@ public class BinarySearchShift {
             if (a[m] < a[0]) {
                 // a[m] < a[0] -> k <= m
                 return BinaryShiftRecursive(a, l, m);
-                // R = BinaryRecursive(a, (l+r)/2, r, x) -> R = k
+                // R = BinaryShiftRecursive(a, (l+r)/2, r, x) -> R = k
             } else {
                 // a[m] > a[0] -> m < k
                 return BinaryShiftRecursive(a, m, r);
-                // R = BinaryRecursive(a, l, (l + r)/2, x) -> R = k
+                // R = BinaryShiftRecursive(a, l, (l + r)/2, x) -> R = k
             }
         }
         // (-1 < l < k <= r <= a.length) && (r - l == 1) -> (r == k || (k = 0 && r = a.length))
