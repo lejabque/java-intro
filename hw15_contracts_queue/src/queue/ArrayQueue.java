@@ -5,30 +5,14 @@ import java.util.Arrays;
 public class ArrayQueue {
     private Object[] elements = new Object[2];
     private int head = 0;
-    private int tail = 0;
     private int size = 0;
 
     public void enqueue(Object newElement) {
         if (size() == elements.length) {
             expandQueue();
         }
-        elements[tail] = newElement;
-        tail = (tail + 1) % elements.length;
+        elements[(head + size) % elements.length] = newElement;
         size++;
-    }
-
-    private void expandQueue() {
-        if (head == 0) {
-            elements = Arrays.copyOf(elements, elements.length * 2);
-        } else {
-            Object[] copyElements = new Object[elements.length * 2];
-            for (int i = 0; i < elements.length; i++) {
-                copyElements[i] = elements[(head + i) % elements.length];
-            }
-            elements = copyElements;
-        }
-        tail = size();
-        head = 0;
     }
 
     public Object element() {
@@ -45,7 +29,6 @@ public class ArrayQueue {
 
     public int size() {
         return size;
-        // tail > head ? tail - head : (tail + elements.length - head);
     }
 
     public boolean isEmpty() {
@@ -54,6 +37,19 @@ public class ArrayQueue {
 
     public void clear() {
         elements = new Object[2];
-        tail = head = size = 0;
+        head = size = 0;
+    }
+
+    private void expandQueue() {
+        if (head == 0) {
+            elements = Arrays.copyOf(elements, elements.length * 2);
+        } else {
+            Object[] copyElements = new Object[elements.length * 2];
+            for (int i = 0; i < elements.length; i++) {
+                copyElements[i] = elements[(head + i) % elements.length];
+            }
+            elements = copyElements;
+        }
+        head = 0;
     }
 }
