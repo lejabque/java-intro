@@ -52,9 +52,9 @@ public class BinarySearchShift {
     }
 
     // Pre: -1 <= l < r <= a.length &&
-    // (i != j && 0 <= i < a.length && 0 <= j < a.length) -> a[i] != a[j]) &&
     // exists -1 <= l < k < r <= a.length:
-    // (0 <= i < j < k -> a[i] < a[j]) && (k <= i < j < a.length -> a[i] < a[j])
+    // (0 <= i < j < k -> a[i] < a[j]) && (k <= i < j < a.length -> a[i] < a[j]) &&
+    // (k > 0 -> a[0] > a[a.length - 1])
     public static int BinaryShiftRecursive(int[] a, int l, int r) {
         if (l < r - 1) {
             // l < r - 1
