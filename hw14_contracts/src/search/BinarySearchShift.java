@@ -2,9 +2,9 @@ package search;
 
 public class BinarySearchShift {
     // Pre: forall i: args[i] is int &&
-    // (i != j && 0 <= i < args.length && 0 <= j < args.length) -> args[i] != args[j]) &&
     //  exists 0 <= k < args.length:
-    //  (0 <= i < j < k -> args[i] < args[j]) && (k <= i < j < args.length -> args[i] < args[j])
+    //  (0 <= i < j < k -> args[i] < args[j]) && (k <= i < j < args.length -> args[i] < args[j]) &&
+    // (k > 0 -> args[0] > args[args.length - 1])
     public static void main(String[] args) {
         int[] numbers = new int[args.length];
         for (int i = 0; i < args.length; i++) {
@@ -16,9 +16,10 @@ public class BinarySearchShift {
     }
 
 
-    // Pre: (i != j && 0 <= i < a.length && 0 <= j < a.length) -> a[i] != a[j]) &&
+    // Pre:
     // exists 0 <= k < a.length:
-    // (0 <= i < j < k -> a[i] < a[j]) && (k <= i < j < a.length -> a[i] < a[j])
+    // (0 <= i < j < k -> a[i] < a[j]) && (k <= i < j < a.length -> a[i] < a[j]) &&
+    // (k > 0 -> a[0] > a[a.length - 1])
     public static int BinaryShiftIterative(int[] a) {
         int l = -1;
         int r = a.length;
