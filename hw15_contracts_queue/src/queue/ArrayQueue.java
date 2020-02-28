@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.Arrays;
-
 public class ArrayQueue {
     private Object[] elements = new Object[2];
     private int head = 0;
@@ -9,6 +7,7 @@ public class ArrayQueue {
 
     // Pre: element != null
     public void enqueue(Object element) {
+        assert element != null;
         if (size() == elements.length) {
             expandQueue();
         }
@@ -19,12 +18,14 @@ public class ArrayQueue {
 
     // Pre: n > 0
     public Object element() {
+        assert size > 0;
         return elements[head];
     }
     // Post: R = a[1]
 
     // Pre: n > 0
     public Object dequeue() {
+        assert size > 0;
         Object resElement = element();
         elements[head] = null;
         head = (head + 1) % elements.length;

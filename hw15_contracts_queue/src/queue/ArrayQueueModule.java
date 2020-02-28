@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.Arrays;
-
 // Inv: a[1], ..., a[n], n >= 0
 // i in [1..n]: a[i] != null
 public class ArrayQueueModule {
@@ -11,6 +9,7 @@ public class ArrayQueueModule {
 
     // Pre: element != null
     public static void enqueue(Object element) {
+        assert element !=  null;
         if (size() == elements.length) {
             expandQueue();
         }
@@ -21,12 +20,14 @@ public class ArrayQueueModule {
 
     // Pre: n > 0
     public static Object element() {
+        assert size > 0;
         return elements[head];
     }
     // Post: R = a[1]
 
     // Pre: n > 0
     public static Object dequeue() {
+        assert size > 0;
         Object resElement = element();
         elements[head] = null;
         head = (head + 1) % elements.length;
