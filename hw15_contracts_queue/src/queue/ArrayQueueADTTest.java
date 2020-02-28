@@ -1,18 +1,34 @@
 package queue;
 
 public class ArrayQueueADTTest {
-    public static void fill(ArrayQueueADT queue, int n) {
+    public static void fillEnqueue(ArrayQueueADT queue, int n) {
         for (int i = 0; i < n; i++) {
             ArrayQueueADT.enqueue(queue, i);
         }
     }
 
-    public static void dump(ArrayQueueADT queue) {
+    public static void fillPush(ArrayQueueADT queue, int n) {
+        for (int i = 0; i < n; i++) {
+            ArrayQueueADT.enqueue(queue, i);
+        }
+    }
+
+    public static void dumpDequeue(ArrayQueueADT queue) {
         while (!ArrayQueueADT.isEmpty(queue)) {
             System.out.println(
                     ArrayQueueADT.size(queue) + " " +
                             ArrayQueueADT.element(queue) + " " +
                             ArrayQueueADT.dequeue(queue)
+            );
+        }
+    }
+
+    public static void dumpRemove(ArrayQueueADT queue) {
+        while (!ArrayQueueADT.isEmpty(queue)) {
+            System.out.println(
+                    ArrayQueueADT.size(queue) + " " +
+                            ArrayQueueADT.peek(queue) + " " +
+                            ArrayQueueADT.remove(queue)
             );
         }
     }
@@ -28,11 +44,23 @@ public class ArrayQueueADTTest {
     public static void main(String[] args) {
         ArrayQueueADT queue = new ArrayQueueADT();
         System.out.println("Fill and dump test:");
-        fill(queue, 10);
-        dump(queue);
+        fillEnqueue(queue, 10);
+        dumpDequeue(queue);
         System.out.println("---------------");
         System.out.println("Fill and clear test:");
-        fill(queue, 10);
+        fillEnqueue(queue, 10);
         clear(queue);
+        System.out.println("---------------");
+        System.out.println("Push and dump test:");
+        fillPush(queue, 10);
+        dumpDequeue(queue);
+        System.out.println("---------------");
+        System.out.println("Enqueue and remove test:");
+        fillEnqueue(queue, 10);
+        dumpRemove(queue);
+        System.out.println("---------------");
+        System.out.println("Push and remove test:");
+        fillPush(queue,10);
+        dumpRemove(queue);
     }
 }

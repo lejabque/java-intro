@@ -1,18 +1,34 @@
 package queue;
 
 public class ArrayQueueModuleTest {
-    public static void fill(int n) {
+    public static void fillPush(int n) {
+        for (int i = 0; i < n; i++) {
+            ArrayQueueModule.push(i);
+        }
+    }
+
+    public static void fillEnqueue(int n) {
         for (int i = 0; i < n; i++) {
             ArrayQueueModule.enqueue(i);
         }
     }
 
-    public static void dump() {
+    public static void dumpDequeue() {
         while (!ArrayQueueModule.isEmpty()) {
             System.out.println(
                     ArrayQueueModule.size() + " " +
                             ArrayQueueModule.element() + " " +
                             ArrayQueueModule.dequeue()
+            );
+        }
+    }
+
+    public static void dumpRemove() {
+        while (!ArrayQueueModule.isEmpty()) {
+            System.out.println(
+                    ArrayQueueModule.size() + " " +
+                            ArrayQueueModule.peek() + " " +
+                            ArrayQueueModule.remove()
             );
         }
     }
@@ -26,12 +42,23 @@ public class ArrayQueueModuleTest {
     }
 
     public static void main(String[] args) {
-        System.out.println("Fill and dump test:");
-        fill(10);
-        dump();
+        System.out.println("Enqueue and dump test:");
+        fillEnqueue(10);
+        dumpDequeue();
         System.out.println("---------------");
         System.out.println("Fill and clear test:");
-        fill(10);
+        fillEnqueue(10);
         clear();
+        System.out.println("Push and dump test:");
+        fillPush(10);
+        dumpDequeue();
+        System.out.println("---------------");
+        System.out.println("Enqueue and remove test:");
+        fillEnqueue(10);
+        dumpRemove();
+        System.out.println("---------------");
+        System.out.println("Push and remove test:");
+        fillPush(10);
+        dumpRemove();
     }
 }

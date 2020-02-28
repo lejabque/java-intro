@@ -1,41 +1,42 @@
 package queue;
 
-import base.Asserts;
 import base.TestCounter;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends Asserts {
-    private final QueueFactory<T> factory;
+public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends ReflectionTest {
+    private static final int OPERATIONS = 100_000;
+
+    private final Class<T> type;
     private final TestCounter counter = new TestCounter();
 
     private static final Object[] ELEMENTS = new Object[]{
             "Hello",
             "world",
             1, 2, 3,
-            new Object()
+            List.of("a"),
+            List.of("a"),
+            List.of("b"),
+            Map.of()
     };
 
     protected final Random random = new Random(2474258720358724587L);
+    private final Supplier<T> reference;
 
-    public ArrayQueueTest(final QueueFactory<T> factory) {
-        Asserts.checkAssert(getClass());
-        this.factory = factory;
+    protected ArrayQueueTest(final Class<T> type, final Function<Stream<Object>, T> reference) {
+        this.type = type;
+        this.reference = () -> reference.apply(Stream.of());
     }
 
     public static void main(final String[] args) {
-        new ArrayQueueTest<>(Queue::new).test();
+        new ArrayQueueTest<>(Queue.class, ReferenceQueue::new).test();
     }
 
     protected void test() {
@@ -51,20 +52,23 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends Asserts {
     }
 
     private void test(final String className, final Mode mode, final int step) {
-        testEmpty(create(className, mode));
-        testSingleton(create(className, mode));
-        testClear(create(className, mode));
+        final Supplier<T> factory = factory(className, mode);
+        testEmpty(factory.get());
+        testSingleton(factory.get());
+        testClear(factory.get());
         for (int i = 0; i <= 10; i += step) {
-            testRandom(create(className, mode), 100_000, (double) i / 10);
+            testRandom(factory.get(), (double) i / 10);
         }
     }
 
-    protected T create(final String className, final Mode mode) {
-        try {
-            return factory.create(className, mode);
-        } catch (MalformedURLException | NoSuchMethodException | ClassNotFoundException e) {
-            throw new AssertionError("Cannot create Queue (" + className + "): " + e.getMessage());
-        }
+    protected Supplier<T> factory(final String name, final Mode mode) {
+        final ProxyFactory<T> factory = new ProxyFactory<>(type, mode, "queue." + name);
+        checkImplementation(factory.implementation);
+        return () -> checking(type, reference.get(), factory.create());
+    }
+
+    protected void checkImplementation(final Class<?> implementation) {
+        // Do nothing by default
     }
 
     protected void testEmpty(final T queue) {
@@ -86,7 +90,7 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends Asserts {
     }
 
     private void nextTest(final String name) {
-        System.err.println("=== " + name);
+        System.err.println("\t=== " + name);
         counter.nextTest();
     }
 
@@ -106,52 +110,69 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends Asserts {
         counter.passed();
     }
 
-    protected void testRandom(final T queue, final int operations, final double addFreq) {
+    protected void testRandom(final T initial, final double addFreq) {
         nextTest("testRandom, add frequency = " + addFreq);
-        final Deque<Object> deque = new ArrayDeque<>();
+        final List<T> queues = new ArrayList<>();
+        queues.add(initial);
         int ops = 0;
-        for (int i = 0; i < operations; i++) {
-            if (deque.isEmpty() || random.nextDouble() < addFreq) {
-                add(deque, queue, randomElement());
+        for (int i = 0; i < OPERATIONS; i++) {
+            counter.nextTest();
+            final T queue = queues.get(random.nextInt(queues.size()));
+            if (queue.isEmpty() || random.nextDouble() < addFreq) {
+                add(queue, randomElement());
             } else {
-                remove(deque, queue);
+                remove(queue);
             }
-            checkAndSize(deque, queue);
-            if (ops++ >= deque.size() && random.nextDouble() < 0.25) {
-                ops -= deque.size();
-                linearTest(deque, queue);
+
+            final int size = checkAndSize(queue);
+            counter.passed();
+
+            if (ops++ >= size && random.nextInt(4) == 0) {
+                ops -= size;
+
+                counter.nextTest();
+                queues.addAll(linearTest(queue));
+                checkAndSize(queue);
+                counter.passed();
             }
         }
-        linearTest(deque, queue);
-        while (!deque.isEmpty()) {
-            remove(deque, queue);
-            checkAndSize(deque, queue);
+
+        for (final T queue : queues) {
+            counter.nextTest();
+            linearTest(queue);
+            for (int i = queue.size(); i > 0; i--) {
+                remove(queue);
+                checkAndSize(queue);
+            }
+            counter.passed();
         }
+
         counter.passed();
     }
 
-    private void checkAndSize(final Deque<Object> deque, final T queue) {
-        if (!deque.isEmpty() && random.nextBoolean()) {
-            check(deque, queue);
+    private int checkAndSize(final T queue) {
+        final int size = queue.size();
+        if (!queue.isEmpty() && random.nextBoolean()) {
+            check(queue);
         }
-        assertSize(deque.size(), queue);
+        return size;
     }
 
-    protected void remove(final Deque<Object> deque, final T queue) {
-        assertEquals("dequeue()", deque.removeFirst(), queue.dequeue());
+    protected void remove(final T queue) {
+        queue.dequeue();
     }
 
-    protected void check(final Deque<Object> deque, final T queue) {
-        assertEquals("element()", deque.element(), queue.element());
+    protected void check(final T queue) {
+        queue.element();
     }
 
-    protected void add(final Deque<Object> deque, final T queue, final Object element) {
-        deque.addLast(element);
+    protected void add(final T queue, final Object element) {
         queue.enqueue(element);
     }
 
-    protected void linearTest(final Deque<Object> deque, final T queue) {
+    protected List<T> linearTest(final T queue) {
         // Do nothing by default
+        return List.of();
     }
 
     protected Object randomElement() {
@@ -159,148 +180,80 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> extends Asserts {
     }
 
     protected void assertSize(final int size, final T queue) {
+        counter.nextTest();
         assertEquals("size()", size, queue.size());
         assert queue.size() == size : "Expected size() " + size + ", found " + queue.size();
         assert (size == 0) == queue.isEmpty() : "Expected isEmpty() " + (size == 0) + ", found " + queue.isEmpty();
+        counter.passed();
     }
 
-    enum Mode {
-        MODULE("Module") {
-            @Override
-            public <T> ZMethod<T> getMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-                return checkStatic(true, new ZMethod<>(instance, name, args));
-            }
-        },
-        ADT("ADT") {
-            @Override
-            public <T> ZMethod<T> getMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-                final Object[] a = new Object[args.length + 1];
-                a[0] = instance;
-                final Class<?>[] result = new Class<?>[args.length + 1];
-                result[0] = instance.getClass();
-                System.arraycopy(args, 0, result, 1, args.length);
-
-                return checkStatic(true, new ZMethod<T>(instance, name, result) {
-                    @Override
-                    protected T invoke(final Object... args) {
-                        if (args.length == 1) {
-                            a[1] = args[0];
-                        }
-                        return super.invoke(a);
-                    }
-                });
-            }
-        },
-        CLASS("") {
-            @Override
-            public <T> ZMethod<T> getMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-                return checkStatic(false, new ZMethod<>(instance, name, args));
-            }
-        };
-
-        private final String suffix;
-
-        Mode(final String suffix) {
-            this.suffix = suffix;
-        }
-
-        private static <T> ZMethod<T> checkStatic(final boolean isStatic, final ZMethod<T> method) {
-            if (isStatic != Modifier.isStatic(method.method.getModifiers())) {
-                throw new AssertionError("Method " + method.method.getName() + " in " + method.method.getDeclaringClass() + (isStatic ? " must" : " must not") + " be static");
-            }
-            return method;
-        }
-
-        public abstract <T> ZMethod<T> getMethod(Object instance, String name, Class<?>... args) throws NoSuchMethodException;
-    }
-
-    protected static class ZMethod<T> {
-        private final Object instance;
-        private final Method method;
-
-        public ZMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-            this.instance = instance;
-            method = instance.getClass().getMethod(name, args);
-        }
-
-        protected T invoke(final Object... args) {
-            try {
-                @SuppressWarnings("unchecked")
-                final T result = (T) method.invoke(instance, args);
-                return result;
-            } catch (final Exception e) {
-                throw new AssertionError("Error calling method " + method.getName(), e);
-            }
+    @Override
+    protected void checkResult(final String call, final Object expected, final Object actual) {
+        if (expected instanceof Queue) {
+            super.checkResult(call, toList((Queue) expected), toList((Queue) actual));
+        } else {
+            super.checkResult(call, expected, actual);
         }
     }
 
-    public interface QueueFactory<T> {
-        T create(String className, Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException;
+    private static List<Object> toList(final Queue queue) {
+        final List<Object> list = Stream.generate(queue::dequeue).limit(queue.size()).collect(Collectors.toUnmodifiableList());
+        list.forEach(queue::enqueue);
+        return list;
     }
 
-    static class Queue {
-        private final ZMethod<Void> enqueue;
-        private final ZMethod<Object> element;
-        private final ZMethod<Object> dequeue;
-        private final ZMethod<Integer> size;
-        private final ZMethod<Boolean> isEmpty;
-        private final ZMethod<Void> clear;
-        private final Mode mode;
-        protected final Object instance;
+    /**
+     * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
+     */
+    protected interface Queue {
+        void enqueue(Object element);
+        Object element();
+        Object dequeue();
+        int size();
+        boolean isEmpty();
+        void clear();
+    }
 
-        public Queue(final String name, final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
-            this(createInstance(name, mode), mode);
+    protected static class ReferenceQueue implements Queue {
+        protected final Deque<Object> deque;
+
+        public ReferenceQueue(final Stream<Object> elements) {
+            deque = elements.collect(Collectors.toCollection(ArrayDeque::new));
         }
 
-        public Queue(final Object instance, final Mode mode) throws NoSuchMethodException {
-            this.mode = mode;
-            this.instance = instance;
-
-            enqueue = findMethod("enqueue", Object.class);
-            element = findMethod("element");
-            dequeue = findMethod("dequeue");
-            size = findMethod("size");
-            isEmpty = findMethod("isEmpty");
-            clear = findMethod("clear");
-        }
-
-        private static Object createInstance(final String name, final Mode mode) throws MalformedURLException, ClassNotFoundException {
-            final String className = "queue." + name + mode.suffix;
-            final URL url = new File(".").toURI().toURL();
-            final Class<?> clazz = new URLClassLoader(new URL[]{url}).loadClass(className);
-            try {
-                return clazz.newInstance();
-            } catch (final Exception e) {
-                throw new AssertionError("Cannot create instance of " + className, e);
-            }
-        }
-
-        protected <T> ZMethod<T> findMethod(final String name, final Class<?>... args) throws NoSuchMethodException {
-            return mode.getMethod(instance, name, args);
-        }
-
+        @Override
         public void enqueue(final Object element) {
-            enqueue.invoke(element);
+            deque.addLast(element);
         }
 
+        @Override
         public Object element() {
-            return element.invoke();
+            return deque.getFirst();
         }
 
+        @Override
         public Object dequeue() {
-            return dequeue.invoke();
+            return deque.removeFirst();
         }
 
+        @Override
         public int size() {
-            return size.invoke();
+            return deque.size();
         }
 
+        @Override
         public boolean isEmpty() {
-            return isEmpty.invoke();
+            return deque.isEmpty();
         }
 
+        @Override
         public void clear() {
-            clear.invoke();
+            deque.clear();
+        }
+
+        @Override
+        public String toString() {
+            return deque.toString();
         }
     }
 }
