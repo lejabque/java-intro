@@ -8,22 +8,24 @@ public class ArrayQueue {
     private int size = 0;
 
     // Pre: element != null
+    // Post: n' = n + 1 && (i in [1..n] -> a[i]' = a[i]) && a[n + 1]' = element
     public void enqueue(Object element) {
         assert element != null;
         expandQueue();
         elements[(head + size) % elements.length] = element;
         size++;
     }
-    // Post: n' = n + 1 && (i in [1..n] -> a[i]' = a[i]) && a[n + 1]' = element
 
     // Pre: n > 0
+    // Post: R = a[1] && immutable
     public Object element() {
         assert size > 0;
         return elements[head];
     }
-    // Post: R = a[1] && immutable
 
     // Pre: n > 0
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1])
+    // R = a[1]
     public Object dequeue() {
         assert size > 0;
         Object resElement = element();
@@ -32,10 +34,9 @@ public class ArrayQueue {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1]) && a[n]' = null
-    // R = a[1]
 
     // Pre: element != null
+    // Post: n' = n + 1 && (i in [2..n+1] -> a[i]' = a[i - 1]) && a[1]' = element
     public void push(Object element) {
         assert element != null;
         expandQueue();
@@ -43,9 +44,10 @@ public class ArrayQueue {
         head = (head - 1 + elements.length) % elements.length;
         size++;
     }
-    // Post: n' = n + 1 && (i in [2..n+1] -> a[i]' = a[i - 1]) && a[1]' = element
 
     // Pre: n > 0
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i])
+    // R = a[1]
     public Object remove() {
         assert size > 0;
         Object resElement = peek();
@@ -53,46 +55,45 @@ public class ArrayQueue {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n]' = null
-    // R = a[1]
 
     // Pre: n > 0
+    // Post: R = a[n] && immutable
     public Object peek() {
         assert size > 0;
         return elements[(head + size - 1) % elements.length];
     }
-    // Post: R = a[n] && immutable
 
     // Pre: n > ind >= 0
+    // Post: R = a[ind + 1] && immutable
     public Object get(int ind) {
         assert size > ind && ind >= 0;
         return elements[(head + ind) % elements.length];
     }
-    // Post: R = a[ind + 1] && immutable
 
     // Pre: n > ind >= 0 && element != null
+    // Post:  n' = n && (i in [1..n] && i != ind + 1 -> a[i]' = a[i]) && a[ind + 1]' = element
     public void set(int ind, Object element) {
         assert size > ind && ind >= 0 && element != null;
         elements[(head + ind) % elements.length] = element;
     }
-    // Post:  n' = n && (i in [1..n] && i != ind + 1 -> a[i]' = a[i]) && a[ind + 1]' = element
 
+    // Post: R = n && immutable
     public int size() {
         return size;
     }
-    // Post: R = n && immutable
 
+    // Post: R = (n == 0) && immutable
     public boolean isEmpty() {
         return size() == 0;
     }
-    // Post: R = (n == 0) && immutable
 
+    // Post: n = 0
     public void clear() {
         elements = new Object[2];
         head = size = 0;
     }
-    // Post: n = 0
 
+    // Post: immutable
     private void expandQueue() {
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];
