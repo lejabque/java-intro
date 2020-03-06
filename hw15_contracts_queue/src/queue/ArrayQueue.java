@@ -14,7 +14,7 @@ public class ArrayQueue {
         elements[(head + size) % elements.length] = element;
         size++;
     }
-    // Post: n' = n + 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n] = element
+    // Post: n' = n + 1 && (i in [1..n] -> a[i]' = a[i]) && a[n + 1]' = element
 
     // Pre: n > 0
     public Object element() {
@@ -32,7 +32,7 @@ public class ArrayQueue {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1]) && a[n] = null
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1]) && a[n]' = null
     // R = a[1]
 
     // Pre: element != null
@@ -43,7 +43,7 @@ public class ArrayQueue {
         head = (head - 1 + elements.length) % elements.length;
         size++;
     }
-    // Post: n' = n + 1 && (i in [2..n] -> a[i]' = a[i - 1]) && a[1] = element
+    // Post: n' = n + 1 && (i in [2..n+1] -> a[i]' = a[i - 1]) && a[1]' = element
 
     // Pre: n > 0
     public Object remove() {
@@ -53,7 +53,7 @@ public class ArrayQueue {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n] = null
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n]' = null
     // R = a[1]
 
     // Pre: n > 0

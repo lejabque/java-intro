@@ -14,7 +14,7 @@ public class ArrayQueueModule {
         elements[(head + size) % elements.length] = element;
         size++;
     }
-    // Post: n' = n + 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n] = element
+    // Post: n' = n + 1 && (i in [1..n] -> a[i]' = a[i]) && a[n + 1]' = element
 
     // Pre: n > 0
     public static Object element() {
@@ -32,7 +32,7 @@ public class ArrayQueueModule {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1]) && a[n] = null
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i + 1]) && a[n]' = null
     // R = a[1]
 
     // Pre: element != null
@@ -43,7 +43,7 @@ public class ArrayQueueModule {
         head = (head - 1 + elements.length) % elements.length;
         size++;
     }
-    // Post: n' = n + 1 && (i in [2..n] -> a[i]' = a[i - 1]) && a[1] = element
+    // Post: n' = n + 1 && (i in [2..n+1] -> a[i]' = a[i - 1]) && a[1]' = element
 
     // Pre: n > 0
     public static Object remove() {
@@ -53,7 +53,7 @@ public class ArrayQueueModule {
         size--;
         return resElement;
     }
-    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n] = null
+    // Post: n' = n - 1 && (i in [1..n-1] -> a[i]' = a[i]) && a[n]' = null
     // R = a[1]
 
     // Pre: n > 0
@@ -80,12 +80,12 @@ public class ArrayQueueModule {
     public static int size() {
         return size;
     }
-    // Post: R = n
+    // Post: R = n && immutable
 
     public static boolean isEmpty() {
         return size() == 0;
     }
-    // Post: R = (n == 0)
+    // Post: R = (n == 0) && immutable
 
     public static void clear() {
         elements = new Object[2];

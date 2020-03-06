@@ -14,9 +14,10 @@ public class ArrayQueueADT {
         queue.elements[(queue.head + queue.size) % queue.elements.length] = element;
         queue.size++;
     }
-    // Post: queue.n' = queue.n + 1 && any i in [1..n-1]: queue.a[i]' = queue.a[i] && queue.a[n] = element
+    // Post: queue.n' = queue.n + 1 && any i in [1..queue.n]:
+    //                                  queue.a[i]' = queue.a[i] && queue.a[queue.n + 1]' = element
 
-    // Pre: queue != null && queue.n >= 0
+    // Pre: queue != null && queue.n > 0
     public static Object element(ArrayQueueADT queue) {
         assert queue != null && queue.size > 0;
         return queue.elements[queue.head];
@@ -32,7 +33,7 @@ public class ArrayQueueADT {
         queue.size--;
         return resElement;
     }
-    // Post: queue.n' = queue.n - 1 && (i in [1..n-1] -> queue.a[i]' = queue.a[i + 1]) && queue.a[n] = null
+    // Post: queue.n' = queue.n - 1 && (i in [1..n-1] -> queue.a[i]' = queue.a[i + 1]) && queue.a[queue.n]' = null
     // R = queue.a[1]
 
     // Pre: queue != null && element != null
@@ -43,7 +44,7 @@ public class ArrayQueueADT {
         queue.head = (queue.head - 1 + queue.elements.length) % queue.elements.length;
         queue.size++;
     }
-    // Post: queue.n' = queue.n + 1 && (i in [2..n] -> queue.a[i]' = queue.a[i - 1]) && queue.a[1] = element
+    // Post: queue.n' = queue.n + 1 && (i in [2..queue.n+1] -> queue.a[i]' = queue.a[i - 1]) && queue.a[1]' = element
 
     // Pre: queue != null && queue.n > 0
     public static Object remove(ArrayQueueADT queue) {
@@ -53,7 +54,7 @@ public class ArrayQueueADT {
         queue.size--;
         return resElement;
     }
-    // Post: queue.n' = queue.n - 1 && (i in [1..n-1] -> queue.a[i]' = queue.a[i]) && queue.a[n] = null
+    // Post: queue.n' = queue.n - 1 && (i in [1..queue.n-1] -> queue.a[i]' = queue.a[i]) && queue.a[queue.n]' = null
     // R = queue.a[1]
 
     // Pre: queue != null && queue.n > 0
@@ -61,7 +62,7 @@ public class ArrayQueueADT {
         assert queue.size > 0;
         return queue.elements[(queue.head + queue.size - 1) % queue.elements.length];
     }
-    // Post: R = queue.a[n] && immutable
+    // Post: R = queue.a[queue.n] && immutable
 
     // Pre: queue != null && queue.n > ind >= 0
     public static Object get(ArrayQueueADT queue, int ind) {
@@ -98,7 +99,7 @@ public class ArrayQueueADT {
         queue.elements = new Object[2];
         queue.head = queue.size = 0;
     }
-    // Post: queue.n = 0 && immutable
+    // Post: queue.n = 0
 
     private static void expandQueue(ArrayQueueADT queue) {
         if (queue.size == queue.elements.length) {
