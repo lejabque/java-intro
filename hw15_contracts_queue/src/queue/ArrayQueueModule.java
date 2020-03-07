@@ -93,7 +93,9 @@ public class ArrayQueueModule {
         head = size = 0;
     }
 
-    // Post: immutable
+    // Pre: true
+    // Post: elements.length' = elements.length * 2 && a'=a && n'=n &&
+    // ((0 <= i < n) -> elements[i] = a[i-1]) && (n <= i < elements.length' -> elements[i] = null) && head' = 0
     private static void expandQueue() {
         if (elements.length == size) {
             Object[] newElements = new Object[elements.length * 2];

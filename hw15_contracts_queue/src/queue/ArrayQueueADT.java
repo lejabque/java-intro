@@ -100,7 +100,8 @@ public class ArrayQueueADT {
     }
 
     // Pre: queue != null
-    // Post: immutable
+    // Post: elements.length' = elements.length * 2 && a'=a && n'=n &&
+    // ((0 <= i < n) -> elements[i] = a[i-1]) && (n <= i < elements.length' -> elements[i] = null) && head' = 0
     private static void expandQueue(ArrayQueueADT queue) {
         if (queue.size == queue.elements.length) {
             Object[] newElements = new Object[queue.elements.length * 2];

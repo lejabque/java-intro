@@ -1,5 +1,7 @@
 package queue;
 
+import java.util.function.Predicate;
+
 // Inv: a[1], ..., a[n], n >= 0
 // i in [1..n]: a[i] != null
 public interface Queue {
@@ -21,6 +23,22 @@ public interface Queue {
     // Post: R = n && immutable
 
     void clear();
+    // Post: n = 0
+
+    // Pre: pred != null
+    void removeIf(Predicate<Object> pred);
+    // Post: a' = {x in a: pred(x) == false} && n' = |queue'|
+
+    // Pre: pred != null
+    void retainIf(Predicate<Object> pred);
+    // Post: n = 0
+
+    // Pre: pred != null
+    void takeWhile(Predicate<Object> pred);
+    // Post: n = 0
+
+    // Pre: pred != null
+    void dropWhile(Predicate<Object> pred);
     // Post: n = 0
 
     boolean isEmpty();
