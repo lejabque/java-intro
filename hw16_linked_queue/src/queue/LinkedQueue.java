@@ -26,6 +26,9 @@ public class LinkedQueue extends AbstractQueue {
         Object res = head.value;
         size--;
         head = head.prev;
+        if (size == 0) {
+            tail = null;
+        }
         return res;
     }
 
@@ -40,25 +43,6 @@ public class LinkedQueue extends AbstractQueue {
         size = 0;
         head = null;
         tail = null;
-    }
-
-    @Override
-    public void takeWhile(Predicate<Object> pred) {
-        Node cur = head;
-        size = 0;
-        head = null;
-        tail = null;
-        while (cur != null && (pred.test(cur.value))) {
-            if (head == null) {
-                head = cur;
-            }
-            size++;
-            tail = cur;
-            cur = cur.prev;
-        }
-        if (tail != null) {
-            tail.prev = null;
-        }
     }
 
     private static class Node {

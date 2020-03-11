@@ -36,18 +36,6 @@ public class ArrayQueue extends AbstractQueue {
         head = size = 0;
     }
 
-    @Override
-    public void takeWhile(Predicate<Object> pred) {
-        int newSize = 0;
-        while (newSize < size && pred.test(elements[(head + newSize) % elements.length])) {
-            newSize++;
-        }
-        for (int i = newSize; i < size; i++) {
-            elements[(head + i) % elements.length] = null;
-        }
-        size = newSize;
-    }
-
     private void expandQueue() {
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];

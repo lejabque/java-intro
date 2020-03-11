@@ -19,9 +19,10 @@ public abstract class AbstractQueue implements Queue {
     public void retainIf(Predicate<Object> pred) {
         int sz = size;
         for (int i = 0; i < sz; i++) {
-            Object element = dequeue();
-            if (pred.test(element)) {
-                enqueue(element);
+            if (pred.test(element())) {
+                enqueue(dequeue());
+            } else {
+                dequeue();
             }
         }
     }
@@ -34,6 +35,18 @@ public abstract class AbstractQueue implements Queue {
     @Override
     public void dropWhile(Predicate<Object> pred) {
         while (!isEmpty() && (pred.test(element()))) {
+            dequeue();
+        }
+    }
+
+    @Override
+    public void takeWhile(Predicate<Object> pred) {
+        int sz = size;
+        while (sz > 0 && pred.test(element())) {
+            enqueue(dequeue());
+            sz--;
+        }
+        while (sz-- > 0) {
             dequeue();
         }
     }
