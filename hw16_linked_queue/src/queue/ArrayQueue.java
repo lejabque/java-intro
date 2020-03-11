@@ -37,26 +37,6 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    public void removeIf(Predicate<Object> pred) {
-        retainIf(pred.negate());
-    }
-
-    @Override
-    public void retainIf(Predicate<Object> pred) {
-        Object[] newElements = new Object[elements.length];
-        int newSize = 0;
-        for (int i = 0; i < size; i++) {
-            if (pred.test(elements[(head + i) % elements.length])) {
-                newElements[newSize] = elements[(head + i) % elements.length];
-                newSize++;
-            }
-        }
-        head = 0;
-        elements = newElements;
-        size = newSize;
-    }
-
-    @Override
     public void takeWhile(Predicate<Object> pred) {
         int newSize = 0;
         while (newSize < size && pred.test(elements[(head + newSize) % elements.length])) {
@@ -66,14 +46,6 @@ public class ArrayQueue extends AbstractQueue {
             elements[(head + i) % elements.length] = null;
         }
         size = newSize;
-    }
-
-
-    @Override
-    public void dropWhile(Predicate<Object> pred) {
-        while (!isEmpty() && (pred.test(element()))) {
-            dequeue();
-        }
     }
 
     private void expandQueue() {

@@ -43,34 +43,6 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    public void removeIf(Predicate<Object> pred) {
-        tail = null;
-        Node cur = head;
-        while (cur != null) {
-            if (pred.test(cur.value)) {
-                if (cur == head) {
-                    head = cur.prev;
-                }
-                if (tail != null) {
-                    tail.prev = cur.prev;
-                }
-                size--;
-            } else {
-                if (tail != null) {
-                    tail.prev = cur;
-                }
-                tail = cur;
-            }
-            cur = cur.prev;
-        }
-    }
-
-    @Override
-    public void retainIf(Predicate<Object> pred) {
-        removeIf(pred.negate());
-    }
-
-    @Override
     public void takeWhile(Predicate<Object> pred) {
         Node cur = head;
         size = 0;
@@ -86,14 +58,6 @@ public class LinkedQueue extends AbstractQueue {
         }
         if (tail != null) {
             tail.prev = null;
-        }
-    }
-
-
-    @Override
-    public void dropWhile(Predicate<Object> pred) {
-        while (!isEmpty() && (pred.test(element()))) {
-            dequeue();
         }
     }
 
