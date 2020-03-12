@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
+ */QueueIfWhile
 public class QueueIfWhileTest extends QueueTest<QueueIfWhileTest.QueueIfWhile> {
     public QueueIfWhileTest() {
         super(QueueIfWhile.class, ReferenceQueueIfWhile::new);

@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.function.Predicate;
-
 public class ArrayQueue extends AbstractQueue {
     private Object[] elements = new Object[2];
     private int head = 0;

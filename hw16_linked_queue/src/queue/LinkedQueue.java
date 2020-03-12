@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.function.Predicate;
-
 public class LinkedQueue extends AbstractQueue {
     private Node head;
     private Node tail;

@@ -1,5 +1,4 @@
 package queue;
-
 import java.util.function.Predicate;
 
 public abstract class AbstractQueue implements Queue {

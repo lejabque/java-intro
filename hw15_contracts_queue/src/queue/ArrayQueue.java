@@ -94,7 +94,7 @@ public class ArrayQueue {
     }
 
     // Pre: true
-    // Post: elements.length' = elements.length * 2 && a'=a && n'=n &&
+    // Post: a'=a && n'=n && elements.length' = elements.length * 2 &&
     // ((0 <= i < n) -> elements[i]' = a[i-1]) && (n <= i < elements.length' -> elements[i]' = null) && head' = 0
     private void expandQueue() {
         if (size == elements.length) {
