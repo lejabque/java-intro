@@ -26,19 +26,24 @@ public interface Queue {
     void clear();
 
     // Pre: pred != null
-    // Post:TODO
+    // Post: M: (m in M -> 1 <= m <= n && pred(a[m]) == false) && (i < j in [1..|M|] -> M[i] < M[j])
+    // && n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void removeIf(Predicate<Object> pred);
 
+
     // Pre: pred != null
-    // Post: TODO
+    // Post: M: (m in M -> 1 <= m <= n && pred(a[m]) == true) && (i < j in [1..|M|] -> M[i] < M[j])
+    // && n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void retainIf(Predicate<Object> pred);
 
     // Pre: pred != null
-    // Post: TODO
+    // Post: 0 <= m <= n: (1 <= i <= m -> pred(a[i]) == true) && (m < n - > pred(a[m + 1] == false)
+    // && n' = m && (1 <= i <= n' -> a[i]' = a[i])
     void takeWhile(Predicate<Object> pred);
 
     // Pre: pred != null
-    // Post: TODO
+    // Post: 0 <= m <= n: (1 <= i <= m -> pred(a[i]) == true) && (m < n - > pred(a[m + 1] == false)
+    // && n' = n - m && (1 <= i <= n' -> a[i]' = a[m + i])
     void dropWhile(Predicate<Object> pred);
 
     // Post: R = (n == 0) && immutable
