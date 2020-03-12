@@ -27,7 +27,7 @@ public interface Queue {
 
     // Pre: pred != null
     //
-    // let M - set: (m in M -> 1 <= m <= n && pred(a[m]) == false) && (m not in M && 1 <= m <= n -> pred(a[m]) == true) &&
+    // let M - sequence of integers: (m in M -> 1 <= m <= n && pred(a[m]) == false) && (m not in M && 1 <= m <= n -> pred(a[m]) == true) &&
     // (i < j in [1..|M|] -> M[i] < M[j])
     // Post: n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void removeIf(Predicate<Object> pred);
@@ -35,7 +35,7 @@ public interface Queue {
 
     // Pre: pred != null
     //
-    // let M - set: (m in M -> 1 <= m <= n && pred(a[m]) == true) && (m not in M && 1 <= m <= n -> pred(a[m]) == false)
+    // let M - sequence of integers: (m in M -> 1 <= m <= n && pred(a[m]) == true) && (m not in M && 1 <= m <= n -> pred(a[m]) == false)
     // && (i < j in [1..|M|] -> M[i] < M[j])
     // Post: n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void retainIf(Predicate<Object> pred);
