@@ -36,7 +36,7 @@ public class BigIntegerEvaluator implements Evaluator<BigInteger> {
 
     @Override
     public BigInteger count(BigInteger x) {
-        return new BigInteger(String.valueOf(x.bitCount()));
+        return BigInteger.valueOf(x.bitCount());
     }
 
     @Override

@@ -28,6 +28,8 @@ public class GenericTabulator implements Tabulator {
                 return new ShortEvaluator();
             case "d":
                 return new CheckedDoubleEvaluator();
+            case "f":
+                return new FloatEvaluator();
             case "bi":
                 return new BigIntegerEvaluator();
         }
@@ -46,8 +48,7 @@ public class GenericTabulator implements Tabulator {
                     try {
                         ans[i][j][k] = expr.evaluate(evaluator.parse(Integer.toString(i + x1)),
                                 evaluator.parse(Integer.toString(j + y1)), evaluator.parse(Integer.toString(k + z1)), evaluator);
-
-                    } catch (EvaluatingException | ArithmeticException e) {
+                    } catch (EvaluatingException e) {
                         ans[i][j][k] = null;
                     }
                 }
