@@ -51,4 +51,9 @@ public class LongEvaluator implements Evaluator<Long> {
     public Long parse(String value) {
         return Long.parseLong(value);
     }
+
+    @Override
+    public Long getValue(int value) {
+        return (long) value;
+    }
 }

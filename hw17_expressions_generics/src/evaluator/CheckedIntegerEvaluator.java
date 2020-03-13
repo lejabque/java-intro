@@ -71,6 +71,11 @@ public class CheckedIntegerEvaluator implements Evaluator<Integer> {
     }
 
     @Override
+    public Integer getValue(int value) {
+        return value;
+    }
+
+    @Override
     public Integer max(Integer x, Integer y) {
         return Math.max(x, y);
     }

@@ -47,4 +47,9 @@ public class CheckedDoubleEvaluator implements Evaluator<Double> {
         return Double.parseDouble(value);
     }
 
+    @Override
+    public Double getValue(int value) {
+        return (double) value;
+    }
+
 }

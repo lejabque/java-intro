@@ -93,9 +93,8 @@ public class ArrayQueue {
         head = size = 0;
     }
 
-    // Pre: true
-    // Post: a'=a && n'=n && elements.length' = elements.length * 2 &&
-    // ((0 <= i < n) -> elements[i]' = a[i-1]) && (n <= i < elements.length' -> elements[i]' = null) && head' = 0
+    // Pre: elements != null && size != null
+    // Post: elements.length > size && immutable
     private void expandQueue() {
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];

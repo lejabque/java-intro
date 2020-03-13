@@ -46,4 +46,9 @@ public class FloatEvaluator implements Evaluator<Float> {
     public Float parse(String value) {
         return Float.parseFloat(value);
     }
+
+    @Override
+    public Float getValue(int value) {
+        return (float) value;
+    }
 }

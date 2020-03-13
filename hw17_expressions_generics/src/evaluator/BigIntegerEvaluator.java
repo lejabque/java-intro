@@ -53,4 +53,9 @@ public class BigIntegerEvaluator implements Evaluator<BigInteger> {
     public BigInteger parse(String value) {
         return new BigInteger(value);
     }
+
+    @Override
+    public BigInteger getValue(int value) {
+        return BigInteger.valueOf(value);
+    }
 }

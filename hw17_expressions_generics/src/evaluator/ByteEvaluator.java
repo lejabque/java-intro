@@ -34,7 +34,7 @@ public class ByteEvaluator implements Evaluator<Byte> {
 
     @Override
     public Byte count(Byte x) {
-        return x == -1 ? 16 : (byte) (Integer.bitCount(x) % 16);
+        return x == -1 ? 8 : (byte) (Integer.bitCount(x) % 8);
     }
 
     @Override
@@ -49,6 +49,11 @@ public class ByteEvaluator implements Evaluator<Byte> {
 
     @Override
     public Byte parse(String value) {
-        return Byte.parseByte(value);
+        return (byte) Integer.parseInt(value);
+    }
+
+    @Override
+    public Byte getValue(int value) {
+        return (byte) value;
     }
 }

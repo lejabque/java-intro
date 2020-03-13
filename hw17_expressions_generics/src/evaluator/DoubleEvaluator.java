@@ -46,4 +46,9 @@ public class DoubleEvaluator implements Evaluator<Double> {
     public Double parse(String value) {
         return Double.parseDouble(value);
     }
+
+    @Override
+    public Double getValue(int value) {
+        return (double) value;
+    }
 }

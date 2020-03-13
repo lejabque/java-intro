@@ -51,4 +51,9 @@ public class ShortEvaluator implements Evaluator<Short> {
     public Short parse(String value) {
         return (short) Integer.parseInt(value);
     }
+
+    @Override
+    public Short getValue(int value) {
+        return (short) value;
+    }
 }

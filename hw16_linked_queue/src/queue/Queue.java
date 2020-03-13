@@ -28,7 +28,7 @@ public interface Queue {
     // Pre: pred != null
     //
     // let M - sequence of integers:  (m in M -> 1 <= m <= n) && (i < j in [1..|M|] -> M[i] < M[j]) &&
-    // (m in M -> pred(a[m]) == false) && (m not in M && 1 <= m <= n -> pred(a[m]) == true)
+    // (for m = 1..n: m in M <=> !pred(a[m]))
     // Post: n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void removeIf(Predicate<Object> pred);
 
@@ -36,20 +36,20 @@ public interface Queue {
     // Pre: pred != null
     //
     // let M - sequence of integers:  (m in M -> 1 <= m <= n) && (i < j in [1..|M|] -> M[i] < M[j]) &&
-    // (m in M -> 1 <= m <= n && pred(a[m]) == true) && (m not in M && 1 <= m <= n -> pred(a[m]) == false)
+    // (for m = 1..n: m in M <=> pred(a[m]))
     // Post: n' = |M| && (1 <= i <= n' -> a[i]' = a[M[i]])
     void retainIf(Predicate<Object> pred);
 
     // Pre: pred != null
     //
-    // let m: 0 <= m <= n && (1 <= i <= m -> pred(a[i]) == true) && (m < n -> pred(a[m + 1] == false)
-    // Post: n' = m && (1 <= i <= n' -> a[i]' = a[i])
+    // let m: 0 <= m <= n && (any 1 <= i <= m -> pred(a[i]) == true) && (m < n -> pred(a[m + 1] == false)
+    // Post: n' = m && (any 1 <= i <= n' -> a[i]' = a[i])
     void takeWhile(Predicate<Object> pred);
 
     // Pre: pred != null
     //
-    // let m: 0 <= m <= n && (1 <= i <= m -> pred(a[i]) == true) && (m < n -> pred(a[m + 1] == false)
-    // Post: n' = n - m && (1 <= i <= n' -> a[i]' = a[m + i])
+    // let m: 0 <= m <= n && (any 1 <= i <= m -> pred(a[i]) == true) && (m < n -> pred(a[m + 1] == false)
+    // Post: n' = n - m && (any 1 <= i <= n' -> a[i]' = a[m + i])
     void dropWhile(Predicate<Object> pred);
 
     // Post: R = (n == 0) && immutable

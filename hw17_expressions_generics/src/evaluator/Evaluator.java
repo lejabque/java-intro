@@ -8,6 +8,7 @@ public interface Evaluator<T> {
     T negate(T x);
     T count(T x);
     T parse(String value);
+    T getValue(int value);
     T max(T x, T y);
     T min(T x, T y);
 }

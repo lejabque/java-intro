@@ -1,4 +1,5 @@
 package queue;
+
 import java.util.function.Predicate;
 
 public abstract class AbstractQueue implements Queue {
@@ -16,12 +17,10 @@ public abstract class AbstractQueue implements Queue {
 
     @Override
     public void retainIf(Predicate<Object> pred) {
-        int sz = size;
-        for (int i = 0; i < sz; i++) {
-            if (pred.test(element())) {
-                enqueue(dequeue());
-            } else {
-                dequeue();
+        for (int i = size; i > 0; i--) {
+            Object el = dequeue();
+            if (pred.test(el)) {
+                enqueue(el);
             }
         }
     }

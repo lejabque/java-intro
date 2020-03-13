@@ -51,4 +51,9 @@ public class IntegerEvaluator implements Evaluator<Integer> {
     public Integer parse(String value) {
         return Integer.parseInt(value);
     }
+
+    @Override
+    public Integer getValue(int value) {
+        return value;
+    }
 }
