@@ -16,7 +16,7 @@ public class GenericTabulator implements Tabulator {
             "l", new LongEvaluator(),
             "s", new ShortEvaluator(),
             "b", new ByteEvaluator(),
-            "d", new CheckedDoubleEvaluator(),
+            "d", new DoubleEvaluator(),
             "f", new FloatEvaluator(),
             "bi", new BigIntegerEvaluator()
     );

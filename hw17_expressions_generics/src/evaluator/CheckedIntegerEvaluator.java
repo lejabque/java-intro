@@ -3,7 +3,7 @@ package evaluator;
 import exceptions.OverflowException;
 import exceptions.ZeroDivisionException;
 
-public class CheckedIntegerEvaluator implements Evaluator<Integer> {
+public class CheckedIntegerEvaluator extends IntegerEvaluator {
 
     @Override
     public Integer add(Integer x, Integer y) throws OverflowException {
@@ -58,30 +58,5 @@ public class CheckedIntegerEvaluator implements Evaluator<Integer> {
             throw new OverflowException();
         }
         return -x;
-    }
-
-    @Override
-    public Integer count(Integer x) {
-        return Integer.bitCount(x);
-    }
-
-    @Override
-    public Integer parse(String value) {
-        return Integer.parseInt(value);
-    }
-
-    @Override
-    public Integer getValue(int value) {
-        return value;
-    }
-
-    @Override
-    public Integer max(Integer x, Integer y) {
-        return Math.max(x, y);
-    }
-
-    @Override
-    public Integer min(Integer x, Integer y) {
-        return Math.min(x, y);
     }
 }
