@@ -5,10 +5,10 @@ import evaluator.Evaluator;
 
 import java.util.Objects;
 
-public abstract class BinaryOperation<T> implements TripleExpression<T> {
-    protected final TripleExpression<T> first, second;
+public abstract class BinaryOperation<T> implements GenericExpression<T> {
+    protected final GenericExpression<T> first, second;
 
-    public BinaryOperation(TripleExpression<T> first, TripleExpression<T> second) {
+    public BinaryOperation(GenericExpression<T> first, GenericExpression<T> second) {
         this.first = first;
         this.second = second;
     }

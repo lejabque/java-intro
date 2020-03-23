@@ -1,4 +1,4 @@
-package generic;
+package tests;
 
 /**
  * Count, min, max over unchecked int, long, short test.

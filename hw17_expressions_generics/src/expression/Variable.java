@@ -5,7 +5,7 @@ import evaluator.Evaluator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public final class Variable<T> implements TripleExpression<T> {
+public final class Variable<T> implements GenericExpression<T> {
     private final String variable;
 
     public Variable(String var) {

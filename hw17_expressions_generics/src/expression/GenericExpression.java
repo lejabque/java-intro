@@ -2,9 +2,6 @@ package expression;
 
 import evaluator.Evaluator;
 
-/**
- * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- */
-public interface TripleExpression<T> {
+public interface GenericExpression<T> extends ToMiniString {
     T evaluate(T x, T y, T z, Evaluator<T> evaluator);
 }

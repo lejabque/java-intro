@@ -1,4 +1,4 @@
-package generic;
+package tests;
 
 /**
  * Generic unchecked int, float, byte test.

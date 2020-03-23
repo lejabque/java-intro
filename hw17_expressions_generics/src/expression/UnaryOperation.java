@@ -5,10 +5,10 @@ import evaluator.Evaluator;
 
 import java.util.Objects;
 
-public abstract class UnaryOperation<T> implements TripleExpression<T> {
-    protected final TripleExpression<T> first;
+public abstract class UnaryOperation<T> implements GenericExpression<T> {
+    protected final GenericExpression<T> first;
 
-    public UnaryOperation(TripleExpression<T> first) {
+    public UnaryOperation(GenericExpression<T> first) {
         this.first = first;
     }
 

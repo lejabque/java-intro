@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Max<T> extends BinaryOperation<T> {
 
-    public Max(TripleExpression<T> first, TripleExpression<T> second) {
+    public Max(GenericExpression<T> first, GenericExpression<T> second) {
         super(first, second);
     }
 

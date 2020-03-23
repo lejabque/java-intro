@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Min<T> extends BinaryOperation<T> {
 
-    public Min(TripleExpression<T> first, TripleExpression<T> second) {
+    public Min(GenericExpression<T> first, GenericExpression<T> second) {
         super(first, second);
     }
 

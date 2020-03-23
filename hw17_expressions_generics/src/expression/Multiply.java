@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Multiply<T> extends BinaryOperation<T> {
 
-    public Multiply(TripleExpression<T> first, TripleExpression<T> second) {
+    public Multiply(GenericExpression<T> first, GenericExpression<T> second) {
         super(first, second);
     }
 

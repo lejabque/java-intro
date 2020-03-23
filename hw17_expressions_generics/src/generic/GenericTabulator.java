@@ -1,12 +1,11 @@
 package generic;
 
-import expression.TripleExpression;
+import expression.GenericExpression;
 import evaluator.*;
 import exceptions.*;
 import parser.ExpressionParser;
 import parser.StringSource;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GenericTabulator implements Tabulator {
@@ -29,7 +28,7 @@ public class GenericTabulator implements Tabulator {
 
     private <T> Object[][][] makeTable(Evaluator<T> evaluator, String expression, int x1, int x2,
                                        int y1, int y2, int z1, int z2) throws ParsingException {
-        TripleExpression<T> expr = new ExpressionParser<T>(new StringSource(expression)).parseExpression();
+        GenericExpression<T> expr = new ExpressionParser<T>(new StringSource(expression)).parseExpression();
         Object[][][] ans = new Object[x2 - x1 + 1][y2 - y1 + 1][z2 - z1 + 1];
         for (int i = 0; i <= x2 - x1; i++) {
             for (int j = 0; j <= y2 - y1; j++) {

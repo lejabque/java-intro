@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Divide<T> extends BinaryOperation<T> {
 
-    public Divide(TripleExpression<T> first, TripleExpression<T> second) {
+    public Divide(GenericExpression<T> first, GenericExpression<T> second) {
         super(first, second);
     }
 

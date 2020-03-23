@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Count<T> extends UnaryOperation<T> {
 
-    public Count(TripleExpression<T> first) {
+    public Count(GenericExpression<T> first) {
         super(first);
     }
 

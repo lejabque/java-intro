@@ -4,7 +4,7 @@ import evaluator.Evaluator;
 
 import java.util.Objects;
 
-public final class Const<T> implements TripleExpression<T> {
+public final class Const<T> implements GenericExpression<T> {
     private final String strValue;
 
     public Const(String value) {

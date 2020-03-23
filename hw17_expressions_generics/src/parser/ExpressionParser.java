@@ -7,7 +7,7 @@ import expression.Divide;
 import expression.Count;
 import expression.Subtract;
 
-public class ExpressionParser<T> extends BaseParser implements Parser<T> {
+public class ExpressionParser<T> extends BaseParser {
 
     public ExpressionParser(StringSource stringSource) {
         super(stringSource, 3);
@@ -17,27 +17,26 @@ public class ExpressionParser<T> extends BaseParser implements Parser<T> {
         super(3);  // max length of binary operator
     }
 
-    @Override
-    public TripleExpression<T> parse(String expression) throws ParsingException {
+    public GenericExpression<T> parse(String expression) throws ParsingException {
         changeSource(new StringSource(expression));
-        TripleExpression<T> result = parseExpression();
+        GenericExpression<T> result = parseExpression();
         if (hasNext() && ch != '\0') {
             throw new MissingOpeningParenthesis(getParsingInfo());
         }
         return result;
     }
 
-    public TripleExpression<T> parseExpression() throws ParsingException {
+    public GenericExpression<T> parseExpression() throws ParsingException {
         skipWhitespace();
         return parseTerm(0);
     }
 
-    private TripleExpression<T> parseTerm(int priority) throws ParsingException {
+    private GenericExpression<T> parseTerm(int priority) throws ParsingException {
         skipWhitespace();
         if (priority == Operation.PRIORITIES.get(Operation.CONST)) {
             return parseValue();
         }
-        TripleExpression<T> parsed = parseTerm(priority + 1);
+        GenericExpression<T> parsed = parseTerm(priority + 1);
         while (true) {
             Operation curOperation = getBinaryOperator(priority);
             if (curOperation == null) {
@@ -47,10 +46,10 @@ public class ExpressionParser<T> extends BaseParser implements Parser<T> {
         }
     }
 
-    private TripleExpression<T> parseValue() throws ParsingException {
+    private GenericExpression<T> parseValue() throws ParsingException {
         skipWhitespace();
         if (test('(')) {
-            TripleExpression<T> parsed = parseExpression();
+            GenericExpression<T> parsed = parseExpression();
             skipWhitespace();
             if (!expect(')')) {
                 throw new MissingClosingParenthesis(getParsingInfo());
@@ -83,7 +82,7 @@ public class ExpressionParser<T> extends BaseParser implements Parser<T> {
         return null;
     }
 
-    private TripleExpression<T> buildBinaryOperation(TripleExpression<T> left, TripleExpression<T> right,
+    private GenericExpression<T> buildBinaryOperation(GenericExpression<T> left, GenericExpression<T> right,
                                                      Operation operation) {
         switch (operation) {
             case ADD:
@@ -102,7 +101,7 @@ public class ExpressionParser<T> extends BaseParser implements Parser<T> {
         return null;
     }
 
-    private TripleExpression<T> buildUnaryOperation(TripleExpression<T> expr,
+    private GenericExpression<T> buildUnaryOperation(GenericExpression<T> expr,
                                                  Operation operation) {
         switch (operation) {
             case COUNT:
@@ -111,14 +110,14 @@ public class ExpressionParser<T> extends BaseParser implements Parser<T> {
         return null;
     }
 
-    private TripleExpression<T> getVariable(String token) throws InvalidVariableException {
+    private GenericExpression<T> getVariable(String token) throws InvalidVariableException {
         if (Operation.VARIABLES.contains(token)) {
             return new Variable<>(token);
         }
         throw new InvalidVariableException(token, getParsingInfo());
     }
 
-    private TripleExpression<T> parseConst(boolean positive) throws ParsingException {
+    private GenericExpression<T> parseConst(boolean positive) throws ParsingException {
         final StringBuilder sb = new StringBuilder();
         if (!positive) {
             sb.append('-');

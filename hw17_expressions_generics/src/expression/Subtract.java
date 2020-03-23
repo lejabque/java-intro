@@ -4,8 +4,7 @@ import evaluator.Evaluator;
 import exceptions.OverflowException;
 
 public final class Subtract<T> extends BinaryOperation<T> {
-
-    public Subtract(TripleExpression<T> first, TripleExpression<T> second) {
+    public Subtract(GenericExpression<T> first, GenericExpression<T> second) {
         super(first, second);
     }
 

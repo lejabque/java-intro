@@ -5,7 +5,7 @@ import exceptions.OverflowException;
 
 public final class Negate<T> extends UnaryOperation<T> {
 
-    public Negate(TripleExpression<T> first) {
+    public Negate(GenericExpression<T> first) {
         super(first);
     }
 

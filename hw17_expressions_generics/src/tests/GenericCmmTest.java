@@ -1,4 +1,4 @@
-package generic;
+package tests;
 
 import java.math.BigInteger;
 
