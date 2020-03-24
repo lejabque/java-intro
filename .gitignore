@@ -12,5 +12,14 @@ hw11_expressions/src/expression/BaseTest.java
 hw12_expressions_parser/example
 hw12_expressions_parser/src/tests
 hw13_exceptions/src/tests
-
+hw17_expressions_generics/src/base
+hw17_expressions_generics/src/tests
+hw16_linked_queue/src/base
+hw16_linked_queue/src/tests
+hw15_contracts_queue/src/base
+hw15_contracts_queue/src/tests
+hw14_contracts_binsearch/src/base
+hw14_contracts_binsearch/src/tests
+hw13_exceptions/src/base
+hw13_exceptions/src/tests
 

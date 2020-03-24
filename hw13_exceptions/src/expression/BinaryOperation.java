@@ -1,6 +1,6 @@
 package expression;
 
-import expression.exceptions.EvaluatingException;
+import exceptions.EvaluatingException;
 
 import java.util.Objects;
 
