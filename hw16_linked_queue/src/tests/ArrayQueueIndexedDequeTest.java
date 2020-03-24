@@ -1,4 +1,4 @@
-package queue;
+package tests;
 
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;

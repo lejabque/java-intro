@@ -1,4 +1,4 @@
-package queue;
+package tests;
 
 import base.TestCounter;
 

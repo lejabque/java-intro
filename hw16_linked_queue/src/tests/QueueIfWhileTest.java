@@ -1,4 +1,4 @@
-package queue;
+package tests;
 
 import java.util.List;
 import java.util.function.Predicate;

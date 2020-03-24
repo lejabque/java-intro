@@ -32,20 +32,25 @@ public abstract class AbstractQueue implements Queue {
 
     @Override
     public void dropWhile(Predicate<Object> pred) {
-        while (!isEmpty() && (pred.test(element()))) {
-            dequeue();
-        }
+        applyWhile(pred, false, true);
     }
 
     @Override
     public void takeWhile(Predicate<Object> pred) {
+        applyWhile(pred, true, false);
+    }
+
+    private void applyWhile(Predicate<Object> pred, boolean saveHead, boolean saveTail) {
         int sz = size;
         while (sz > 0 && pred.test(element())) {
-            enqueue(dequeue());
+            Object el = dequeue();
+            if (saveHead) {
+                enqueue(el);
+            }
             sz--;
         }
-        while (sz-- > 0) {
-            dequeue();
+        while (sz-- > 0 && !saveTail) {
+            Object el = dequeue();
         }
     }
 }
