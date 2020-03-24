@@ -13,7 +13,7 @@
 #### Модификации
  * *Базовая*
     * Класс `GenericTabulator` должен реализовывать интерфейс
-      [Tabulator](java/expression/generic/Tabulator.java) и
+      [Tabulator](tests/java/expression/generic/Tabulator.java) и
       сроить трехмерную таблицу значений заданного выражения.
         * `mode` – режим вычислений:
            * `i` – вычисления в `int` с проверкой на переполнение;
@@ -26,33 +26,33 @@
           значение выражения для `x = x1 + i`, `y = y1 + j`, `z = z1 + k`.
           Если значение не определено (например, по причине переполнения),
           то соответствующий элемент должен быть равен `null`.
-    * [Исходный код тестов](java/expression/generic/GenericTest.java)
+    * [Исходный код тестов](tests/java/expression/generic/GenericTest.java)
  * *Сmm*
     * Дополнительно реализовать унарные операции:
         * `count` – число установленных битов, `count 5` равно 2.
     * Дополнительно реализовать бинарную операцию (минимальный приоритет):
         * `min` – минимум, `2 min 3` равно 2;
         * `max` – максимум, `2 max 3` равно 3.
-    * [Исходный код тестов](java/expression/generic/GenericCmmTest.java)
+    * [Исходный код тестов](tests/java/expression/generic/GenericCmmTest.java)
  * *Ls*
     * Дополнительно реализовать поддержку режимов:
         * `l` – вычисления в `long` без проверки на переполнение;
         * `s` – вычисления в `short` без проверки на переполнение.
-    * [Исходный код тестов](java/expression/generic/GenericLsTest.java)
+    * [Исходный код тестов](tests/java/expression/generic/GenericLsTest.java)
  * *CmmUls*
     * Реализовать операции из модификации *Cmm*.
     * Дополнительно реализовать поддержку режимов:
         * `u` – вычисления в `int` без проверки на переполнение;
         * `l` – вычисления в `long` без проверки на переполнение;
         * `s` – вычисления в `s` без проверки на переполнение.
-    * [Исходный код тестов](java/expression/generic/GenericCmmUlsTest.java)
+    * [Исходный код тестов](tests/java/expression/generic/GenericCmmUlsTest.java)
  * *CmmUfb*
     * Реализовать операции из модификации *Cmm*.
     * Дополнительно реализовать поддержку режимов:
         * `u` – вычисления в `int` без проверки на переполнение;
         * `f` – вычисления в `float` без проверки на переполнение;
         * `b` – вычисления в `byte` без проверки на переполнение.
-    * [Исходный код тестов](java/expression/generic/GenericCmmUfbTest.java)
+    * [Исходный код тестов](tests/java/expression/generic/GenericCmmUfbTest.java)
 
 
 
@@ -64,8 +64,8 @@
 
 #### Модификации
  * *Базовая*
-    * [Исходный код тестов](java/queue/QueueTest.java)
-    * [Откомпилированные тесты](artifacts/queue/QueueTest.jar)
+    * [Исходный код тестов](tests/java/queue/QueueTest.java)
+    * [Откомпилированные тесты](tests/artifacts/queue/QueueTest.jar)
  * *IfWhile*
     * Добавить в интерфейс очереди и реализовать методы
         * `removeIf(predicate)` – удалить элементы, удовлетворяющие
@@ -78,8 +78,8 @@
             [предикату](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Predicate.html)
     * Взаимный порядок элементов должен сохраняться
     * Дублирования кода быть не должно
-    * [Исходный код тестов](java/queue/QueueIfWhileTest.java)
-    * [Откомпилированные тесты](artifacts/queue/QueueIfWhileTest.jar)
+    * [Исходный код тестов](tests/java/queue/QueueIfWhileTest.java)
+    * [Откомпилированные тесты](tests/artifacts/queue/QueueIfWhileTest.jar)
 
 
 [Домашнее задание 15. Очередь на массиве](hw15_contracts_queue)
@@ -103,22 +103,22 @@
 #### Модификации
  * *Базовая*
     * Классы должны находиться в пакете `queue`
-    * [Исходный код тестов](java/queue/ArrayQueueTest.java)
-    * [Откомпилированные тесты](artifacts/queue/ArrayQueueTest.jar)
+    * [Исходный код тестов](tests/java/queue/ArrayQueueTest.java)
+    * [Откомпилированные тесты](tests/artifacts/queue/ArrayQueueTest.jar)
  * *Deque* (сложная)
     * Реализовать методы
         * `push` – добавить элемент в начало очереди
         * `peek` – вернуть последний элемент в очереди
         * `remove` – вернуть и удалить последний элемент из очереди
-    * [Исходный код тестов](java/queue/ArrayQueueDequeTest.java)
-    * [Откомпилированные тесты](artifacts/queue/ArrayQueueDequeTest.jar)
+    * [Исходный код тестов](tests/java/queue/ArrayQueueDequeTest.java)
+    * [Откомпилированные тесты](tests/artifacts/queue/ArrayQueueDequeTest.jar)
  * *IndexedDeque*
     * Реализовать модификацию *Deque*
     * Реализовать методы
         * `get` – получить элемент по индексу, отсчитываемому с головы
         * `set` – заменить элемент по индексу, отсчитываемому с головы
-    * [Исходный код тестов](java/queue/ArrayQueueIndexedDequeTest.java)
-    * [Откомпилированные тесты](artifacts/queue/ArrayQueueIndexedDequeTest.jar)
+    * [Исходный код тестов](tests/java/queue/ArrayQueueIndexedDequeTest.java)
+    * [Откомпилированные тесты](tests/artifacts/queue/ArrayQueueIndexedDequeTest.jar)
 
 [Домашнее задание 14. Бинарный поиск, контракты](hw14_contracts_binsearch)
 ----
@@ -133,14 +133,14 @@
 #### Модификации
  * *Базовая*
     * Класс `BinarySearch` должен находиться в пакете `search`
-    * [Исходный код тестов](java/search/BinarySearchTest.java)
-    * [Откомпилированные тесты](artifacts/search/BinarySearchTest.jar)
+    * [Исходный код тестов](tests/java/search/BinarySearchTest.java)
+    * [Откомпилированные тесты](tests/artifacts/search/BinarySearchTest.jar)
  * *Shift*
     * На вход подается отсортированный массив, циклически сдвинутый на `k`
       элементов. Требуется найти `k`. Все числа в массиве различны.
     * Класс должен иметь имя `BinarySearchShift`
-    * [Исходный код тестов](java/search/BinarySearchShiftTest.java)
-    * [Откомпилированные тесты](artifacts/search/BinarySearchShiftTest.jar)
+    * [Исходный код тестов](tests/java/search/BinarySearchShiftTest.java)
+    * [Откомпилированные тесты](tests/artifacts/search/BinarySearchShiftTest.jar)
 
 
 [Домашнее задание 13. Обработка ошибок](hw13_exceptions)
@@ -154,23 +154,23 @@
 #### Модификации
  * *Базовая*
     * Класс `ExpressionParser` должен реализовывать интерфейс
-        [Parser](java/expression/exceptions/Parser.java)
+        [Parser](tests/java/expression/exceptions/Parser.java)
     * Классы `CheckedAdd`, `CheckedSubtract`, `CheckedMultiply`,
         `CheckedDivide` и `CheckedNegate` должны реализовывать интерфейс
-        [TripleExpression](java/expression/TripleExpression.java)
+        [TripleExpression](tests/java/expression/TripleExpression.java)
     * Нельзя использовать типы `long` и `double`
     * Нельзя использовать методы классов `Math` и `StrictMath`
-    * [Исходный код тестов](java/expression/exceptions/ExceptionsTest.java)
+    * [Исходный код тестов](tests/java/expression/exceptions/ExceptionsTest.java)
  * *PowLog2*
     * Дополнительно реализуйте унарные операции:
         * `log2` – логарифм по уснованию 2, `log2 10` равно 3;
         * `pow2` – два в степени, `pow2 4` равно 16.
-    * [Исходный код тестов](java/expression/exceptions/ExceptionsPowLog2Test.java)
+    * [Исходный код тестов](tests/java/expression/exceptions/ExceptionsPowLog2Test.java)
  * *PowLog*
     * Дополнительно реализуйте бинарные операции (максимальный приоритет):
         * `**` – возведение в степень, `2 ** 3` равно 8;
         * `//` – логарифм, `10 // 2` равно 3.
-    * [Исходный код тестов](java/expression/exceptions/ExceptionsPowLogTest.java)
+    * [Исходный код тестов](tests/java/expression/exceptions/ExceptionsPowLogTest.java)
 
 
 [Домашнее задание 12. Разбор выражений](hw12_expressions_parser)
@@ -190,7 +190,7 @@
 #### Модификации
  * *Базовая*
     * Класс `ExpressionParser` должен реализовывать интерфейс
-        [Parser](java/expression/parser/Parser.java)
+        [Parser](tests/java/expression/parser/Parser.java)
     * Результат разбора должен реализовывать интерфейс
         [TripleExpression](tests/java/expression/TripleExpression.java)
     * [Исходный код тестов](tests/java/expression/parser/ParserTest.java)
@@ -438,7 +438,7 @@ new Subtract(
  * *Hex*
     * Шестнадцатеричные числа имеют префикс `0x`
     * Класс должен иметь имя `SumHex`
-    * [Исходный код тестов](java/sum/SumHexTest.java)
+    * [Исходный код тестов](tests/java/sum/SumHexTest.java)
     * [Откомпилированные тесты](tests/artifacts/sum/SumHexTest.jar)
 
 Исходный код тестов:
