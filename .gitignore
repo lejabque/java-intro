@@ -2,7 +2,6 @@
 .DS_Store
 .idea
 *.class
-*.jar
 out
 *.iml
 hw7_markup/src/base
